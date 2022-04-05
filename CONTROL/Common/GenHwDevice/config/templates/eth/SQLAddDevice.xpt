@@ -1,0 +1,331 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+File SQLAddDevice.xpt
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+«FILE Assembly+"/idl/"+Assembly+"Add.sql"»
+SET SERVEROUTPUT ON;
+
+DECLARE
+    compTypeId componenttype.componenttypeid%TYPE:=0;
+    lruNameCount NUMBER;
+    componentTypeIdCount NUMBER;
+    assemblyNameCount NUMBER;
+    defaultComponentCount NUMBER;
+    defaultBACIPropertyCount NUMBER;
+    defCompId NUMBER;
+    defaultBACIPropId NUMBER;
+    defaultMonPointId NUMBER;
+    monitorPropCount NUMBER;
+    indice NUMBER;
+
+BEGIN
+dbms_output.put_line('Transaction BEGIN');
+
+«REM»
+  First we find out wether LRUType Assembly has already been inserted. 
+«ENDREM»
+SELECT COUNT(lruName) INTO lruNameCount FROM lruType WHERE lruName='«Assembly»';
+IF lruNameCount=0 THEN
+dbms_output.put_line('Inserting LRU');
+INSERT INTO LRUType VALUES (
+    '«Assembly»',
+    '«DeviceName»',
+    '«ICD»',
+    '«ICDDateAsArrayTime»',
+    '«DescriptionAsString»',
+    ''
+);
+ELSE
+    dbms_output.put_line('LRU already exists... continue');
+END IF;
+
+
+«REM»
+  NOW  We find out wether ComponentType has already been inserted. 
+«ENDREM»
+SELECT COUNT(componentTypeId) INTO componentTypeIdCount FROM componentType WHERE idl='IDL:alma/Control/«Assembly»:1.0';
+IF componentTypeIdCount=0 THEN
+    dbms_output.put_line('Inserting component type IDL:alma/Control/«Assembly»:1.0');
+    INSERT INTO componentType VALUES (
+        ComponT_seq.NextVal,
+        'IDL:alma/Control/«Assembly»:1.0'
+    );
+    «REM»
+      Next line was added since Oracle sequences are implemented such that we cannot be sure that next element is current+1
+    «ENDREM»
+ELSE 
+    dbms_output.put_line('Component type IDL:alma/Control/«Assembly»:1.0 already exists... continue');
+END IF;
+SELECT componenttypeid INTO compTypeId FROM componentType WHERE idl='IDL:alma/Control/«Assembly»:1.0';
+
+
+«REM»
+  NOW  We find out wether AssemblyType has already been inserted. 
+«ENDREM»
+SELECT count(assemblytypename) INTO assemblyNameCount FROM assemblytype WHERE assemblytypename='«Assembly»';
+IF assemblyNameCount=0 THEN
+    dbms_output.put_line('Inserting assembly type «Assembly»');
+    INSERT INTO AssemblyType (
+        ASSEMBLYTYPENAME,
+        BASEELEMENTTYPE,
+        LRUNAME,
+        FULLNAME,
+        DESCRIPTION,
+        NOTES,
+        COMPONENTTYPEID,
+	PRODUCTIONCODE,
+	SIMULATEDCODE)
+    VALUES (
+        '«Assembly»', 
+        'Antenna',
+        '«Assembly»', 
+        '«DeviceName»', 
+        '«DescriptionAsString»', 
+        '',
+        compTypeId,
+        '«Assembly»Impl',
+        '«Assembly»CompSimImpl'
+    );
+ELSE
+    dbms_output.put_line('Assembly type «Assembly» already exists... continue');
+END IF;
+
+
+«REM»
+  NOW  We find out wether DefaultComponent has already been inserted. 
+«ENDREM»
+SELECT count(defaultcomponentid) INTO defaultComponentCount FROM defaultComponent WHERE assemblytypename='«Assembly»';
+IF defaultComponentCount=0 THEN
+    dbms_output.put_line('Inserting default component «Assembly»');
+    SELECT MAX(defaultcomponentid) INTO defCompId FROM defaultComponent;
+    defCompId:=COALESCE(defCompId,0)+1;
+    INSERT INTO DefaultComponent VALUES (
+        defCompId,
+        compTypeId, 
+        '«Assembly»', 
+        'cpp', 
+        '1',
+        '«Assembly»Impl.cpp',
+        '«Assembly»Impl.cpp',
+        '0',
+        '0',
+        '0',
+        '5',
+        '4',
+        '4',
+        ''
+    );
+ELSE
+    SELECT defaultcomponentid INTO defCompId FROM defaultcomponent WHERE assemblytypename='«Assembly»';
+«IF Extends != "none"»
+    dbms_output.put_line('Default component «Assembly» already exists... continue');
+«ELSE»
+    dbms_output.put_line('Default component «Assembly» already exists. Deleting associated baciprops and monpoints...');
+    FOR propCur in (select defaultbacipropid from defaultbaciproperty where defaultcomponentid = defCompId)
+    LOOP
+        FOR monCur in (select defaultmonitorpointid from defaultmonitorpoint where defaultbacipropertyid = propCur.defaultbacipropid)
+        LOOP
+            delete from defaultmonitorpoint where defaultmonitorpointid = monCur.defaultmonitorpointid;
+        END LOOP;
+        delete from defaultbaciproperty where defaultbacipropid = propCur.defaultbacipropid;
+    END LOOP;
+«ENDIF»
+END IF;
+
+
+«REM»
+  NOW  We find out wether defaultBACIPropertyType has already been inserted. 
+«ENDREM»
+    «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+        «IF x.isMonitored»
+            «IF !x.isDependent && x.hasDependents»
+                «LET x.MPName AS parentBACIProperty»
+                «ENDLET»
+            «ENDIF»
+
+            «REM»
+              Ethernet device have no dependent monitor points.
+              However, we better check in case of the spreadsheet typo.
+            «ENDREM»
+            «IF !x.isDependent»
+                «REM»Adding BACIProperty«ENDREM»
+                SELECT COUNT(propertyname) INTO defaultBACIPropertyCount FROM defaultbaciProperty WHERE propertyname='«x.MPName»' and defaultComponentId=defCompId;
+                IF defaultBACIPropertyCount=0 THEN
+                    «REM»NO default property found. It will be added...«ENDREM»
+                    dbms_output.put_line('Inserting default BACI Property «x.MPName»');
+                    SELECT MAX(defaultBACIPropId) INTO defaultBACIPropId FROM defaultbaciProperty;
+                    defaultBACIPropId:=COALESCE(defaultBACIPropId,0)+1;
+                    INSERT INTO DefaultBACIProperty (
+                        DEFAULTBACIPROPID,
+                        DEFAULTCOMPONENTID,
+                        PROPERTYNAME,
+                        DESCRIPTION,
+                        FORMAT,
+                        UNITS,
+                        RESOLUTION,
+                        ARCHIVE_PRIORITY,
+                        ARCHIVE_MIN_INT,
+                        ARCHIVE_MAX_INT,
+                        DEFAULT_TIMER_TRIG,
+                        MIN_TIMER_TRIG,
+                        INITIALIZE_DEVIO,
+                        MIN_DELTA_TRIG,
+                        DEFAULT_VALUE,
+                        GRAPH_MIN,
+                        GRAPH_MAX,
+                        MIN_STEP,
+                        ARCHIVE_DELTA,
+                        ALARM_HIGH_ON,
+                        ALARM_LOW_ON,
+                        ALARM_HIGH_OFF,
+                        ALARM_LOW_OFF,
+                        ALARM_TIMER_TRIG,
+                        MIN_VALUE,
+                        MAX_VALUE,
+                        BITDESCRIPTION,
+                        WHENSET,
+                        WHENCLEARED,
+                        STATESDESCRIPTION,
+                        CONDITION,
+                        ALARM_ON,
+                        ALARM_OFF,
+                        DATA,
+                        ALARM_FAULT_FAMILY,
+                        ALARM_FAULT_MEMBER,
+                        ALARM_LEVEL,
+                        ARCHIVE_SUPPRESS,
+                        ARCHIVE_MECHANISM)
+                    VALUES (
+                        defaultBACIPropId,
+                        defCompId,
+                        '«x.MPName»',
+                        '«x.Description»',
+                        '«x.Format»',
+                        '«x.DisplayUnits»',
+                        '0',
+                        '3',
+                        '0',
+                        «IF x.Interval != "none"»'«x.Interval»', «ELSE»'0', «ENDIF»
+                        '1',
+                        '0.048',
+                        '0',
+                        '0',
+                        '0',
+                        «IF x.GraphMin == "na" || x.GraphMin == "none"»'0',  «ELSE»'«x.GraphMin»',  «ENDIF» 
+                        «IF x.GraphMax == "na" || x.GraphMax == "none"»'0',  «ELSE»'«x.GraphMax»',  «ENDIF» 
+                        '0',
+                        '0',
+                        '0',
+                        '0',
+                        '0',
+                        '0',
+                        '0',
+                        '-2147483648',
+                        '2147483647',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '!',
+                        '!',
+                        '0',
+                        «IF x.Interval == "none" || x.Interval == "0"»'1', «ELSE»'0', «ENDIF»
+                        'monitor_collector'
+                    );
+                ELSE 
+                    dbms_output.put_line('Default BACI Property «x.MPName» already exists... continue');
+                    SELECT defaultBACIPropId INTO defaultBACIPropId FROM defaultbaciProperty WHERE propertyname='«x.MPName»' and defaultComponentId=defCompId;
+                END IF;
+
+                «REM»Adding MonitorPoint«ENDREM»
+                SELECT COUNT(monitorPointName) INTO monitorPropCount FROM defaultMonitorPoint WHERE defaultbacipropertyId=defaultBACIPropId;
+                IF monitorPropCount=0 THEN
+                    SELECT MAX(defaultMonitorPointId) INTO defaultMonPointId FROM defaultMonitorPoint;
+                    defaultMonPointId:=COALESCE(defaultMonPointId,0)+1; 
+                    INSERT INTO DefaultMonitorPoint (
+                        DEFAULTMONITORPOINTID,
+                        DEFAULTBACIPROPERTYID,
+                        MONITORPOINTNAME,
+                        INDICE,
+                        DATATYPE,
+                        RCA,
+                        TERELATED,
+                        RAWDATATYPE,
+                        WORLDDATATYPE,
+                        UNITS,
+                        SCALE,
+                        OFFSET,
+                        MINRANGE,
+                        MAXRANGE,
+                        DESCRIPTION)
+                    VALUES(
+                        defaultMonPointId,
+                        defaultBACIPropId,
+                        '«x.MPName»',
+                        '0',
+                        '«x.DataToDatabaseType»',
+                        '0x0',
+                        '0',
+                        '«x.DataType»',
+                        '«x.DataToCPPType»',
+                        '«x.DataUnits»',
+                        '0',
+                        '0',
+                        «IF x.MinRange == "na" || x.MinRange == "none" || x.MinRange == "not specified"»'0',  «ELSE»'«x.MinRange»',  «ENDIF» 
+                        «IF x.MaxRange == "na" || x.MaxRange == "none" || x.MaxRange == "not specified"»'0',  «ELSE»'«x.MaxRange»',  «ENDIF» 
+                        '«x.DescriptionAsString»'
+                    );
+                ELSE 
+                    dbms_output.put_line('WARNING: Found other Monitor Points associated with property «x.MPName». Skipping unique monitor point insertion.');
+                END IF;
+            «ENDIF»   «REM»IF !x.isDependent«ENDREM»
+        «ENDIF»   «REM»IF x.isMonitored«ENDREM»
+    «ENDFOREACH»   «REM»FOREACH (Set[MonitorPoint]) MonitorPoint AS x«ENDREM»
+COMMIT;
+
+EXCEPTION 
+WHEN OTHERS THEN
+    dbms_output.put_line('Transaction Error:'||SQLERRM);
+    dbms_output.put_line('Rolling back the transaction');
+    ROLLBACK;
+END;
+
+.
+/
+«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="../MandCBase.xsd"/>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="MandCImpl_Address">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Address"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="MandCImpl_OnChange">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="On Change"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_DataType">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Data Type"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+<!-- Specification of column value fields. -->
+	<xsd:complexType name="MandCImpl_AddressV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="none|0x([0-9A-Fa-f])*|([0-9])*|[a-zA-Z]([a-zA-Z0-9_])*"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+    <!-- Specification of column value fields. -->
+	<xsd:complexType name="MandCImpl_OnChangeV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+                            <xsd:pattern value="-?([0-9])+(\.([0-9])+)?(E-([0-9])+)?"/>
+							<xsd:pattern value="no"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

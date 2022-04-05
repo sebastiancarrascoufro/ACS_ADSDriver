@@ -1,0 +1,158 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/config/CDB/schemas/"+Assembly+"Base.xsd"»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * Warning!
+ *  =========================================================
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  =========================================================
+-->
+<xs:schema targetNamespace="urn:schemas-cosylab-com:«Assembly»Base:1.0"
+    xmlns="urn:schemas-cosylab-com:«Assembly»Base:1.0"
+    xmlns:amb="urn:schemas-cosylab-com:AmbDevice:1.0"
+    xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+    xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    «IF Extends != "none"»
+          xmlns:ext="urn:schemas-cosylab-com:«Extends»:1.0" 
+    «ELSE»
+          xmlns:extcontrol="urn:schemas-cosylab-com:ControlDevice:1.0"
+    «ENDIF»
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+    <xs:import namespace="urn:schemas-cosylab-com:CDB:1.0" schemaLocation="http://www.eso.org/schemas/ACS/CDB.xsd"/>
+    <xs:import namespace="urn:schemas-cosylab-com:BACI:1.0" schemaLocation="http://www.eso.org/schemas/ACS/BACI.xsd"/>
+    <xs:import namespace="urn:schemas-cosylab-com:AmbDevice:1.0" schemaLocation="http://www.nrao.edu/schemas/CONTROL/AmbDevice.xsd"/>
+    «IF Extends != "none"»
+          <xs:import namespace="urn:schemas-cosylab-com:«Extends»:1.0" schemaLocation="http://www.nrao.edu/schemas/CONTROL/«Extends».xsd"/>
+    «ELSE»
+          <xs:import namespace="urn:schemas-cosylab-com:ControlDevice:1.0" schemaLocation="http://www.nrao.edu/schemas/CONTROL/ControlDevice.xsd"/>
+    «ENDIF»
+    <xs:complexType name="«Assembly»Base">
+    «IF Extends != "none"»
+        <xs:complexContent>
+        <xs:extension base="ext:«Extends»">
+    «ELSE»
+          <xs:complexContent>
+          <xs:extension base="extcontrol:ControlDevice">
+    «ENDIF»
+    <xs:sequence>
+    «FOREACH MonitorPoint AS x»
+        «IF x.isMonitored»
+          «IF x.isPattern»
+      <xs:element name="«x.MPName»" type ="baci:ROpattern"/>
+          «ELSE»
+            «IF x.isWorldDataArray»
+      <xs:element name="«x.MPName»" type ="baci:RO«x.WorldDataToBACIType»Seq"/>
+            «ELSE»
+      <xs:element name="«x.MPName»" type ="baci:RO«x.WorldDataToBACIType»"/>
+            «ENDIF»
+          «ENDIF»
+        «ENDIF»
+    «ENDFOREACH»
+    «IF Extends == "none"»
+        <xs:element name="Address">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:restriction base="amb:Address">
+        «IF Channel == "none" || Channel == "parm"»
+            «IF Channel == "none"»
+                  <xs:attribute name="ChannelNumber" type="xs:integer" use="optional"/>
+            «ELSE»
+                  <xs:attribute name="ChannelNumber" type="xs:integer" use="required"/>
+            «ENDIF»
+        «ELSE»
+              <xs:attribute name="ChannelNumber" type="xs:integer" use="optional" default="«Channel»"/>
+        «ENDIF»
+        «IF NodeAddress == "none" || NodeAddress == "parm"»
+            «IF NodeAddress == "none"»
+                  <xs:attribute name="NodeNumber" type="xs:integer" use="optional"/>
+            «ELSE»
+                  <xs:attribute name="NodeNumber" type="xs:integer" use="required"/>
+            «ENDIF»
+        «ELSE»
+              <xs:attribute name="NodeNumber" type="xs:integer" use="optional" default="«NodeAddressInDecimal»"/>
+        «ENDIF»
+              <xs:attribute name="IDL" type="xs:string" use="optional"
+                            default="IDL:alma/Control/«Assembly»Base:1.0"/>
+              <xs:attribute name="Implementation" type="xs:string"
+                            use="optional" default="«Assembly»Impl"/>
+		
+            </xs:restriction>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    «ENDIF»
+    </xs:sequence>
+	<xs:attribute name="remoteip" type="xs:string" use="required" />
+	<xs:attribute name="adsport" type="xs:integer" use="required"/>
+	<xs:attribute name="adsthreads" type="xs:integer" use="required"/>
+	<xs:attribute name="amsnetid" type="xs:string" use="required" />
+  </xs:extension>
+ </xs:complexContent>
+</xs:complexType>
+<xs:element name="«Assembly»Base" type="«Assembly»Base"/>
+</xs:schema>
+«ENDFILE»
+«ENDDEFINE»

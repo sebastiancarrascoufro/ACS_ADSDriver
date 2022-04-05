@@ -1,0 +1,119 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+
+
+«REM»
+    === The Following is the Definition for the ETH Devices. ===
+«ENDREM»
+«DEFINE Root FOR alma::Control::datamodel::meta::eth::DeviceModel»
+«CheckConstraints»
+«EXPAND eth::CVSIgnore::Root»
+«EXPAND eth::CDBSchema::Root»
+«EXPAND eth::CDBComponent::Root»
+«EXPAND eth::CDBInstance::Root»
+«EXPAND eth::BaseIDL::Root»
+«EXPAND eth::BaseDotH::Root»
+«EXPAND eth::BaseDotCPP::Root»
+«EXPAND eth::CCLBaseDotPY::Root»
+«EXPAND eth::SQLAddDevice::Root»
+«EXPAND eth::XMLAddDevice::Root»
+«REM»
+«EXPAND eth::Sim::EthSimBaseDotH::Root»
+«EXPAND eth::Sim::EthSimBaseDotCPP::Root»
+«EXPAND eth::Sim::CompSimIDL::Root»
+«EXPAND eth::Sim::CompSimDotH::Root»
+«EXPAND eth::Sim::CompSimDotCPP::Root»
+«ENDREM»
+«TheEnd»
+«ENDDEFINE»
+
+«REM»
+    === The Following is the Definition for the AMB Devices. ===
+«ENDREM»
+«DEFINE Root FOR alma::Control::datamodel::meta::amb::DeviceModel»
+«CheckConstraints»
+«EXPAND amb::CVSIgnore::Root»
+«EXPAND amb::HTML::Root»
+«EXPAND amb::CDBSchema::Root»
+«EXPAND amb::CDBComponent::Root»
+«EXPAND amb::CDBInstance::Root»
+«EXPAND amb::BaseIDL::Root»
+«EXPAND amb::BaseDotH::Root»
+«EXPAND amb::BaseDotCPP::Root»
+«EXPAND amb::HWSim::HWSimBaseDotH::Root»
+«EXPAND amb::HWSim::HWSimBaseDotCPP::Root»
+«EXPAND amb::HWSim::CompSimBaseIDL::Root»
+«EXPAND amb::HWSim::CompSimBaseDotH::Root»
+«EXPAND amb::HWSim::CompSimBaseDotCPP::Root»
+«EXPAND amb::ADS::CompAdsBaseIDL::Root»
+«EXPAND amb::ADS::CompAdsBaseDotH::Root»
+«EXPAND amb::ADS::CompAdsBaseDotCPP::Root»
+«IF !checkIfDeviceFileExists("include", "HWSimImpl.h")»
+    «EXPAND amb::HWSim::HWSimImplDotH::Root»
+«ENDIF»
+«IF !checkIfDeviceFileExists("src", "HWSimImpl.cpp")»
+    «EXPAND amb::HWSim::HWSimImplDotCPP::Root»
+«ENDIF»
+«IF !checkIfDeviceFileExists("include", "CompSimImpl.h")»
+    «EXPAND amb::HWSim::CompSimImplDotH::Root»
+«ENDIF»
+«IF !checkIfDeviceFileExists("src", "CompSimImpl.cpp")»
+    «EXPAND amb::HWSim::CompSimImplDotCPP::Root»
+«ENDIF»
+«IF !checkIfDeviceFileExists("include", "CompAdsImpl.h")»
+    «EXPAND amb::ADS::CompAdsImplDotH::Root»
+«ENDIF»
+«IF !checkIfDeviceFileExists("src", "CompAdsImpl.cpp")»
+    «EXPAND amb::ADS::CompAdsImplDotCPP::Root»
+«ENDIF»
+«IF !checkIfTestFileExists("test", "HWSimImpl.cpp")»
+«EXPAND amb::HWSim::TestHWSimImpl::Root»
+«ENDIF»
+«IF !checkIfTestFileExists("test", "AmbDeviceInt.cpp")»
+«EXPAND amb::HWSim::TestAmbDeviceInt::Root»
+«ENDIF»
+«EXPAND amb::SQLAddDevice::Root»
+«EXPAND amb::XMLAddDevice::Root»
+«EXPAND amb::CCLBaseDotPY::Root»
+«EXPAND amb::ALT::Root»
+«EXPAND amb::DeviceDefDotPY::Root»
+«EXPAND amb::MonitorPoints::Root»
+«EXPAND amb::ControlPoints::Root»
+«REM»
+    === The following support GUI code generation. ===
+«ENDREM»
+«EXPAND amb::GUIControlPointPMDotJava::Root»
+«EXPAND amb::GUIIcdControlPointsDotJava::Root»
+«EXPAND amb::GUIIcdMonitorPointsDotJava::Root»
+«EXPAND amb::GUIMonitorPointPMDotJava::Root»
+«TheEnd»
+«ENDDEFINE»

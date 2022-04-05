@@ -1,0 +1,440 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2010
+(c) Associated Universities Inc., 2010
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/src/CCL/__init__.py"»
+#! /usr/bin/env python
+#******************************************************************************
+# ALMA - Atacama Large Millimeter Array
+# (c) Associated Universities Inc., 2010
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+# WARNING! DO NOT MODIFY THIS FILE!
+# ---------------------------------------------------------
+# | This is generated code!  Do not modify this file.       |
+# | Any changes will be lost when the file is re-generated. |
+#  ---------------------------------------------------------
+#
+
+"""
+This package is part of the Control Command Language (CCL).
+It contains the code used for accessing «Assembly».
+"""
+from pkgutil import extend_path
+__path__ = extend_path(__path__, __name__)
+«ENDFILE»
+«FILE DirPath+"/src/CCL/"+Assembly+"Base.py"»
+#! /usr/bin/env python
+#******************************************************************************
+# ALMA - Atacama Large Millimeter Array
+# (c) Associated Universities Inc., 2010
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+# WARNING! DO NOT MODIFY THIS FILE!
+# ---------------------------------------------------------
+# | This is generated code!  Do not modify this file.       |
+# | Any changes will be lost when the file is re-generated. |
+#  ---------------------------------------------------------
+#
+
+"""
+This module defines the «Assembly» Control Command Language (CCL)
+base class. It is automatically generated and provides access to
+all set monitor, control points and device methods.
+"""
+
+import math
+«IF Extends != "none"»
+# This class extends «Extends»
+import CCL.«Extends»
+«ELSE»
+import CCL.HardwareDevice
+«ENDIF»
+
+from CCL.Container import getComponent
+from CCL.Container import getDynamicComponent
+from CCL.logging import getLogger
+
+«IF Extends != "none"»
+class «Assembly»Base(CCL.«Extends».«Extends»):
+«ELSE»
+class «Assembly»Base(CCL.HardwareDevice.HardwareDevice):
+«ENDIF»
+    '''
+«Description»
+    '''
+    def __init__(self, \
+                antennaName = None, \
+                componentName = None, \
+                stickyFlag = False):
+        '''
+        The constructor creates a «Assembly» object or a group of «Assembly»
+        objects.
+
+        If the antennaName is defined then this constructor references
+        the component running on that antenna. Alternativly the full
+        componentName can be specified if desired.
+
+        If antennaName or componentName are specified as list then a set of
+        «Assembly» components are created.
+
+        The «Assembly»Base class is a python proxy to the «Assembly»
+        component. The component can be running before creating this
+        proxy but if it is not it will be started. The object reference
+        is obtained using a call to getComponent (stickyFlag = True)
+        or to getComponentNonSticky (stickyFlag = False, default).
+
+        An exception is thrown if there is a problem creating
+        this component, establishing the connection to the
+        previously mentioned hardware components, or if either
+        both or neither antennaName and componentName are specified.
+
+        EXAMPLE:
+        import CCL.«Assembly»Base
+        obj = CCL.«Assembly»Base.«Assembly»Base("DV01")
+
+        or
+
+        import CCL.«Assembly»Base
+        obj = CCL.«Assembly»Base.«Assembly»Base(["DV01", "DA41"])
+        '''«IF Extends != "none"»
+        CCL.«Extends».«Extends».__init__(self, \
+            antennaName, componentName, stickyFlag)«ELSE»
+        # Dictionary of device instances
+        self._devices = {}
+
+        # Group of antenna or component names.
+        if ((isinstance(antennaName, list) == True) or
+            (isinstance(componentName, list) == True)):
+            # Antenna names
+            if isinstance(antennaName, list) == True:
+                if len(antennaName) != 0:
+                    for idx in range(0, len(antennaName)):
+                        self._devices["CONTROL/" + antennaName[idx] + \
+                            "/«Assembly»"] = ""
+            # Component names
+            if isinstance(componentName, list) == True:
+                if len(componentName) != 0:
+                    for idx in range(0, len(componentName)):
+                        self._devices[componentName[idx]] = ""
+        # One component
+        else:
+            if((antennaName == None) and (componentName == None)):
+                raise NameError, "missing antennaName or componentName"
+            elif((antennaName != None) and (componentName != None)):
+                raise NameError, "missing antennaName or componentName"
+
+            if antennaName != None:
+                self._devices["CONTROL/" + antennaName + \
+                    "/«Assembly»"] = ""
+
+            if componentName != None:
+                self._devices[componentName] = ""
+
+        # Initialize the base class
+        for key, val in self._devices.iteritems():
+            CCL.HardwareDevice.HardwareDevice.__init__(self, \
+                key, stickyFlag)
+            self._devices[key] = self._HardwareDevice__hw«ENDIF»
+        self.__logger = getLogger()
+
+    def __del__(self):«IF Extends != "none"»
+        CCL.«Extends».«Extends».__del__(self)«ELSE»
+        for key, val in self._devices.iteritems():
+            instance = self._devices[key]
+            del(instance)
+        CCL.HardwareDevice.HardwareDevice.__del__(self)«ENDIF»
+
+    #
+    # --------------------- General Methods ---------------------
+    #
+
+«IF Extends == "none"»
+    def isSimulated(self):
+        '''
+        Returns True if the device is simulated, False if
+        real hardware is accessed.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].isSimulated()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+«ENDIF»
+
+«IF Channel != "none"»
+    #
+    # Get the channel number for this device
+    #
+    def GET_CHANNEL_NUMBER(self):
+        '''
+        This command returns the channel number for this device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].GET_CHANNEL_NUMBER()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «IF Channel == "parm"»
+    def SET_CHANNEL_NUMBER(self, channelNumber):
+        '''
+        Set the channel number for this device to channelNumber.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].GET_CHANNEL_NUMBER()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «ENDIF»
+«ENDIF»
+
+«IF NodeAddress != "none"»
+    def GET_NODE_ADDRESS(self):
+        '''
+        Get the node address for this device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].GET_NODE_ADDRESS()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «IF NodeAddress == "parm"»
+    def SET_NODE_ADDRESS(self, nodeAddress):
+        '''
+        Set the node address for this device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].GET_NODE_ADDRESS()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «ENDIF»
+«ENDIF»
+
+«IF BaseAddress != "none"»
+    def GET_BASE_ADDRESS(self):
+        '''
+        Get the base address for this device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].GET_BASE_ADDRESS()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «IF BaseAddress == "parm"»
+    def SET_BASE_ADDRESS(self, baseAddress):
+        '''
+        Set the base address for this device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].SET_BASE_ADDRESS(baseAddress)
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «ENDIF»
+«ENDIF»
+    #
+    # --------------------- Generic Monitor Points -------------
+    #
+«IF GenericMonitorPoints»
+
+    def getInternalSlaveCanErrorMsg(self):
+        '''
+        Allow you to get a readable message about the Internal Slave CAN Error
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = \
+                self._devices[key].GET_INTERNAL_SLAVE_CAN_ERROR_MSG()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+    def getLastCanErrorMsg(self):
+        '''
+        Allow you to get a readable message about last CAN error
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = self._devices[key].GET_LAST_CAN_ERROR_MSG()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+«ENDIF»
+
+    #
+    # --------------------- Monitor Points ---------------------
+    #
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isExternal»
+    #
+    # «x.MPName»
+    #
+    def GET_«x.MPName»(self):
+        '''
+«x.Description»
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = \
+                self._devices[key].GET_«x.MPName»()
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «ENDIF»
+«ENDFOREACH»
+
+    #
+    # --------------------- Control Points ---------------------
+    #
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF x.isExternal»
+    #
+    # «x.CPName»
+    #
+        «IF x.argList == ""»
+    def  SET_«x.CPName»(self):
+        «ELSE»
+    def SET_«x.CPName»(self, «x.argList»):
+        «ENDIF»
+        '''
+«x.Description»
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]
+            result[antName] = \«IF x.argList == ""»
+                self._devices[key].SET_«x.CPName»()«ELSE»
+                self._devices[key].SET_«x.CPName»(«x.argList»)«ENDIF»
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    «ENDIF»
+«ENDFOREACH»
+
+    # ----------------- List of Monitor Points ------------------
+    def getMonitorList(self):
+        '''
+        This method returns a list containing all monitor point
+        names of this hardware device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]«IF Extends != "none"»
+            monitorList = \
+                CCL.«Extends».«Extends».getMonitorList(self)«ELSE»
+            monitorList = []«ENDIF»
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+            «IF x.isExternal && x.isMonitored»monitorList.append("«x.MPName»")«ENDIF»
+«ENDFOREACH»
+            result[antName] = monitorList
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+
+    # ----------------- List of Control Points ------------------
+    def getControlList(self):
+        '''
+    This method returns a list containing all control point
+        names of this hardware device.
+        '''
+        result = {}
+        for key, val in self._devices.iteritems():
+            antName = key.rsplit("/")[1]«IF Extends != "none"»
+            controlList = \
+                CCL.«Extends».«Extends».getControlList(self)«ELSE»
+            controlList = []«ENDIF»
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+            «IF x.isExternal»controlList.append("«x.CPName»")«ENDIF»
+«ENDFOREACH»
+            result[antName] = controlList
+        if len(self._devices) == 1:
+            return result.values()[0]
+        return result
+«ENDFILE»
+«ENDDEFINE»

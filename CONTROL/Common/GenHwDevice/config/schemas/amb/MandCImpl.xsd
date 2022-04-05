@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="../MandCBase.xsd"/>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="MandCImpl_Assembly">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Assembly"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_RCA">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="RCA"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_RawDataType">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Raw Data Type"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_TERelated">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="TE Related"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+    <xsd:complexType name="MandCImpl_OnChange">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="On Change"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_WorldDataType">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="World Data Type"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_Scale">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Scale"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_Offset">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Offset"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+<!-- Specification of column value fields. -->
+	<xsd:complexType name="MandCImpl_AssemblyV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:Name">
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_RCAV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="none|0x([0-9A-Fa-f])*"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_RawDataTypeV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value=   "bit(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "ubyte(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=  "int8(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "uint8(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "int16(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="uint16(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "int24(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="uint24(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "int32(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="uint32(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "int48(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="uint48(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "int64(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="uint64(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "float(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="double(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="string"/>
+							<xsd:pattern value="&lt;[0-7]&gt;"/>
+							<xsd:pattern value="&lt;[0-7]&gt;"/>
+							<xsd:pattern value="&lt;([0-9])+&gt;&lt;[0-7]&gt;"/>
+							<xsd:pattern value="&lt;[0-7]-[0-7]&gt;"/>
+							<xsd:pattern value="&lt;([0-9])+&gt;&lt;[0-7]-[0-7]&gt;"/>
+							<xsd:pattern value="\[([0-9])+\]"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]bit"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]ubyte"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]int8"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]uint8"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]int16"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]uint16"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]int24"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]uint24"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]int32"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]uint32"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]int48"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]uint48"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]int64"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]uint64"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]float"/>
+							<xsd:pattern value="\[([0-9])+-{0,1}([0-9])*\]double"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_TERelatedV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="yes"/>
+							<xsd:enumeration value="no"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+    <xsd:complexType name="MandCImpl_OnChangeV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="-?([0-9])+(\.([0-9])+)?(E-([0-9])+)?"/>
+							<xsd:pattern value="no"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_WorldDataTypeV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value=  "ubyte(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=  "short(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "ushort(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=    "int(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=   "uint(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=   "long(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=  "ulong(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=  "float(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "double(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="boolean(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value="acstime(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value=   "void(\[([0-9])*\]){0,1}"/>
+							<xsd:pattern value= "string"/>
+							<!-- {Name, Name, ...}
+							<xsd:pattern value="\{[a-zA-z]([a-zA-z0-9_])*(,[a-zA-z]([a-zA-z0-9_])*)*\}"/>
+							-->
+							<!-- {Text, Text, ...} -->
+							<xsd:pattern value="\{.+(,.+)*\}"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_ScaleV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value= "none"/>
+							<xsd:pattern value= "extended"/>
+							<xsd:pattern value= "CelsiusToKelvin"/>
+							<xsd:pattern value= "-?([0-9])+(\.([0-9])+)?(E-([0-9])+)?"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MandCImpl_OffsetV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value= "none"/>
+							<xsd:pattern value= "extended"/>
+							<xsd:pattern value= "-?([0-9])+(\.([0-9])+)?(E-([0-9])+)?"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

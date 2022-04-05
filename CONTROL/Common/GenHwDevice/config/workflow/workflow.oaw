@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- March 19, 2007 -->
+<workflow>
+    <property file="config/workflow/workflow.properties"/>
+
+    <cartridge file="org/openarchitectureware/workflow/oawclassic/classicstart.oaw">
+        <log4jConfigFile value="config/workflow/log4j.properties"/>
+        <metaEnvironmentSlot value="me"/>
+        <instantiatorEnvironmentSlot value="ie"/>
+    </cartridge>    
+
+  <component class="alma.Control.datamodel.HwDeviceWorkflowInitializer">
+        <metaEnvironmentSlot value="me"/>
+        <deviceDir value="${deviceDir}"/>
+        <spreadsheetDir value="${spreadsheetDir}"/>
+        <generatedDir value="${generatedDir}"/>
+        <monitorDBOnly value="${monitorDBOnly}"/>
+        <generateAlt value="${generateAlt}"/>
+        <modelSlot value="model"/>
+    </component>
+
+    <cartridge file="org/openarchitectureware/workflow/oawclassic/classicinit.oaw">
+        <metaEnvironmentSlot value="me"/>
+    </cartridge>
+    
+     <component id="generator" class="org.openarchitectureware.xpand2.Generator">
+        <fileEncoding value="ISO-8859-1"/>
+        <metaModel class="org.openarchitectureware.type.impl.java.JavaMetaModel">
+               <typeStrategy class="org.openarchitectureware.type.impl.oawclassic.OAWClassicStrategy" 
+                             convertPropertiesToLowerCase="false"/>
+        </metaModel>
+        <expand value="Root::Root FOR model"/>
+        <genPath value="${generatedDir}"/>
+       </component>
+
+    <cartridge file="org/openarchitectureware/workflow/oawclassic/classicfinish.oaw">
+        <instantiatorEnvironmentSlot value="ie"/>
+        <dumpfile value=""/>
+    </cartridge>
+
+</workflow>

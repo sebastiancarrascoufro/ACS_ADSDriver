@@ -1,0 +1,625 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/src/"+Assembly+"CompAdsBase.cpp"»
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * WARNING! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+
+#include <«Assembly»CompAdsBase.h>
+#include <sstream>
+#include <iomanip>
+#include <string>
+
+#include <ControlExceptions.h>
+#include <ControlBasicInterfacesC.h>
+
+
+
+using std::string;
+using acsErrTypeLifeCycle::LifeCycleExImpl;
+//------------------------------------------------------------------------------
+«Assembly»CompAdsBase::«Assembly»CompAdsBase(const ACE_CString& name,
+    maci::ContainerServices* pCS):
+    «Assembly»Impl(name, pCS)
+{
+
+
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+
+
+	std::string remoteIp; 
+	std::string stringarray;
+	uint32_t port;
+	uint32_t sz;
+	uint8_t amsarr[6];
+
+
+	
+	try 
+	{
+	CORBA::Any* characteristic = get_characteristic_by_name("remoteip");
+	if (!(*characteristic>>=remoteIp))
+	    {
+	    ACS_SHORT_LOG((LM_ERROR,"Error getting remoteip by the CORBA::Any object"));
+	    }
+	}
+    	catch (...)
+	{
+	ACS_SHORT_LOG((LM_ERROR,"Error reading the characteristic remoteip by its name"));
+	}
+
+	try 
+	{
+	CORBA::Any* characteristic = get_characteristic_by_name("amsnetid");
+	if (!(*characteristic>>=stringarray))
+	    {
+	    ACS_SHORT_LOG((LM_ERROR,"Error getting amsnetid by the CORBA::Any object"));
+	    }else {
+
+		std::vector<uint8_t> amsvector;
+
+		    std::stringstream text_stream(stringarray);
+		    std::string item;
+		    while (std::getline(text_stream, item, ',')) {
+			amsvector.push_back(stoi(item));
+		    }
+		    std::copy(amsvector.begin(), amsvector.end(), amsarr);
+		}
+	}
+    	catch (...)
+	{
+	ACS_SHORT_LOG((LM_ERROR,"Error reading the characteristic amsnetid by its name"));
+	}
+
+	try 
+	{
+		
+	CORBA::Any* characteristic = get_characteristic_by_name("adsport");
+	char *strCharacteristic;
+	if (!(*characteristic >>= CORBA::Any::to_string(strCharacteristic, 0)))
+	    {
+	    ACS_SHORT_LOG((LM_ERROR,"Error getting adsport by the CORBA::Any object"));
+	    }else{
+		std::istringstream i(strCharacteristic);
+		i >> port;
+		}
+	}
+    	catch (...)
+	{
+	ACS_SHORT_LOG((LM_ERROR,"Error reading the characteristic adsport by its name"));
+	}
+
+	try 
+	{
+	CORBA::Any* characteristic = get_characteristic_by_name("adsthreads");
+	char *strCharacteristic;
+	if (!(*characteristic >>= CORBA::Any::to_string(strCharacteristic, 0)))
+	    {
+	    ACS_SHORT_LOG((LM_ERROR,"Error getting threadsize by the CORBA::Any object"));
+	    }else{
+		std::istringstream i(strCharacteristic);
+		i >> sz;
+		}
+	}
+   	catch (...)
+	{
+	ACS_SHORT_LOG((LM_ERROR,"Error reading the characteristic adsthreads by its name"));
+	}
+
+
+    const std::string compName = pCS->getName().c_str();
+    size_t divider = compName.find_last_of('/');
+    const std::string path = compName.substr(0, divider);
+    const std::string dev = compName.substr(divider+1);
+
+    interface_mp = new adsDevio(dev, remoteIp, amsarr, port, sz);
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»«IF x.isMonitored && !x.isDependent»
+    interface_mp->insertRCA(«x.RCA», std::string("«x.MPName»"));
+«ENDIF»«ENDFOREACH» 
+«FOREACH (Set[ControlPoint]) ControlPoint AS y»«IF !y.isDependent»       
+   interface_mp->insertRCA(«y.RCA», std::string("«y.CPName»"));
+«ENDIF»«ENDFOREACH» 
+
+
+
+}
+
+//------------------------------------------------------------------------------
+«Assembly»CompAdsBase::~«Assembly»CompAdsBase()
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+    delete interface_mp;
+}
+
+inline void «Assembly»CompAdsBase::setChannelNumber(const unsigned int arg)
+{
+std::cout << "setChannelNumber" << std::endl;
+    channel_m = arg;
+}
+/**
+ * Get the channel number for this device.
+ */
+inline unsigned int «Assembly»CompAdsBase::getChannelNumber() const
+{
+    return channel_m;
+}
+/**
+ * CORBA method for getting the node address for this device.
+ */
+inline unsigned int «Assembly»CompAdsBase::getNodeAddress() const
+{
+    return nodeAddress_m;
+}
+inline void «Assembly»CompAdsBase::setNodeAddress(const unsigned int arg)
+{
+    nodeAddress_m = arg;
+}
+//------------------------------------------------------------------------------
+void «Assembly»CompAdsBase::getDeviceUniqueId(std::string& deviceID)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+    // Getting the data from monitorPoint_SERIAL_NUMBER
+    AmbRelativeAddr rca(0x00000U);
+    AmbDataLength_t length(8U);
+    AmbDataMem_t rawBytes[8];
+    sem_t synchLock;
+    ACS::Time timestamp(0ULL);
+    AmbErrorCode_t status(AMBERR_PENDING);
+
+    sem_init(&synchLock, 0, 0);
+    monitor(rca, length, rawBytes, &synchLock, &timestamp, &status);
+    sem_wait(&synchLock);
+    sem_destroy(&synchLock);
+
+    /**
+     * Setting the correct number to deviceID
+     * If not implemented in the simulation set it to 0x0
+     */
+    if(status != AMBERR_NOERR)
+    {
+        deviceID = "0x0000000000000000";
+    }
+    else
+    {
+/// TODO
+/// Thomas, 2009-04-03
+/// Ralph's tests fail.  So I commented the correct way out and put the
+/// old way back into place until it has been sorted out what happens when
+/// TAT gathers the printed out strings.
+//        std::ostringstream uniqueId;
+//        std::ios::fmtflags oldFlags(uniqueId.flags());
+//        uniqueId.setf(std::ios::hex, std::ios::basefield);
+
+//        uniqueId << "0x";
+//        for(unsigned short idx(0U); idx < 8U; ++idx)
+//        {
+//            uniqueId << std::setw(2) << std::setfill('0')
+//                << static_cast< unsigned short >(rawBytes[idx]);
+//        }
+
+//        uniqueId.setf(oldFlags);
+
+        std::ostringstream uniqueId;
+        uniqueId << "0x"
+            << std::hex;
+        for(unsigned short idx(0U); idx < 8U; ++idx)
+        {
+            uniqueId << std::setw(2)
+                << std::setfill('0')
+                << static_cast< unsigned short >(rawBytes[idx]);
+        }
+
+        deviceID =  uniqueId.str();
+    }
+}
+
+
+//------------------------------------------------------------------------------
+void «Assembly»CompAdsBase::monitor(
+    AmbRelativeAddr RCA,
+    AmbDataLength_t& dataLength,
+    AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    return (monitorTE(0, RCA, dataLength, data, synchLock, timestamp, status));
+}
+void «Assembly»CompAdsBase::command(
+    AmbRelativeAddr RCA,
+    AmbDataLength_t dataLength,
+    const AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    return (commandTE(0, RCA, dataLength, data, synchLock, timestamp, status));
+}
+
+void «Assembly»CompAdsBase::monitorTE(
+    ACS::Time TimeEvent,
+    AmbRelativeAddr RCA,
+    AmbDataLength_t& dataLength,
+    AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    // Call to get a monitor point at a specific time
+    AmbCompletion_t* completion(new AmbCompletion_t);
+    ::memset(completion, 0, sizeof(AmbCompletion_t));
+    // Build the completion block
+    completion->dataLength_p = &dataLength;
+    completion->data_p = data;
+    completion->timestamp_p = timestamp;
+    completion->status_p = status;
+    completion->synchLock_p = synchLock;
+
+    AmbMessage_t message;
+    // Build the message block
+    message.requestType = AMB_MONITOR;
+    message.channel = channel_m;
+    try
+    {
+        message.address = createAMBAddr(nodeAddress_m, RCA);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        // Bad address
+        if(completion->status_p != 0)
+        {
+            *completion->status_p = AMBERR_ADDRERR;
+        }
+
+        if(completion->timestamp_p != 0)
+        {
+            *completion->timestamp_p = 0;
+        }
+
+        if(completion->synchLock_p != 0)
+        {
+            sem_post(completion->synchLock_p);
+        }
+
+        delete completion;
+        return;
+    }
+
+    message.dataLen = 0;
+    message.completion_p = completion;
+    message.targetTE = TimeEvent;
+
+    if(completion->type_p != NULL) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: type_p is not NULL when it should be!"));
+        completion->type_p = NULL;
+    }
+    if(completion->status_p != status) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: status_p is not the correct address!"));
+        completion->status_p = status;
+    }
+    interface_mp->enqueueAdsMessage(message);
+}
+
+void «Assembly»CompAdsBase::commandTE(
+    ACS::Time TimeEvent,
+    AmbRelativeAddr RCA,
+    AmbDataLength_t dataLength,
+    const AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+     AmbCompletion_t* completion(new AmbCompletion_t);
+    ::memset(completion, 0, sizeof(AmbCompletion_t));
+    
+    // Build the completion block
+    completion->timestamp_p = timestamp;
+    completion->status_p = status;
+    completion->synchLock_p = synchLock;
+
+    AmbMessage_t message;
+    // Build the message block
+    message.requestType = AMB_CONTROL;
+    message.channel = channel_m;
+
+    try
+    {
+        message.address = createAMBAddr(nodeAddress_m, RCA);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        // Bad address
+        if(completion->status_p != 0)
+        {
+            *completion->status_p = AMBERR_ADDRERR;
+        }
+
+        if(completion->timestamp_p != 0)
+        {
+            *completion->timestamp_p = 0;
+        }
+
+        if(completion->synchLock_p != 0)
+        {
+            sem_post(completion->synchLock_p);
+        }
+
+        if(completion->synchLock_p != 0)
+        {
+            sem_post(completion->synchLock_p);
+        }
+
+        delete completion;
+        return;
+    }
+
+    message.dataLen = dataLength;
+    for(unsigned int idx(0U); idx < dataLength; ++idx)
+    {
+        message.data[idx] = data[idx];
+    }
+
+    message.completion_p = completion;
+    message.targetTE = TimeEvent;
+
+    if(completion->type_p != NULL) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: type_p is not NULL when it should be!"));
+        completion->type_p = NULL;
+    }
+    if(completion->status_p != status) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: status_p is not the correct address!"));
+        completion->status_p = status;
+    }
+    
+    interface_mp->enqueueAdsMessage(message);
+}
+
+void «Assembly»CompAdsBase::monitorNextTE(
+    AmbRelativeAddr RCA,
+    AmbDataLength_t& dataLength,
+    AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    // Call to get a monitor point at a specific time
+    AmbCompletion_t* completion = new AmbCompletion_t;
+    ::memset(completion, 0, sizeof(AmbCompletion_t));
+    // Build the completion block
+    completion->dataLength_p = &dataLength;
+    completion->data_p = data;
+    completion->timestamp_p = timestamp;
+    completion->status_p = status;
+    completion->synchLock_p = synchLock;
+
+    AmbMessage_t message;
+    // Build the message block
+    message.requestType = AMB_MONITOR_NEXT;
+    message.channel = channel_m;
+    try
+    {
+        message.address = createAMBAddr(nodeAddress_m, RCA);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        // Bad address
+        if(completion->status_p != 0)
+        {
+            *completion->status_p = AMBERR_ADDRERR;
+        }
+
+        if(completion->timestamp_p != 0)
+        {
+            *completion->timestamp_p = 0;
+        }
+
+        if(completion->synchLock_p != 0)
+        {
+            sem_post(completion->synchLock_p);
+        }
+
+        delete completion;
+        return;
+    }
+
+    message.dataLen = 0;
+    message.completion_p = completion;
+    message.targetTE = 0;
+
+    if(completion->type_p != NULL) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: type_p is not NULL when it should be!"));
+        completion->type_p = NULL;
+    }
+    if(completion->status_p != status) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: status_p is not the correct address!"));
+        completion->status_p = status;
+    }
+    //interface_mp->enqueueMessage(message);
+    interface_mp->enqueueAdsMessage(message);
+}
+
+void «Assembly»CompAdsBase::commandNextTE(AMBSystem::AmbRelativeAddr RCA,
+    AmbDataLength_t dataLength,
+    const AmbDataMem_t* data,
+    sem_t* synchLock,
+    ACS::Time* timestamp,
+    AmbErrorCode_t* status)
+{
+     AmbCompletion_t* completion(new AmbCompletion_t);
+    ::memset(completion, 0, sizeof(AmbCompletion_t));
+    // Build the completion block
+    completion->timestamp_p = timestamp;
+    completion->status_p = status;
+    completion->synchLock_p = synchLock;
+
+
+    AmbMessage_t message;
+    // Build the message block
+    message.requestType = AMB_CONTROL_NEXT;
+    message.channel = channel_m;
+
+    try
+    {
+        message.address = createAMBAddr(nodeAddress_m, RCA);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        // Bad address
+        if(completion->status_p != 0)
+        {
+            *completion->status_p = AMBERR_ADDRERR;
+        }
+
+        if(completion->timestamp_p != 0)
+        {
+            *completion->timestamp_p = 0;
+        }
+
+        if(completion->synchLock_p != 0)
+        {
+            sem_post(completion->synchLock_p);
+        }
+
+        delete completion;
+        return;
+    }
+
+    message.dataLen = dataLength;
+    for(unsigned int idx(0U); idx < dataLength; ++idx)
+    {
+        message.data[idx] = data[idx];
+    }
+
+    message.completion_p = completion;
+    message.targetTE = 0;
+
+    if(completion->type_p != NULL) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: type_p is not NULL when it should be!"));
+        completion->type_p = NULL;
+    }
+    if(completion->status_p != status) {
+        ACS_SHORT_LOG((LM_WARNING, "Corruption: status_p is not the correct address!"));
+        completion->status_p = status;
+    }
+    
+    interface_mp->enqueueAdsMessage(message);
+}
+
+
+void «Assembly»CompAdsBase::flushNode(ACS::Time TimeEvent, ACS::Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    if(interface_mp == 0)
+    {
+        *status = AMBERR_WRITEERR;
+        return;
+    }
+
+    // Send the message and wait for a return
+    try
+    {
+        *status = interface_mp->flush(channel_m, nodeAddress_m, TimeEvent,
+            (Time&)*timestamp);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        if(status != 0)
+        {
+            *status = AMBERR_ADDRERR;
+        }
+    }
+}
+
+void «Assembly»CompAdsBase::flushRCA(ACS::Time TimeEvent, AmbRelativeAddr RCA,
+    ACS::Time* timestamp, AmbErrorCode_t* status)
+{
+    if(interface_mp == 0)
+    {
+        *status = AMBERR_WRITEERR;
+        return;
+    }
+
+    // Send the message and wait for a return
+    try
+    {
+        *status = interface_mp->flush(channel_m, nodeAddress_m, RCA,
+            TimeEvent, (Time&)*timestamp);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        if(status != 0)
+        {
+            *status = AMBERR_ADDRERR;
+        }
+    }
+}
+
+
+«ENDFILE»
+«ENDDEFINE»

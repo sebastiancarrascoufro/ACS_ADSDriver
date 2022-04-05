@@ -1,0 +1,118 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/src/"+Assembly+"CompAdsImpl.cpp"»
+//
+// ALMA - Atacama Large Millimeter Array
+// (c) European Southern Observatory, 2009
+// (c) Associated Universities Inc., 2009
+// Copyright by ESO (in the framework of the ALMA collaboration),
+// Copyright by AUI (in the framework of the ALMA collaboration),
+// All rights reserved.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY, without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+// MA 02111-1307  USA
+
+#include <«Assembly»CompAdsImpl.h>
+#include <string>
+#include <sstream>
+// For audience logs.
+#include <LogToAudience.h>
+#include <maciContainerServices.h>
+#include <TypeConversion.h>
+#include <Utils.h>
+#include <SimulatedSerialNumber.h>
+#include <stdint.h>
+
+
+// Please use this class to implement alternative component, extending
+// the «Assembly»CompAdsBase class.
+
+
+«Assembly»CompAdsImpl::«Assembly»CompAdsImpl(const ACE_CString& name,
+    maci::ContainerServices* cs):
+    «Assembly»CompAdsBase(name, cs)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+    const std::string componentName(name.c_str());
+    «IF Parent != "Antenna"»
+    const std::string subComponentName(
+        componentName.substr(0, componentName.find_last_of('/')));
+    const uint64_t hashed_sn(AMB::Utils::getSimSerialNumber(
+        subComponentName, std::to_string(8)));
+    «ELSE»
+    const uint64_t hashed_sn(AMB::Utils::getSimSerialNumber(
+        componentName, "«Assembly»"));
+    «ENDIF»
+    std::ostringstream msg;
+    msg << "simSerialNumber for \""
+        << componentName
+        << "\" with assembly name \"«Assembly»\" is 0x"
+        << std::hex
+        << hashed_sn;
+    LOG_TO_DEVELOPER(LM_DEBUG, msg.str());
+    
+    std::vector< CAN::byte_t > sn;
+    AMB::TypeConversion::valueToData(sn, hashed_sn, 8U);
+
+    «IF (NodeAddress != "none") && (NodeAddress != "parm")»
+    //const AMB::node_t node(«NodeAddress»U);
+    «ELSE»
+    //const AMB::node_t node(0U);
+    «ENDIF»
+
+    
+}
+
+#include <maciACSComponentDefines.h>
+MACI_DLL_SUPPORT_FUNCTIONS(«Assembly»CompAdsImpl)
+«ENDFILE»
+«ENDDEFINE»

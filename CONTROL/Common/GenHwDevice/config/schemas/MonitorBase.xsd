@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="MandCBase.xsd"/>
+
+	<xsd:complexType name="MonitorBaseFR">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MonitorBase_Title"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of spreadsheet title -->
+	<xsd:complexType name="MonitorBase_Title">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Monitor Point"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="MonitorBase_Default">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Default"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorBase_ErrorCondition">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Error Condition"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorBase_ErrorSeverity">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Error Severity"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorBase_ErrorAction">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Error Action"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column value fields -->
+	<xsd:complexType name="MonitorBase_DefaultV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="none"/>
+							<xsd:pattern value="mid"/>
+							<xsd:pattern value="random"/>
+							<xsd:pattern value= "-?([0-9])+(\.([0-9])+)?(E[-+]([0-9])+)?"/>
+							<xsd:pattern value="0x([0-9A-Fa-f])+"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorBase_ErrorConditionV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="none"/>
+							<xsd:pattern value=".*"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorBase_ErrorSeverityV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="none"/>
+							<xsd:enumeration value="error"/>
+							<xsd:enumeration value="severe"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorBase_ErrorActionV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="none"/>
+							<xsd:pattern value="continue"/>
+							<xsd:pattern value="stop"/>
+							<xsd:pattern value="extended"/>
+							<xsd:pattern value="report, continue"/>
+							<xsd:pattern value=".*"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

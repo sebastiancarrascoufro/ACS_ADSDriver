@@ -1,0 +1,107 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+«FILE Assembly+"/doc/"+Assembly+"ControlPoints.html"»
+<html>
+    <body>
+
+<script language="javascript">
+function showme(funcName){
+   if( document.getElementById( funcName + "Cont").style.visibility == "hidden" ) {
+       document.getElementById( funcName + "Cont").innerHTML=window[ funcName + "Text"];
+       document.getElementById( funcName + "Cont").style.visibility = "visible";
+       show=true;
+   }
+   else {
+      document.getElementById( funcName + "Cont").innerHTML = "";
+      document.getElementById( funcName + "Cont").style.visibility = "hidden";
+      show=false;
+   }
+}
+</script>
+
+  <h1>Device «DeviceName»</h1>
+    <h2>Control Points</h2>
+<table>
+<tr><td>Function Name</td><td>RCA</td></tr>
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+<tr>
+<td VALIGN=top>
+SET_«x.CPName»
+</td>
+<td VALIGN=top>
+«x.RCA»
+</td>
+<td>
+        <a href="javascript:showme('SET_«x.CPName»')">details</a> <div id="SET_«x.CPName»Cont" style="visibility:hidden">
+      «EXPAND ControlPointDisplay FOR x»
+        </div>
+<script language="javascript">
+   var SET_«x.CPName»Text = document.getElementById("SET_«x.CPName»Cont").innerHTML;
+   document.getElementById("SET_«x.CPName»Cont").innerHTML = "";
+</script>
+</td>
+</tr>
+«ENDFOREACH»
+</table>
+  </body>
+</html>
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE ControlPointDisplay FOR ControlPoint»
+    <li><em>Assembly</em> «Assembly»
+    <li><em>Name</em> «CPName»
+    <li><em>RCA</em> «RCA»
+    <li><em>RawDataType</em> «RawDataType»
+    <li><em>TeRelated</em> «TeRelated»
+    <li><em>WorldDataType</em> «WorldDataType»
+    <li><em>DataUnits</em> «DataUnits»
+    <li><em>Scale</em> «Scale»
+    <li><em>Offset</em> «Offset»
+    <li><em>MinRange</em> «MinRange»
+    <li><em>MaxRange</em> «MaxRange»
+    <li><em>Returns</em> «Returns»
+    <li><em>Parameter</em> «Parameter»
+    <li><em>Data</em> «Data»
+    <li><em>Value</em> «Value»
+    <li><em>Mode</em> «Mode»
+    <li><em>Implement</em> «Implement»
+    <li><em>External</em> «External»
+    <li><em>Description</em> «Description»
+      «IF isArchived»
+      <li><em>Is archived</em>
+      «ELSE»
+      <li><em>Not archived</em>
+      «ENDIF»
+«ENDDEFINE»

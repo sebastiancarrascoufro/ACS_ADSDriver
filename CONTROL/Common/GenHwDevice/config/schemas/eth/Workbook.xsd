@@ -1,0 +1,113 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:o="urn:schemas-microsoft-com:office:office"
+				xmlns:x="urn:schemas-microsoft-com:office:excel"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:import namespace="urn:schemas-microsoft-com:office:office"
+					schemaLocation="../OfficeNamespace.xsd"/>
+	<xsd:import namespace="urn:schemas-microsoft-com:office:excel"
+					schemaLocation="../ExcelNamespace.xsd"/>
+
+	<xsd:include schemaLocation="MainImpl.xsd"/>
+	<xsd:include schemaLocation="MonitorImpl.xsd"/>
+	<xsd:include schemaLocation="ControlImpl.xsd"/>
+	<xsd:include schemaLocation="ArchiveImpl.xsd"/>
+
+	<xsd:element name="Workbook" type="ss:Workbook"/>
+
+
+	<!-- Definition of the WorkBook -->
+	<xsd:complexType name="Workbook">
+		<xsd:sequence>
+			<xsd:element ref="o:DocumentProperties" minOccurs="0"/>
+			<xsd:element ref="o:OfficeDocumentSettings" minOccurs="0"/>
+			<xsd:element ref="x:ExcelWorkbook" minOccurs="0"/>
+			<xsd:element ref="ss:Styles" minOccurs="0"/>
+			<xsd:element name="Worksheet" type="ss:MainWorksheet"/>
+			<xsd:element name="Worksheet" type="ss:MonitorWorksheet"/>
+			<xsd:element name="Worksheet" type="ss:ControlWorksheet"/>
+			<xsd:element name="Worksheet" type="ss:ArchiveWorksheet"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="Styles"/>
+
+
+	<!-- Definition of the Worksheets -->
+	<xsd:complexType name="MainWorksheet">
+		<xsd:sequence>
+			<xsd:element name="Table" type="ss:MainTable"/>
+			<xsd:element ref="x:WorksheetOptions" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorWorksheet">
+		<xsd:sequence>
+			<xsd:element name="Table" type="ss:MonitorTable"/>
+			<xsd:element ref="x:WorksheetOptions" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ControlWorksheet">
+		<xsd:sequence>
+			<xsd:element name="Table" type="ss:ControlTable"/>
+			<xsd:element ref="x:WorksheetOptions" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ArchiveWorksheet">
+		<xsd:sequence>
+			<xsd:element name="Table" type="ss:ArchiveTable"/>
+			<xsd:element ref="x:WorksheetOptions" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+
+	<!-- Definition of the tables of each Worksheet -->
+	<xsd:complexType name="MainTable">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Column"/>
+			</xsd:sequence>
+				<xsd:group ref="ss:MainImpl"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorTable">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Column"/>
+			</xsd:sequence>
+				<xsd:group ref="ss:MonitorImpl"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ControlTable">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Column"/>
+			</xsd:sequence>
+				<xsd:group ref="ss:ControlImpl"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ArchiveTable">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Column"/>
+			</xsd:sequence>
+				<xsd:group ref="ss:ArchiveImpl"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

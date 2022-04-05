@@ -1,0 +1,177 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+«FILE Assembly+"/doc/"+Assembly+".html"»
+<html>
+  <body>
+  <h1>Device «DeviceName»</h1>
+  <ul>
+    <li><em>Assembly</em>  «Assembly»
+    <li><em>Description</em>  «Description»
+    <li><em>DeviceName</em>  «DeviceName»
+    <li><em>Extends</em>  «Extends»
+    <li><em>Parent</em>  «Parent»
+    <li><em>Cardinality</em>  «Cardinality»
+    <li><em>NodeAddress</em>  «NodeAddress»
+    <li><em>Channel</em>  «Channel»
+    <li><em>BaseAddress</em>  «BaseAddress»
+    <li><em>ICD</em>  «ICD»
+    <li><em>ICDDate</em>  «ICDDate»
+  </ul>
+      <h3>Notes</h3>
+      <ul>
+«FOREACH (Set[Note]) Notes AS x»
+    <li><em>«x.Note»</em>
+«ENDFOREACH»
+      </ul>
+
+    <h2>Monitor Points</h2>
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+      <h3>«x.MPName»</h3>
+      <ul>
+      «EXPAND MonitorPointDisplay FOR x»
+      </ul>
+«ENDFOREACH»
+
+    <h2>Control Points</h2>
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+      <h3>«x.CPName»</h3>
+      <ul>
+      «EXPAND ControlPointDisplay FOR x»
+      </ul>
+«ENDFOREACH»
+
+    <h2>Archive Property</h2>
+«FOREACH (Set[ArchiveProperty]) ArchiveProperty AS x»
+      <h3>«x.APName»</h3>
+      <ul>
+    <li><em>Assembly</em> «x.Assembly»
+    <li><em>Name</em> «x.APName»
+    <li><em>RefersTo</em> «x.RefersTo»
+    <li><em>Interval</em> «x.IntervalFull» «IF x.isIntervalTE» Monitored every TE and dumped every «x.Interval» seconds «ENDIF»
+    <li><em>OnlyOnChange</em> «x.OldOnlyOnChange»
+    <li><em>DisplayUnits</em> «x.DisplayUnits»
+    <li><em>GraphMin</em> «x.GraphMin»
+    <li><em>GraphMax</em> «x.GraphMax»
+    <li><em>Format</em> «x.Format»
+    <li><em>Title</em> «x.Title»
+    «IF x.RefersTo != "none"»  
+        «IF x.isMonitorPoint»  
+            «EXPAND MonitorPointDisplay FOR x.getMonitorPoint »
+        «ENDIF»
+        «IF x.isControlPoint»  
+            «EXPAND ControlPointDisplay FOR x.getControlPoint »
+        «ENDIF»
+    «ENDIF»
+      </ul>
+«ENDFOREACH»
+
+  </body>
+</html>
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE MonitorPointDisplay FOR MonitorPoint»
+    <li><em>Assembly</em> «Assembly»
+      «IF isDependent»
+      <li><em>Name</em> «getDependentName» depends on «getDependsOnName»
+      «ELSE»
+    <li><em>Name</em> «MPName»
+      «ENDIF»
+    <li><em>RCA</em> «RCA»
+      «IF isDependent»
+          «IF isDependentGroupBit»
+      <li><em>RawDataType</em> bits «IF isRawDataArray» «getGroupStart» through «getGroupEnd» «ELSE» «getFirstBit» through «getLastBit» «ENDIF»
+          «ELSEIF isDependentBit»
+      <li><em>RawDataType</em> bit «IF isSingleBit» «getBit» «ELSE» «getFirstBit» through «getLastBit» «ENDIF»
+          «ENDIF»
+          «IF isDependentElement»
+    <li><em>RawDataType</em> «RawDataType» Array Element «GetDimension» 
+        «ENDIF»
+      «ELSE»
+    <li><em>RawDataType</em> «RawDataType» «IF isRawDataArray» Array Of «NumberItemsRawData» Total «TotalBytesRawData» bytes «ENDIF» CPP type is «RawDataToCPPType»
+      «ENDIF»
+    <li><em>TeRelated</em> «TeRelated»
+    <li><em>WorldDataType</em> «WorldDataType» «IF isWorldDataArray» Array Of «NumberItemsWorldData» «ENDIF»
+    <li><em>DataUnits</em> «DataUnits»
+    <li><em>Scale</em> «Scale»
+    <li><em>Offset</em> «Offset»
+    <li><em>MinRange</em> «MinRange»
+    <li><em>MaxRange</em> «MaxRange»
+    <li><em>Default</em> «Default»
+    <li><em>ErrorCondition</em> «ErrorCondition»
+    <li><em>ErrorSeverity</em> «ErrorSeverity»
+    <li><em>ErrorAction</em> «ErrorAction»
+    <li><em>Mode</em> «Mode»
+    <li><em>Implement</em> «Implement»
+    <li><em>External</em> «External»
+    <li><em>CanBeInvalid</em> «CanBeInvalid»
+    <li><em>Description</em> «Description»
+      «IF hasDependents»
+      <li><em>Has dependents</em>
+      «ELSE»
+      <li><em>No dependents</em>
+      «ENDIF»
+      «IF isArchived»
+      <li><em>Is archived</em>
+      «ELSE»
+      <li><em>Not archived</em>
+      «ENDIF»
+«ENDDEFINE»
+
+«DEFINE ControlPointDisplay FOR ControlPoint»
+    <li><em>Assembly</em> «Assembly»
+    <li><em>Name</em> «CPName»
+    <li><em>RCA</em> «RCA»
+    <li><em>RawDataType</em> «RawDataType»
+    <li><em>TeRelated</em> «TeRelated»
+    <li><em>WorldDataType</em> «WorldDataType»
+    <li><em>DataUnits</em> «DataUnits»
+    <li><em>Scale</em> «Scale»
+    <li><em>Offset</em> «Offset»
+    <li><em>MinRange</em> «MinRange»
+    <li><em>MaxRange</em> «MaxRange»
+    <li><em>Returns</em> «Returns»
+    <li><em>Parameter</em> «Parameter»
+    <li><em>Data</em> «Data»
+    <li><em>Value</em> «Value»
+    <li><em>Mode</em> «Mode»
+    <li><em>Implement</em> «Implement»
+    <li><em>External</em> «External»
+    <li><em>Description</em> «Description»
+      «IF isArchived»
+      <li><em>Is archived</em>
+      «ELSE»
+      <li><em>Not archived</em>
+      «ENDIF»
+«ENDDEFINE»
