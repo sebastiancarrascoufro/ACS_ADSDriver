@@ -75,6 +75,7 @@ adsDevio::~adsDevio()
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	exit_signal = true;
         delete notificationRoute;
+	tr.join();
     }
     catch (const std::exception & exc)
     {
