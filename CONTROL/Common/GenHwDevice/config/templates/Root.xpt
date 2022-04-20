@@ -63,6 +63,9 @@ MA 02111-1307  USA
 «CheckConstraints»
 «EXPAND amb::CVSIgnore::Root»
 «EXPAND amb::HTML::Root»
+«EXPAND amb::ADS::CDBComponentADS::Root»
+«EXPAND amb::ADS::CDBInstanceADS::Root»
+«EXPAND amb::ADS::CDBSchemaADS::Root»
 «EXPAND amb::CDBSchema::Root»
 «EXPAND amb::CDBComponent::Root»
 «EXPAND amb::CDBInstance::Root»

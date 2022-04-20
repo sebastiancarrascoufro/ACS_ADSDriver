@@ -22,7 +22,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 MA 02111-1307  USA
 
-File CDBInstance.xpt
+File CDBInstanceADS.xpt
 
 «ENDREM»
 
@@ -39,8 +39,7 @@ File CDBInstance.xpt
 «ENDDEFINE»
 
 «DEFINE SWModuleDef FOR DeviceModel»
-«FILE DirPath+"/doc/"+Assembly+".xml"»
-<?xml version="1.0" encoding="ISO-8859-1"?>
+«FILE DirPath+"/doc/"+Assembly+"ADS.xml"»<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
  * ALMA - Atacama Large Millimeter Array
  * (c) European Southern Observatory, 2002
@@ -70,10 +69,10 @@ File CDBInstance.xpt
  * | Any changes will be lost when the file is re-generated. |
  *  =========================================================
 -->
-<«Assembly»Base xmlns="urn:schemas-cosylab-com:«Assembly»Base:1.0"
-    xsi:schemaLocation="urn:schemas-cosylab-com:«Assembly»Base:1.0 http://www.nrao.edu/schemas/CONTROL/«Assembly»Base.xsd"
+<«Assembly»BaseADS xmlns="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0"
+    xsi:schemaLocation="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0 http://www.nrao.edu/schemas/CONTROL/«Assembly»BaseADS.xsd"
       xmlns:amb="urn:schemas-cosylab-com:AmbDevice:1.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" remoteip="192.168.1.6" adsport="866" adsthreads="5" amsnetid="192,168,56,1,1,1">
     «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
         «IF x.isMonitored»
   <«x.MPName»
@@ -123,6 +122,6 @@ File CDBInstance.xpt
     «ENDIF»
 «ENDIF»
     />
-</«Assembly»Base>
+</«Assembly»BaseADS>
 «ENDFILE»
 «ENDDEFINE»

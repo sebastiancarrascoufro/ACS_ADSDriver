@@ -37,8 +37,7 @@ MA 02111-1307  USA
 «ENDDEFINE»
 
 «DEFINE SWModuleDef FOR DeviceModel»
-«FILE DirPath+"/config/CDB/schemas/"+Assembly+"Base.xsd"»
-<?xml version="1.0" encoding="ISO-8859-1"?>
+«FILE DirPath+"/config/CDB/schemas/"+Assembly+"BaseADS.xsd"»<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
  * ALMA - Atacama Large Millimeter Array
  * (c) European Southern Observatory, 2002
@@ -68,8 +67,8 @@ MA 02111-1307  USA
  * | Any changes will be lost when the file is re-generated. |
  *  =========================================================
 -->
-<xs:schema targetNamespace="urn:schemas-cosylab-com:«Assembly»Base:1.0"
-    xmlns="urn:schemas-cosylab-com:«Assembly»Base:1.0"
+<xs:schema targetNamespace="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0"
+    xmlns="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0"
     xmlns:amb="urn:schemas-cosylab-com:AmbDevice:1.0"
     xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
     xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
@@ -89,7 +88,7 @@ MA 02111-1307  USA
     «ELSE»
           <xs:import namespace="urn:schemas-cosylab-com:ControlDevice:1.0" schemaLocation="http://www.nrao.edu/schemas/CONTROL/ControlDevice.xsd"/>
     «ENDIF»
-    <xs:complexType name="«Assembly»Base">
+    <xs:complexType name="«Assembly»BaseADS">
     «IF Extends != "none"»
         <xs:complexContent>
         <xs:extension base="ext:«Extends»">
@@ -98,17 +97,9 @@ MA 02111-1307  USA
           <xs:extension base="extcontrol:ControlDevice">
     «ENDIF»
     <xs:sequence>
-    «FOREACH MonitorPoint AS x»
-        «IF x.isMonitored»
-          «IF x.isPattern»
-      <xs:element name="«x.MPName»" type ="baci:ROpattern"/>
-          «ELSE»
-            «IF x.isWorldDataArray»
-      <xs:element name="«x.MPName»" type ="baci:RO«x.WorldDataToBACIType»Seq"/>
-            «ELSE»
-      <xs:element name="«x.MPName»" type ="baci:RO«x.WorldDataToBACIType»"/>
-            «ENDIF»
-          «ENDIF»
+    «FOREACH MonitorPoint AS x»«IF x.isMonitored»«IF x.isPattern»
+      <xs:element name="«x.MPName»" type ="baci:ROpattern"/>«ELSE»«IF x.isWorldDataArray»
+      <xs:element name="«x.MPName»" type ="baci:RO«x.WorldDataToBACIType»Seq"/>«ELSE»<xs:element name="«x.MPName»" type ="baci:RO«x.WorldDataToBACIType»"/>«ENDIF»«ENDIF»
         «ENDIF»
     «ENDFOREACH»
     «IF Extends == "none"»
@@ -135,9 +126,9 @@ MA 02111-1307  USA
               <xs:attribute name="NodeNumber" type="xs:integer" use="optional" default="«NodeAddressInDecimal»"/>
         «ENDIF»
               <xs:attribute name="IDL" type="xs:string" use="optional"
-                            default="IDL:alma/Control/«Assembly»Base:1.0"/>
+                            default="IDL:alma/Control/«Assembly»BaseADS:1.0"/>
               <xs:attribute name="Implementation" type="xs:string"
-                            use="optional" default="«Assembly»Impl"/>
+                            use="optional" default="«Assembly»CompAdsImpl"/>
 		
             </xs:restriction>
           </xs:complexContent>
@@ -145,10 +136,14 @@ MA 02111-1307  USA
       </xs:element>
     «ENDIF»
     </xs:sequence>
+	<xs:attribute name="remoteip" type="xs:string" use="required" />
+	<xs:attribute name="adsport" type="xs:integer" use="required"/>
+	<xs:attribute name="adsthreads" type="xs:integer" use="required"/>
+	<xs:attribute name="amsnetid" type="xs:string" use="required" />
   </xs:extension>
  </xs:complexContent>
 </xs:complexType>
-<xs:element name="«Assembly»Base" type="«Assembly»Base"/>
+<xs:element name="«Assembly»BaseADS" type="«Assembly»BaseADS"/>
 </xs:schema>
 «ENDFILE»
 «ENDDEFINE»

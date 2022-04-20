@@ -22,8 +22,6 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 MA 02111-1307  USA
 
-File CDBInstance.xpt
-
 «ENDREM»
 
 «IMPORT org::openarchitectureware::core::meta::core»
@@ -39,12 +37,11 @@ File CDBInstance.xpt
 «ENDDEFINE»
 
 «DEFINE SWModuleDef FOR DeviceModel»
-«FILE DirPath+"/doc/"+Assembly+".xml"»
-<?xml version="1.0" encoding="ISO-8859-1"?>
+«FILE DirPath+"/doc/"+Assembly+"ComponentADS.xml"»<?xml version="1.0" encoding="iso-8859-1"?>
 <!--
  * ALMA - Atacama Large Millimeter Array
- * (c) European Southern Observatory, 2002
- * (c) Associated Universities Inc., 2002
+ * (c) European Southern Observatory, 2009
+ * (c) Associated Universities Inc., 2009
  * Copyright by ESO (in the framework of the ALMA collaboration),
  * Copyright by AUI (in the framework of the ALMA collaboration),
  * All rights reserved.
@@ -70,59 +67,18 @@ File CDBInstance.xpt
  * | Any changes will be lost when the file is re-generated. |
  *  =========================================================
 -->
-<«Assembly»Base xmlns="urn:schemas-cosylab-com:«Assembly»Base:1.0"
-    xsi:schemaLocation="urn:schemas-cosylab-com:«Assembly»Base:1.0 http://www.nrao.edu/schemas/CONTROL/«Assembly»Base.xsd"
-      xmlns:amb="urn:schemas-cosylab-com:AmbDevice:1.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
-        «IF x.isMonitored»
-  <«x.MPName»
-    archive_priority="15"
-    «IF x.Interval != "none" && x.Interval != "0"»
-    archive_min_int="«x.Interval»"
-    archive_max_int="«x.Interval»"
-    «ELSE»
-    archive_min_int="0"
-    archive_max_int="0"
-    archive_suppress="1"
-    «ENDIF»
-    default_value="0"
-    «IF x.GraphMin != "none"»
-    graph_min="«x.GraphMin»"
-    «ENDIF»
-    «IF x.GraphMax != "none"»
-    graph_max="«x.GraphMax»"
-    «ENDIF»
-    format="%«x.Format»"
-    description="«x.Title»"
-    units="«x.DataUnits»"
-    min_timer_trig="0.048"
-    «IF x.isPattern»
-    bitDescription=""
-    alarm_mask="0"
-    alarm_trigger="0"
-    «ELSE»
-    min_delta_trig="1"
-    «ENDIF»
-    default_timer_trig="1"
-    resolution="1"
-    min_step="1"
-    alarm_timer_trig="0"
-    />
-          «ENDIF»
-    «ENDFOREACH»
-    <Address
-«IF Channel != "none" && Channel != "parm"»
-        ChannelNumber = "«Channel»"
-«ENDIF»
-«IF NodeAddress != "none"»
-    «IF NodeAddress != "parm"»
-        NodeNumber = "«NodeAddressInDecimal»"
-    «ELSE»
-        NodeNumber = "Fill in the correct Node Address!"
-    «ENDIF»
-«ENDIF»
-    />
-</«Assembly»Base>
+<!--
+    Change the following entries!
+    - Container: XY01 to your container.
+    - Name: CONTROL/XY01/«Assembly» to the name of the component.
+-->
+<Component
+    Code="«Assembly»CompAdsImpl"
+    Container="CONTROL/XY01/cppContainer"
+    ImplLang="cpp"
+    Name="CONTROL/XY01/«Assembly»"
+    Type="IDL:alma/Control/«Assembly»CompAdsImpl:1.0"
+    xmlns="urn:schemas-cosylab-com:Component:1.0">
+</Component>
 «ENDFILE»
 «ENDDEFINE»
