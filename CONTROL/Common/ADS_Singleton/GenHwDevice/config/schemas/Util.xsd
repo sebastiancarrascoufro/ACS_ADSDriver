@@ -1,0 +1,48 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<!--Basic Types -->
+	<xsd:complexType name="String">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:token">
+				<xsd:anyAttribute namespace="##any" processContents="skip"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Double">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:anyAttribute namespace="##any" processContents="skip"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Dummy">
+		<xsd:sequence>
+			<xsd:element name="Data"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!--Restricted Types -->
+	<xsd:complexType name="Name">
+		<xsd:simpleContent>
+			<xsd:restriction base="ss:String">
+				<xsd:pattern value="[a-zA-Z]([a-zA-z0-9_])*"/>
+				<xsd:anyAttribute namespace="##any" processContents="skip"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SEIT">
+		<xsd:simpleContent>
+			<xsd:restriction base="ss:String">
+				<xsd:anyAttribute namespace="##any" processContents="skip"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+</xsd:schema>

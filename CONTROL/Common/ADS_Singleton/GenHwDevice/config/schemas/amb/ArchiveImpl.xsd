@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="../ArchiveBase.xsd"/>
+
+	<xsd:group name="ArchiveImpl">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="1">
+				<xsd:element name="Row" type="ss:ArchiveBaseFR"/>
+				<xsd:element name="Row" type="ss:ArchiveImplSR"/>
+				<xsd:element name="Row" type="ss:ArchiveImplRows" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Row"/>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="ArchiveImplSR">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:ArchiveImpl_Assembly"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_Name"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_RefersTo"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_Interval"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_OldOnlyOnChange"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_DisplayUnits"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_GraphMin"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_GraphMax"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_Format"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_OnStartup"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_Title2"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ArchiveImplRows">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:ArchiveImpl_AssemblyV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_NameV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_RefersToV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_IntervalV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_OldOnlyOnChangeV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_DisplayUnitsV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_GraphMinV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_GraphMaxV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_FormatV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_OnStartupV"/>
+				<xsd:element name="Cell" type="ss:ArchiveBase_Title2V"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="ArchiveImpl_Assembly">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Assembly"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column value fields -->
+	<xsd:complexType name="ArchiveImpl_AssemblyV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:Name">
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NamedCell" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

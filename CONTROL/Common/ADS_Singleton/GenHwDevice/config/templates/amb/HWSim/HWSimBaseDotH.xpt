@@ -1,0 +1,239 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/include/"+Assembly+"HWSimBase.h"»
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C.
+#endif
+#ifndef «Assembly»HWSimBase_h
+#define «Assembly»HWSimBase_h
+//
+// ALMA - Atacama Large Millimiter Array
+// (c) Associated Universities Inc., 2011
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA
+//
+// WARNING! DO NOT MODIFY THIS FILE!
+//  ---------------------------------------------------------
+// | This is generated code!  Do not modify this file.       |
+// | Any changes will be lost when the file is re-generated. |
+//  ---------------------------------------------------------
+//
+
+
+«IF Extends == "none"»
+#include <CommonHWSim.h>
+«ELSE»
+#include <«Extends»HWSimImpl.h>
+«ENDIF»
+#include <vector>
+// For AMB::node_t and CAN::byte_t
+#include <CANTypes.h>
+
+
+namespace AMB
+{
+    /// The «Assembly»HWSimBase class is the base class for the
+    /// «DeviceName» hardware simulator.
+    /// <ul>
+    /// <li> Device:   «DeviceName»
+    /// <li> Assembly: «Assembly»
+    /// <li> Parent:   «Parent»
+    /// <li> Node:     «NodeAddress»
+    /// <li> Channel:  «Channel»
+    /// </ul>
+    class «Assembly»HWSimBase:
+«IF Extends == "none"»
+        public CommonHWSim
+«ELSE»
+        public «Extends»HWSimImpl
+«ENDIF»
+    {
+        public:
+        /// Constructor
+        /// \param node Node ID of this device
+        /// \param serialNumber S/N of this device
+        «Assembly»HWSimBase(AMB::node_t node,
+            const std::vector< CAN::byte_t >& serialNumber);
+
+        /// Destructor
+        virtual ~«Assembly»HWSimBase()
+        {
+        };
+
+        /// Monitor and Control Points creation (state_m map entries)
+        /// and value initialization
+        /// \param node Node ID of this device
+        /// \param serialNumber S/N of this device
+        /// \exception CAN::Error
+        virtual void initialize(AMB::node_t node,
+            const std::vector< CAN::byte_t >& serialNumber);
+
+        /// Monitor interface ('get' functions for monitor points)
+        /// \param rca CAN node RCA
+        /// \return std::vector of bytes containing monitor info. Each response
+        /// is sized to what's specified in the ICD.
+        /// \exception CAN::Error
+        virtual std::vector< CAN::byte_t > monitor(AMB::rca_t rca) const;
+
+        /// Control points getter ('get' functions for control points)
+        /// \param rca CAN node RCA
+        virtual std::vector< CAN::byte_t > controlGetter(AMB::rca_t rca) const;
+
+        /// Control Interface ('set' functions for control points)
+        /// \param rca CAN node RCA
+        /// \param data CAN message data required by device
+        /// \exception CAN::Error
+        virtual void control(AMB::rca_t rca,
+            const std::vector< CAN::byte_t >& data);
+
+        /// Monitor points setter ('set' functions for monitor points)
+        /// \param rca CAN node RCA
+        /// \param data CAN message data required by device
+        virtual void monitorSetter(AMB::rca_t rca,
+            const std::vector< CAN::byte_t >& data);
+
+        /// Specific Monitor point RCAs for «Assembly»
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF !x.isDependent»
+        static const AMB::rca_t monitorPoint_«x.MPName»;
+    «ENDIF»
+«ENDFOREACH»
+
+        /// Specific Monitor points Map for «Assembly»
+        std::map< const AMB::rca_t, std::vector< CAN::byte_t > (
+            AMB::«Assembly»HWSimBase::*)() const > monitorPointsMap;
+
+        /// Specific Control point RCAs for «Assembly»
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent»
+        static const AMB::rca_t controlPoint_«x.CPName»;
+    «ENDIF»
+«ENDFOREACH»
+
+        /// Specific Control points Map for «Assembly»
+        std::map< const AMB::rca_t, void (AMB::«Assembly»HWSimBase::*)(
+            const std::vector< CAN::byte_t >& data) > controlPointsMap;
+
+
+        protected:
+        /// Specific Monitor get helper functions
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF !x.isDependent»
+        virtual std::vector< CAN::byte_t > getMonitor«x.getAltDependentName»Proxy() const;
+
+        virtual std::vector< CAN::byte_t > getMonitor«x.getAltDependentName»() const;
+    «ENDIF»
+«ENDFOREACH»
+
+        /// Specific Control get helper functions
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent»
+        virtual std::vector< CAN::byte_t > getControl«x.getAltDependentName»Proxy() const;
+
+        virtual std::vector< CAN::byte_t > getControl«x.getAltDependentName»() const;
+    «ENDIF»
+«ENDFOREACH»
+
+        /// Specific Control points get helper Map for «Assembly»
+        std::map< const AMB::rca_t, std::vector< CAN::byte_t > (
+            AMB::«Assembly»HWSimBase::*)() const > controlPointsGetterMap;
+
+        /// Specific Control set helper functions
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent»
+        /// \exception CAN:Error
+        virtual void setControl«x.getAltDependentName»Proxy(
+            const std::vector< CAN::byte_t >& data);
+
+        /// \exception CAN:Error
+        virtual void setControl«x.getAltDependentName»(
+            const std::vector< CAN::byte_t >& data);
+    «ENDIF»
+«ENDFOREACH»
+
+        /// Specific Monitor set helper functions
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF !x.isDependent»
+        /// \exception CAN:Error
+        virtual void setMonitor«x.getAltDependentName»Proxy(
+            const std::vector< CAN::byte_t >& data);
+
+        /// \exception CAN:Error
+        virtual void setMonitor«x.getAltDependentName»(
+            const std::vector< CAN::byte_t >& data);
+    «ENDIF»
+«ENDFOREACH»
+
+        /// Specific Monitor points set helper Map for «Assembly»
+        std::map< const AMB::rca_t, void (AMB::«Assembly»HWSimBase::*)(
+            const std::vector< CAN::byte_t >& data) > monitorPointsSetterMap;
+
+        virtual void setBaseAddress(unsigned int arg);
+        virtual unsigned int getBaseAddress() const;
+
+
+        private:
+        /// No default ctor.
+        «Assembly»HWSimBase();
+
+        /// No copy ctor.
+        «Assembly»HWSimBase(const «Assembly»HWSimBase&);
+
+        /// No assigment optor.
+        «Assembly»HWSimBase& operator=(const «Assembly»HWSimBase&);
+
+        unsigned int baseAddress_m;
+    };
+}
+#endif
+«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,8 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:o="urn:schemas-microsoft-com:office:office"
+				targetNamespace="urn:schemas-microsoft-com:office:office">
+
+	<xsd:element name="DocumentProperties"/>
+	<xsd:element name="OfficeDocumentSettings"/>
+
+</xsd:schema>

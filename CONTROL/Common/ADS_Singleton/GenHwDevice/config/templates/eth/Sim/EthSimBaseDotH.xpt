@@ -1,0 +1,252 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+    «EXPAND SWModuleDef»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/include/"+Assembly+"EthSimBase.h"»
+#ifndef «Assembly»EthSimBase_h
+#define «Assembly»EthSimBase_h
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * WARNING! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C.
+#endif
+
+«IF Extends == "none"»
+#include <EthernetDeviceInterface.h>
+«ELSE»
+#include <«Extends»EthSimImpl.h>
+«ENDIF»
+#include <sstream>
+#include <acstime.h>
+#include <stdint.h>
+
+
+/// The «Assembly»EthSimBase class is the base class for the
+/// «DeviceName» hardware simulator.
+/// <ul>
+/// <li> Device:   «DeviceName»
+/// <li> Assembly: «Assembly»
+/// </ul>
+class «Assembly»EthSimBase:
+«IF Extends == "none"»
+    public EthernetDeviceInterface
+«ELSE»
+    public «Extends»EthSimImpl
+«ENDIF»
+{
+    public:
+    /// Constructor
+    «Assembly»EthSimBase();
+
+    /// Destructor
+    virtual ~«Assembly»EthSimBase();
+
+    /// Returns true if a device is in simulation mode, false if
+    /// it works with real hardware.
+    virtual CORBA::Boolean isSimulated();
+
+    /// EthernetDeviceInterface Methods
+    virtual void open(const string& hostname,
+        const std::vector< std::string >& parameters);
+
+    virtual void close();
+
+    /// TODO: This should be in an extended class
+    virtual void monitor(int address, int& value);
+    virtual void monitor(int address, short& value);
+    virtual void monitor(int address, int64_t& value);
+    virtual void monitor(int address, char& value);
+    virtual void monitor(int address, string& value);
+    virtual void monitor(int address, float& value);
+    virtual void monitor(int address, double& value);
+    virtual void monitor(int address, bool& value);
+
+    virtual void monitor(int address, std::vector< int >& value);
+    virtual void monitor(int address, std::vector< short >& value);
+    virtual void monitor(int address, std::vector< int64_t >& value);
+    virtual void monitor(int address, std::vector< char >& value);
+    virtual void monitor(int address, std::vector< string >& value);
+    virtual void monitor(int address, std::vector< float >& value);
+    virtual void monitor(int address, std::vector< double >& value);
+    virtual void monitor(int address, std::vector< bool >& value);
+
+    virtual void command(int address);
+    virtual void command(int address, const int& value);
+    virtual void command(int address, const short& value);
+    virtual void command(int address, const int64_t& value);
+    virtual void command(int address, const char& value);
+    virtual void command(int address, const string& value);
+    virtual void command(int address, const float& value);
+    virtual void command(int address, const double& value);
+    virtual void command(int address, const bool& value);
+
+    virtual void command(int address, const std::vector< int >& value);
+    virtual void command(int address, const std::vector< short >& value);
+    virtual void command(int address, const std::vector< int64_t >& value);
+    virtual void command(int address, const std::vector< char >& value);
+    virtual void command(int address, const std::vector< string >& value);
+    virtual void command(int address, const std::vector< float >& value);
+    virtual void command(int address, const std::vector< double >& value);
+    virtual void command(int address, const std::vector< bool >& value);
+
+    /// TODO: Use a different m_state (see below)
+/**
+    template < class Type >
+    void CVREthSimBase::monitor(int address, Type& value, ACS::Time& timestamp)
+    {
+        if(m_state.find(address) != m_state.end())
+        {
+//            value = (Type) *(m_state.find(address)->second);
+//        }
+//        else
+//        {
+            std::string address_str;
+            std::stringstream ss;
+            ss << address;
+            ss >> address_str;
+            std::string ex = "Address " + address_str + " not found.";
+            throw IllegalParameterEx(ex);
+        }
+    };
+
+    template < class Type >
+    void CVREthSimBase::monitor(int address, std::vector < Type >& value,
+        ACS::Time& timestamp)
+    {
+        if(m_state.find(address) != m_state.end())
+        {
+//            value = (vector <Type>) *(m_state.find(address)->second);
+//      }
+//      else
+//      {
+            std::string address_str;
+            std::stringstream ss;
+            ss << address; ss >> address_str;
+            std::string ex = "Address " + address_str + " not found.";
+            throw IllegalParameterEx(ex);
+        }
+    };
+
+    template < class Type >
+    void CVREthSimBase::command(int address, Type& value)
+    {
+//        if (m_state.find(address) != m_state.end())
+//        {
+//            *(m_state.find(address)->second) = value;
+//        }
+//        else
+//        {
+            std::string address_str;
+            std::stringstream ss;
+            ss << address;
+            ss >> address_str;
+            std::string ex = "Address " + address_str + " not found.";
+            throw IllegalParameterEx(ex);
+//        }
+    };
+
+    template < class Type >
+    void CVREthSimBase::command(int address, std::vector < Type >& value)
+    {
+//        if (m_state.find(address) != m_state.end())
+//        {
+//            *(m_state.find(address)->second) = value;
+//        }
+//        else
+//        {
+            std::string address_str;
+            std::stringstream ss;
+            ss << address;
+            ss >> address_str;
+            std::string ex = "Address " + address_str + " not found.";
+            throw IllegalParameterEx(ex);
+//        }
+    };
+*/
+
+
+    protected:
+    /// TODO
+    /// map< void* > not allowed.
+    /// Find a way to store values for addresses in an organized way.
+    /// Stores the point values, mapped to their address
+    //    map < int, void* > m_state;
+
+    /// Register if simulated socket is open or not.
+    bool m_isOpen;
+
+    int m_port;
+
+    /// linger time in seconds.
+    int m_lingerTime;
+
+    int m_retries;
+
+    /// Socket timeout in miliseconds.
+    int m_timeout;
+
+    std::string m_hostname;
+};
+#endif
+«ENDFILE»
+«ENDDEFINE»

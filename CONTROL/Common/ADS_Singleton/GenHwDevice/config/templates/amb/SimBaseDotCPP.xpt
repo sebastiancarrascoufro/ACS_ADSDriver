@@ -1,0 +1,184 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/src/"+Assembly+"SimBase.cpp"»
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * Warning! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+
+#include <«Assembly»SimBase.h>
+#include <ControlBasicInterfacesC.h>
+
+
+«Assembly»SimBase::«Assembly»SimBase(const ACE_CString& name,
+    maci::ContainerServices* cs):
+    «Assembly»Impl(name, cs)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isDependent && x.Default != "none"»
+        «IF x.Default == "mid"»
+            «IF x.WorldDataToCPPType != "double" && x.WorldDataToCPPType != "float"»
+    value«x.getAltDependentName» = static_cast< «x.WorldDataToCPPType» >(
+        («x.MinRange» + «x.MaxRange») / 2.0);
+            «ELSE»
+    value«x.getAltDependentName»= («x.MinRange» + «x.MaxRange») / 2.0;
+            «ENDIF»
+        «ELSE»
+    value«x.getAltDependentName» = «x.Default»;
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+}
+
+«Assembly»SimBase::~«Assembly»SimBase()
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+}
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «EXPAND ProtectedMonitorPoint FOR x»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «EXPAND ProtectedControlPoint FOR x»
+«ENDFOREACH»
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE ProtectedMonitorPoint FOR MonitorPoint»
+/// MonitorPoint: «MPName»
+    «IF !isExternal || !isMonitored»
+/// «DescriptionFormattedL5»
+    «ENDIF»
+    «REM»
+    a. Major monitor method
+    «ENDREM»
+    «IF isImplemented»
+/// Get the current value of «MPName» from the device.
+        «IF !isDependent»
+            «IF isWorldDataArray»
+std::vector< «WorldDataToCPPType» > «Assembly»SimBase::get«AltMPName»(
+    ACS::Time& timestamp)
+            «ELSE»
+«WorldDataToCPPType» «Assembly»SimBase::get«AltMPName»(
+    ACS::Time& timestamp)
+            «ENDIF»
+{
+    if((isReady() == false) || (inErrorState() == true))
+    {
+        ControlExceptions::INACTErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        std::ostringstream msg;
+        msg << "Cannot execute monitor request.  Device is either inactive or "
+            "in error state: "
+            << getErrorMessage();
+        ex.addData(Control::EX_USER_ERROR_MSG, msg.str());
+        ex.log();
+        throw ex;
+    }
+    else
+    {
+        return «Assembly»Base::get«AltMPName»(timestamp);
+    }
+
+            «IF isWorldDataArray»
+    return std::vector< «WorldDataToCPPType» >(«NumberItemsRawData»);
+            «ELSE»
+    return 0;
+            «ENDIF»
+}
+        «ENDIF»
+    «ENDIF»
+«ENDDEFINE»
+
+«DEFINE ProtectedControlPoint FOR ControlPoint»
+    «IF !isDependent»
+        «IF Implement»
+«cppReturns» «Assembly»SimBase::set«AltCPName»«cppDeclaration»
+{
+    if((isReady() == false)
+    || (inErrorState() == true))
+    {
+        ControlExceptions::INACTErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        std::ostringstream msg;
+        msg << "Cannot execute control request.  Device is either inactive or "
+            "in error state: "
+            << getErrorMessage();
+        ex.addData(Control::EX_USER_ERROR_MSG, msg.str());
+        ex.log();
+        throw ex;
+    }
+}
+        «ENDIF»
+
+/// ControlPoint: «CPName»
+        «IF !isExternal»
+/// «DescriptionFormattedL5»
+        «ENDIF»
+    «ENDIF»
+«ENDDEFINE»

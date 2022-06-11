@@ -1,0 +1,157 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+    «EXPAND SWModuleDef»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/idl/"+Assembly+"Base.idl"»
+#ifndef «Assembly»Base_idl
+#define «Assembly»Base_idl
+/*
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2010
+ * (c) Associated Universities Inc., 2010
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * WARNING! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+
+/// External interface to the hardware assembly: Control::«Assembly».
+
+
+«IF Extends != "none"»
+#include <«Extends».idl>
+«ELSE»
+#include <HardwareDevice.idl>
+«ENDIF»
+#include <ControlExceptions.idl>
+#include <EthernetDeviceExceptions.idl>
+#include <baci.idl>
+
+
+#pragma prefix "alma"
+
+
+module Control
+{
+    /// «Description»
+    interface «Assembly»Base:
+«IF Extends != "none"»
+    «Extends»
+«ELSE»
+    Control::HardwareDevice
+«ENDIF»
+    {
+        /////////////////////
+        // BACI Properties //
+        /////////////////////
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isMonitored»
+        /// «x.Description»
+        «IF x.DisplayUnits == "pattern"»
+        readonly attribute ACS::ROpattern «x.MPName»;
+        «ELSE»
+            «IF x.isDataArray»
+        readonly attribute ACS::RO«x.DataToBACIType»Seq «x.MPName»;
+            «ELSE»
+        readonly attribute ACS::RO«x.DataToBACIType» «x.MPName»;
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+        ////////////////////////////////////////
+        // IDL Definitions for Monitor Points //
+        ////////////////////////////////////////
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+«IF x.isExternal»
+        /// «x.Description»
+        «IF x.isDataArray»
+        «x.DataToIDLSeqType» GET_«x.MPName»(out ACS::Time timestamp) raises
+            (EthernetDeviceExceptions::SocketOperationFailedEx,
+            EthernetDeviceExceptions::IllegalParameterEx,
+            ControlExceptions::INACTErrorEx);
+        «ELSE»
+        «x.DataToIDLType» GET_«x.MPName»(out ACS::Time timestamp) raises
+            (EthernetDeviceExceptions::SocketOperationFailedEx,
+            EthernetDeviceExceptions::IllegalParameterEx,
+            ControlExceptions::INACTErrorEx);
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+        ////////////////////////////////////////
+        // IDL Definitions for Control Points //
+        ////////////////////////////////////////
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF x.isExternal»
+        /// «x.Description»
+        «IF x.isDataArray»
+        void SET_«x.CPName»(in «x.DataToIDLSeqType» param) raises
+        «ELSEIF x.DataType == "void"»
+        void SET_«x.CPName»() raises
+        «ELSE»
+        void SET_«x.CPName»(in «x.DataToIDLType» param) raises
+        «ENDIF»
+            (EthernetDeviceExceptions::SocketOperationFailedEx,
+            EthernetDeviceExceptions::IllegalParameterEx,
+            ControlExceptions::INACTErrorEx);
+    «ENDIF»
+«ENDFOREACH»
+    };
+};
+#endif
+«ENDFILE»
+«ENDDEFINE»

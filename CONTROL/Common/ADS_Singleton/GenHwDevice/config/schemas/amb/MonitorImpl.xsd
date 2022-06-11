@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<xsd:schema xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:schemas-microsoft-com:office:spreadsheet">
+
+	<xsd:include schemaLocation="MandCImpl.xsd"/>
+	<xsd:include schemaLocation="../MonitorBase.xsd"/>
+
+	<xsd:group name="MonitorImpl">
+		<xsd:sequence>
+			<xsd:sequence maxOccurs="1" minOccurs="0">
+				<xsd:element name="Row" type="ss:MonitorBaseFR"/>
+				<xsd:element name="Row" type="ss:MonitorImplSR"/>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" name="Row" type="ss:MonitorImplRows"/>
+			</xsd:sequence>
+			<xsd:sequence maxOccurs="unbounded" minOccurs="0">
+				<xsd:element name="Row"/>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="MonitorImplSR">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MandCImpl_Assembly"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Name"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_RCA"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_RawDataType"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_TERelated"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_OnChange"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_WorldDataType"/>
+				<xsd:element name="Cell" type="ss:MandCBase_DataUnits"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_Scale"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_Offset"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MinRange"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MaxRange"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_Default"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_ErrorCondition"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_ErrorSeverity"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_ErrorAction"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Mode"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Implement"/>
+				<xsd:element name="Cell" type="ss:MandCBase_External"/>
+				<xsd:element name="Cell" type="ss:MonitorImpl_CanBeInvalid"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Description"/>
+			</xsd:sequence>
+			<xsd:sequence maxOccurs="unbounded" minOccurs="0">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MonitorImplRows">
+		<!-- <xsd:assert test="fn:count(./Cell) > 0"/>-->
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MandCImpl_AssemblyV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_NameV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_RCAV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_RawDataTypeV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_TERelatedV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_OnChangeV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_WorldDataTypeV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_DataUnitsV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_ScaleV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_OffsetV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MinRangeV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MaxRangeV"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_DefaultV"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_ErrorConditionV"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_ErrorSeverityV"/>
+				<xsd:element name="Cell" type="ss:MonitorBase_ErrorActionV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_ModeV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_ImplementV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_ExternalV"/>
+				<xsd:element name="Cell" type="ss:MonitorImpl_CanBeInvalidV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_DescriptionV"/>
+			</xsd:sequence>
+			<xsd:sequence maxOccurs="unbounded" minOccurs="0">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="MonitorImpl_CanBeInvalid">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Can Be Invalid"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="NamedCell"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column value fields -->
+	<xsd:complexType name="MonitorImpl_CanBeInvalidV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="yes"/>
+							<xsd:enumeration value="yes-feStatus"/>
+							<xsd:enumeration value="no"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="NamedCell"/>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,403 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/src/"+Assembly+"CompSimBase.cpp"»
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * WARNING! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+
+#include <«Assembly»CompSimBase.h>
+#include <ControlBasicInterfacesC.h>
+#include <sstream>
+#include <iomanip>
+#include <string>
+
+
+//------------------------------------------------------------------------------
+«Assembly»CompSimBase::«Assembly»CompSimBase(const ACE_CString& name,
+    maci::ContainerServices* pCS):
+    «Assembly»Impl(name, pCS)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+}
+
+//------------------------------------------------------------------------------
+«Assembly»CompSimBase::~«Assembly»CompSimBase()
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+}
+
+CORBA::Boolean «Assembly»CompSimBase::isSimulated()
+{
+    return true;
+}
+
+//------------------------------------------------------------------------------
+void «Assembly»CompSimBase::getDeviceUniqueId(std::string& deviceID)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+    // Getting the data from monitorPoint_SERIAL_NUMBER
+    AmbRelativeAddr rca(0x00000U);
+    AmbDataLength_t length(8U);
+    AmbDataMem_t rawBytes[8];
+    sem_t synchLock;
+    ACS::Time timestamp(0ULL);
+    AmbErrorCode_t status(AMBERR_PENDING);
+
+    sem_init(&synchLock, 0, 0);
+    monitor(rca, length, rawBytes, &synchLock, &timestamp, &status);
+    sem_wait(&synchLock);
+    sem_destroy(&synchLock);
+
+    /**
+     * Setting the correct number to deviceID
+     * If not implemented in the simulation set it to 0x0
+     */
+    if(status != AMBERR_NOERR)
+    {
+        deviceID = "0x0000000000000000";
+    }
+    else
+    {
+/// TODO
+/// Thomas, 2009-04-03
+/// Ralph's tests fail.  So I commented the correct way out and put the
+/// old way back into place until it has been sorted out what happens when
+/// TAT gathers the printed out strings.
+//        std::ostringstream uniqueId;
+//        std::ios::fmtflags oldFlags(uniqueId.flags());
+//        uniqueId.setf(std::ios::hex, std::ios::basefield);
+
+//        uniqueId << "0x";
+//        for(unsigned short idx(0U); idx < 8U; ++idx)
+//        {
+//            uniqueId << std::setw(2) << std::setfill('0')
+//                << static_cast< unsigned short >(rawBytes[idx]);
+//        }
+
+//        uniqueId.setf(oldFlags);
+
+        std::ostringstream uniqueId;
+        uniqueId << "0x"
+            << std::hex;
+        for(unsigned short idx(0U); idx < 8U; ++idx)
+        {
+            uniqueId << std::setw(2)
+                << std::setfill('0')
+                << static_cast< unsigned short >(rawBytes[idx]);
+        }
+
+        deviceID =  uniqueId.str();
+    }
+}
+
+//------------------------------------------------------------------------------
+void «Assembly»CompSimBase::setSimValue(const CORBA::Long rca,
+    const Control::LongSeq& data)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+    AmbRelativeAddr RCA(static_cast< AmbRelativeAddr >(rca));
+    AmbDataLength_t messageLength(static_cast< AmbDataLength_t >(data.length()));
+    AmbDataMem_t message[8];
+
+    if(data.length() > 8)
+    {
+        messageLength = 8;
+    }
+
+    for(unsigned short index(0U); index < messageLength; ++index)
+    {
+        message[index] = static_cast< AmbDataMem_t >(data[index]);
+    }
+
+    ACS::Time timestamp(0ULL);
+    sem_t synchLock;
+    AmbErrorCode_t status(AMBERR_PENDING);
+
+    if(sem_init(&synchLock, 0, 0) == -1)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Could not init the synch semaphore.");
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+
+    try
+    {
+        simulationIf_m.command(RCA, messageLength, message, &synchLock,
+            &timestamp, &status);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        sem_destroy(&synchLock);
+
+        throw ControlExceptions::SimErrorExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getSimErrorEx();
+    }
+
+    if(sem_wait(&synchLock) == -1)
+    {
+        sem_destroy(&synchLock);
+
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Waiting on the semaphore failed.");
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+
+    if(sem_destroy(&synchLock) == -1)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Semaphore destruction failed.  Ignoring this " 
+            "exception!");
+        ex.log();
+    }
+
+    if(status != AMBERR_NOERR)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        std::ostringstream msg;
+        msg << "AMB request returned "
+            << static_cast< int >(status)
+            << ".";
+        ex.addData(Control::EX_USER_ERROR_MSG, msg.str()); 
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+}
+
+//------------------------------------------------------------------------------
+Control::LongSeq* «Assembly»CompSimBase::getSimValue(
+    const CORBA::Long rca)
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+    AmbRelativeAddr RCA(static_cast< AmbRelativeAddr >(rca));
+    AmbDataLength_t messageLength(0U);
+    AmbDataMem_t message[8];
+
+    ACS::Time timestamp(0ULL);
+    sem_t synchLock;
+    AmbErrorCode_t status(AMBERR_PENDING);
+
+    if(sem_init(&synchLock, 0, 0) == -1)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Could not init the synch semaphore.");
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+
+    try
+    {
+        simulationIf_m.monitor(RCA, messageLength, message, &synchLock,
+            &timestamp, &status);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        sem_destroy(&synchLock);
+
+        throw ControlExceptions::SimErrorExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getSimErrorEx();
+    }
+
+    if(sem_wait(&synchLock) == -1)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Waiting on the semaphore failed.");
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+
+    if(sem_destroy(&synchLock) == -1)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Destruction of the synch semaphore failed.");
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+
+    if(status != AMBERR_NOERR)
+    {
+        ControlExceptions::SimErrorExImpl ex(__FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+        std::ostringstream msg;
+        msg << "AMB request returned "
+            << static_cast< int >(status)
+            << ".";
+        ex.addData(Control::EX_USER_ERROR_MSG, msg.str()); 
+        ex.log();
+        throw ex.getSimErrorEx();
+    }
+
+    Control::LongSeq_var data(new Control::LongSeq);
+    data->length(messageLength);
+    for(unsigned short index(0U); index < data->length(); ++index)
+    {
+        data[index] = static_cast< CORBA::Long >(message[index]);
+    }
+
+    return data._retn();
+}
+
+//------------------------------------------------------------------------------
+void «Assembly»CompSimBase::monitor(
+    AmbRelativeAddr RCA,
+    AmbDataLength_t& dataLength,
+    AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.monitor(RCA, dataLength, data, synchLock, timestamp, status);
+}
+
+void «Assembly»CompSimBase::command(
+    AmbRelativeAddr RCA,
+    AmbDataLength_t dataLength,
+    const AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.command(RCA, dataLength, data, synchLock, timestamp, status);
+}
+
+void «Assembly»CompSimBase::monitorTE(
+    ACS::Time TimeEvent,
+    AmbRelativeAddr RCA,
+    AmbDataLength_t& dataLength,
+    AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.monitorTE(TimeEvent, RCA, dataLength, data, synchLock,
+        timestamp, status);
+}
+
+void «Assembly»CompSimBase::commandTE(
+    ACS::Time TimeEvent,
+    AmbRelativeAddr RCA,
+    AmbDataLength_t dataLength,
+    const AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.commandTE(TimeEvent, RCA, dataLength, data, synchLock,
+        timestamp, status);
+}
+
+void «Assembly»CompSimBase::monitorNextTE(
+    AmbRelativeAddr RCA,
+    AmbDataLength_t& dataLength,
+    AmbDataMem_t* data,
+    sem_t* synchLock,
+    Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.monitorNextTE(RCA, dataLength, data, synchLock, timestamp,
+        status);
+}
+
+void «Assembly»CompSimBase::commandNextTE(AMBSystem::AmbRelativeAddr RCA,
+    AmbDataLength_t dataLength,
+    const AmbDataMem_t* data,
+    sem_t* synchLock,
+    ACS::Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.commandNextTE(RCA, dataLength, data, synchLock, timestamp,
+        status);
+}
+
+void «Assembly»CompSimBase::flushNode(
+    ACS::Time TimeEvent,
+    ACS::Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.flushNode(TimeEvent, timestamp, status);
+}
+
+void «Assembly»CompSimBase::flushRCA(
+    ACS::Time TimeEvent,
+    AmbRelativeAddr RCA,
+    ACS::Time* timestamp,
+    AmbErrorCode_t* status)
+{
+    simulationIf_m.flushRCA(TimeEvent, RCA,  timestamp, status);
+}
+«ENDFILE»
+«ENDDEFINE»

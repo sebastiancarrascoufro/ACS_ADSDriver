@@ -1,0 +1,31 @@
+<project name="GenHwDevice" default="acs-all" basedir=".">
+  <description>
+A simple build file that just calls the Makefiles.
+  </description>
+
+  <!-- ACS part -->
+
+  <property name="src" location="."/>
+  <property name="test" location="../test"/>
+  <target name="acs-compile" description="compiles and installs the sources">
+    <exec dir="${src}" executable="make">
+      <arg line="all install"/>
+    </exec>
+  </target>
+  <target name="acs-clean" description="cleans up">
+    <exec dir="${src}" executable="make">
+      <arg line="clean"/>
+    </exec>
+    <exec dir="${test}" executable="make" description="cleans up test">
+      <arg line="clean"/>
+    </exec>
+  </target>
+  <target name="acs-test-compile" description="compiles and installs the test sources">
+    <exec dir="${test}" executable="make">
+      <arg line="all"/>
+    </exec>
+  </target>
+  <target name="acs-all" description="compiles and installs src"
+          depends="acs-compile"/>
+
+</project>

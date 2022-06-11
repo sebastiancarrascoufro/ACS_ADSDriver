@@ -1,0 +1,638 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+    «EXPAND SWModuleDef»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/src/"+Assembly+"Base.cpp"»
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * Warning! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+
+#include <«Assembly»Base.h>
+// For audience logs.
+#include <LogToAudience.h>
+// Includes for Utils helpers
+#include <Utils.h>
+#include <stdint.h>
+#include <ControlBasicInterfacesC.h>
+
+
+/// Constructor
+«Assembly»Base::«Assembly»Base(const ACE_CString& name,
+    maci::ContainerServices* cs):
+«IF Extends != "none"»
+    «Extends»Impl(name, cs)
+«ELSE»
+    EthernetDevice(name, cs)
+«ENDIF»
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF !x.isDependent && x.Address != "none"»
+        «IF x.isEnumAddress»
+    , address«x.AltMPName»(«VendorClass»::«x.Address»)
+        «ELSE»
+    , address«x.AltMPName»(«x.Address»)
+        «ENDIF» 
+    «ENDIF»
+        «IF x.isMonitored»
+    , spp«x.AltMPName»(this)
+        «ENDIF»
+«ENDFOREACH»
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent && x.Address != "none"»
+        «IF x.isEnumAddress»
+    , address«x.AltCPName»(«VendorClass»::«x.Address»)
+        «ELSE»
+    , address«x.AltCPName»(«x.Address»)
+        «ENDIF» 
+    «ENDIF»
+    «IF x.isMonitored»
+    , spp«x.AltMPName»(this)
+    «ENDIF»
+«ENDFOREACH»
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+}
+
+«Assembly»Base::~«Assembly»Base()
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+}
+
+CORBA::Boolean «Assembly»Base::isSimulated()
+{
+    return false;
+}
+
+// ACS Lifecycle methods
+void «Assembly»Base::initialize()
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+
+    // Call the base class implementation
+«IF Extends != "none"»
+    «Extends»Impl::initialize();
+«ELSE»
+    EthernetDevice::initialize();
+«ENDIF»
+
+    // Create specific properties
+    try
+    {
+        const ACE_CString nameWithSep(cdbName_m + ":");
+    «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isMonitored»
+        {
+            const ACE_CString propName(nameWithSep + "«x.MPName»");
+            /**
+              * Create new property with new DevIO. The DevIO will automatically
+              * be deleted on destruction of the property.
+              */
+            spp«x.AltMPName» =
+        «IF x.DisplayUnits == "pattern"»
+            new baci::ROpattern(propName, getComponent(),
+            «IF x.isDataArray»
+                new EthernetRODevIO< std::vector< «x.DataToCPPType» > >(
+                    address«x.AltMPName», this));
+            «ELSE»
+            new EthernetRODevIO< «x.DataToCPPType» >(
+                address«x.AltMPName», this));
+            «ENDIF»
+        «ELSE»
+            «IF x.isDataArray»
+            new baci::RO«x.DataToBACIType»Seq(propName, getComponent(),
+                new EthernetRODevIO< std::vector< «x.DataToCPPType» > >(
+                    address«x.AltMPName», this));
+            «ELSEIF x.DataType == "string"»
+            new baci::RO«x.DataToBACIType»(propName, getComponent(),
+                new EthernetRODevIO< std::string >(
+                    address«x.AltMPName», this));
+            «ELSE»
+            new baci::RO«x.DataToBACIType»(propName, getComponent(),
+            «IF x.DataToCPPType == "long long"»
+#if __x86_64__
+                new EthernetRODevIO< int64_t >(
+                    address«x.AltMPName», this));
+#else
+                new EthernetRODevIO< «x.DataToCPPType» >(
+                    address«x.AltMPName», this));
+#endif
+            «ELSE»
+                new EthernetRODevIO< «x.DataToCPPType» >(
+                    address«x.AltMPName», this));
+            «ENDIF»
+            «ENDIF»
+        «ENDIF»
+            «REM»Set the Alarm family and member names for this BACI property.
+            spp«x.AltMPName»->setAlarmFaultFamily(Control::CharacteristicControlDeviceImpl::getAlarmFamilyName("«Assembly»").c_str());
+            spp«x.AltMPName»->setAlarmFaultMember(Control::CharacteristicControlDeviceImpl::getAlarmMemberName().c_str());
+            «ENDREM»
+        }
+    «ENDIF»
+    «ENDFOREACH»
+    }
+    catch(const ControlExceptions::CDBErrorExImpl& ex)
+    {
+        // getElement can throw this exception
+        throw acsErrTypeLifeCycle::LifeCycleExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+    }
+    catch(const baciErrTypeProperty::PropertyActivationExImpl& ex)
+    {
+        // properties initialization can throw this exception
+        throw acsErrTypeLifeCycle::LifeCycleExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__);
+    }
+
+    // Create Vendor Class instance
+    if(!ethernetDeviceIF_mp)
+    {
+        LOG_TO_DEVELOPER(LM_DEBUG, "Creating a new Ethernet communication "
+            "class instance.");
+        ethernetDeviceIF_mp.reset(new «VendorClass»);
+    }
+    else
+    {
+        LOG_TO_DEVELOPER(LM_DEBUG, "Not creating a new Ethernet communication "
+            "simulation class instance.  There is already one active.");
+    }
+}
+
+void «Assembly»Base::cleanUp()
+{
+    // No need to check if the device is already in hwStop state.  This is
+    // done in Control::HardwareDeviceImpl::hwStop() anyway.
+    try
+    {
+        Control::HardwareDeviceImpl::hwStop();
+    }
+    catch(...)
+    {
+        LOG_TO_OPERATOR(LM_WARNING, "Caught an exception during transition to "
+            "the hardware stop state.  Continuing anyway.");
+    }
+«IF Extends != "none"»
+    «Extends»Impl::cleanUp();
+«ELSE»
+    EthernetDevice::cleanUp();
+«ENDIF»
+}
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isExternal»
+        «EXPAND PublicMonitorPoint FOR x»
+    «ENDIF»
+    «EXPAND ProtectedMonitorPoint FOR x»
+    «IF x.isMonitored»
+        «EXPAND BACIMethod FOR x»
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF x.isExternal»
+        «EXPAND PublicControlPoint FOR x»
+    «ENDIF»
+    «EXPAND ProtectedControlPoint FOR x»
+«ENDFOREACH»
+
+«ENDFILE»
+«ENDDEFINE»
+
+
+«DEFINE PublicMonitorPoint FOR MonitorPoint»
+/// MonitorPoint: «MPName»
+/// «Description»
+    «REM»
+    a. Major monitor method
+    «ENDREM»
+    «IF isDataArray»
+        «IF DataType != "void"»
+«DataToCORBASeqType»*
+    «Assembly»Base::GET_«MPName»(ACS::Time& timestamp)
+{
+    std::vector< «DataToCPPType» > ret;
+    try
+    {
+        ret = get«AltMPName»(timestamp);
+    }
+    catch(const EthernetDeviceExceptions::SocketOperationFailedExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::SocketOperationFailedExImpl(ex,
+            __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getSocketOperationFailedEx();
+    }
+    catch(const EthernetDeviceExceptions::IllegalParameterExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::IllegalParameterExImpl(ex, __FILE__,
+            __LINE__, __PRETTY_FUNCTION__).getIllegalParameterEx();
+    }
+    catch(const ControlExceptions::INACTErrorExImpl& ex)
+    {
+        throw ControlExceptions::INACTErrorExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getINACTErrorEx();
+    }
+
+    «DataToCORBASeqType»_var x(
+        new «DataToCORBASeqType»);
+    x->length(ret.size());
+    std::size_t i(0U);
+    for(std::vector< «DataToCPPType» >::iterator iter(ret.begin());
+        iter != ret.end(); ++iter, ++i)
+    {
+        x[i] = static_cast< «DataToCORBAType» >(*iter);
+    }
+
+    return x._retn();
+}
+            «ELSE»
+#error "MonitorPoint: «MPName» is of type void. Cannot create GET_«MPName»!"
+            «ENDIF»
+        «ELSE»
+            «IF DataType == "string"»
+«DataToCORBAType» «Assembly»Base::GET_«MPName»(ACS::Time& timestamp)
+            «ELSE»
+«DataToCORBAType» «Assembly»Base::GET_«MPName»(ACS::Time& timestamp)
+            «ENDIF»
+{
+    try
+    {
+                «IF DataType == "string"»
+        CORBA::String_var ret(
+            CORBA::string_dup(get«AltMPName»(timestamp).c_str()));
+        return ret._retn();
+                «ELSE»
+        «DataToCORBAType» ret(get«AltMPName»(timestamp));
+        return ret;
+                «ENDIF»
+    }
+    catch(const EthernetDeviceExceptions::SocketOperationFailedExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::SocketOperationFailedExImpl(ex,
+            __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getSocketOperationFailedEx();
+    }
+    catch(const EthernetDeviceExceptions::IllegalParameterExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::IllegalParameterExImpl(ex, __FILE__,
+            __LINE__, __PRETTY_FUNCTION__).getIllegalParameterEx();
+    }
+    catch(const ControlExceptions::INACTErrorExImpl& ex)
+    {
+        throw ControlExceptions::INACTErrorExImpl( ex,__FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getINACTErrorEx();
+    }
+}
+        «ENDIF»
+«ENDDEFINE»
+
+
+«DEFINE ProtectedMonitorPoint FOR MonitorPoint»
+    «IF isExternal»
+    /// MonitorPoint: «MPName»
+    «ELSE»
+    /// MonitorPoint: «MPName»
+    /// «Description»
+    «ENDIF»
+    «REM»
+    a. Major monitor method
+    «ENDREM»
+    «IF isImplemented»
+        «IF isDataArray»
+std::vector< «DataToCPPType» > «Assembly»Base::get«AltMPName»(
+    ACS::Time& timestamp)
+{
+    std::vector< «DataToCPPType» > value;
+        «ELSEIF DataType == "string"»
+std::string «Assembly»Base::get«AltMPName»(ACS::Time& timestamp)
+{
+    std::string value;
+        «ELSE»
+«DataToCPPType» «Assembly»Base::get«AltMPName»(ACS::Time& timestamp)
+{
+    «DataToCPPType» value;
+        «ENDIF»
+    «IF Mode == "startup"»
+    Control::HardwareDeviceImpl::checkHwStateOrThrow(
+        &Control::HardwareDeviceImpl::isStartup, __FILE__, __LINE__,
+        __PRETTY_FUNCTION__);
+    «ELSEIF Mode == "diagnostic"»
+    Control::HardwareDeviceImpl::checkHwStateOrThrow(
+        &Control::HardwareDeviceImpl::isDiagnostic, __FILE__, __LINE__,
+        __PRETTY_FUNCTION__);
+    «ELSE»
+    Control::HardwareDeviceImpl::checkHwStateOrThrow(
+        &Control::HardwareDeviceImpl::isReady, __FILE__, __LINE__,
+        __PRETTY_FUNCTION__);
+    «ENDIF»
+
+    «IF !isDependent»
+    try
+    {
+        EthernetDevice::monitor(address«AltMPName», value, timestamp);
+        Control::HardwareDeviceImpl::clearDeviceErrorCounter();
+    }
+    catch(const EthernetDeviceExceptions::SocketOperationFailedExImpl& ex)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        throw EthernetDeviceExceptions::SocketOperationFailedExImpl(ex,
+            __FILE__, __LINE__, __PRETTY_FUNCTION__);
+    }
+    catch(const EthernetDeviceExceptions::IllegalParameterExImpl& ex)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        throw EthernetDeviceExceptions::IllegalParameterExImpl(ex, __FILE__,
+        __LINE__, __PRETTY_FUNCTION__);
+    }
+    catch(const EthernetDeviceExceptions::EthernetDeviceExceptionsExImpl& ex)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        EthernetDeviceExceptions::SocketOperationFailedExImpl nex(ex,__FILE__,
+        __LINE__, __PRETTY_FUNCTION__);
+        nex.addData(Control::EX_USER_ERROR_MSG, "Caught a generic "
+            "\"EthernetDeviceExceptions::EthernetDeviceExceptionsExImpl\" "
+            "exception.");
+        throw nex;
+    }
+    catch(...)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        EthernetDeviceExceptions::SocketOperationFailedExImpl ex(__FILE__,
+        __LINE__, __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Caught an unexpected exception.");
+        throw ex;
+    }
+    «ELSE»
+    /// TODO: Support getting dependent monitor points
+#warning FIXME: Dependent monitor points are not supported.
+    «ENDIF»
+    return value;
+}
+    «ENDIF»
+«ENDDEFINE»
+
+
+«DEFINE BACIMethod FOR MonitorPoint»
+/**
+ * Get the current value of «MPName» as a BACI property.
+ */
+    «IF DisplayUnits == "pattern"»
+ACS::ROpattern_ptr «Assembly»Base::«MPName»()
+    «ELSE»
+        «IF isDataArray»
+ACS::RO«DataToBACIType»Seq_ptr «Assembly»Base::«MPName»()
+        «ELSE»
+ACS::RO«DataToBACIType»_ptr «Assembly»Base::«MPName»()
+        «ENDIF»
+    «ENDIF»
+{
+    AUTO_TRACE(__PRETTY_FUNCTION__);
+    «IF DisplayUnits == "pattern"»
+    ACS::ROpattern_var prop(ACS::ROpattern::_narrow(
+        spp«AltMPName»->getCORBAReference()));
+    «ELSE»
+        «IF isDataArray»
+    ACS::RO«DataToBACIType»Seq_var prop(
+        ACS::RO«DataToBACIType»Seq::_narrow(
+            spp«AltMPName»->getCORBAReference()));
+        «ELSE»
+    ACS::RO«DataToBACIType»_var prop(
+        ACS::RO«DataToBACIType»::_narrow(
+            spp«AltMPName»->getCORBAReference()));
+        «ENDIF»
+    «ENDIF»
+    return prop._retn();
+}
+«ENDDEFINE»
+
+
+«DEFINE PublicControlPoint FOR ControlPoint»
+/// ControlPoint: «CPName»
+/// «Description»
+    «REM»
+    a. Major control method
+    «ENDREM»
+    «IF isDataArray»
+        «IF DataType != "void"»
+void «Assembly»Base::SET_«CPName»(
+    const «DataToCORBASeqType»& data)
+{
+    std::vector< «DataToCPPType» > x(data.length());
+    std::size_t i(0U);
+    for(std::vector< «DataToCPPType» >::iterator iter(x.begin());
+        iter != x.end(); ++iter, ++i)
+    {
+        (*iter) = static_cast< «DataToCPPType» >(data[i]);
+    }
+
+    try
+    {
+        set«AltCPName»(x);
+    }
+    catch(const EthernetDeviceExceptions::SocketOperationFailedExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::SocketOperationFailedExImpl(ex,
+            __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getSocketOperationFailedEx();
+    }
+    catch(const EthernetDeviceExceptions::IllegalParameterExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::IllegalParameterExImpl(ex, __FILE__,
+            __LINE__, __PRETTY_FUNCTION__).getIllegalParameterEx();
+    }
+    catch(const ControlExceptions::INACTErrorExImpl& ex)
+    {
+        throw ControlExceptions::INACTErrorExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getINACTErrorEx();
+    }
+}
+        «ELSE»
+#error "ControlPoint: «CPName» is of type void. Cannot create SET_«CPName»!"
+        «ENDIF»
+    «ELSE»
+        «IF DataType == "void"»
+void «Assembly»Base::SET_«CPName»()
+        «ELSEIF DataType == "string"»
+void «Assembly»Base::SET_«CPName»(const «DataToCORBAType» data)
+        «ELSE»
+void «Assembly»Base::SET_«CPName»(«DataToCORBAType» data)
+        «ENDIF»
+{
+    try
+    {
+        «IF DataType == "void"»
+        set«AltCPName»();
+        «ELSEIF DataType == "string"»
+        const std::string tempData(data);
+        set«AltCPName»(tempData);
+        «ELSE»
+        set«AltCPName»(data);
+        «ENDIF»
+    }
+    catch(const EthernetDeviceExceptions::SocketOperationFailedExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::SocketOperationFailedExImpl(ex,
+            __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getSocketOperationFailedEx();
+    }
+    catch(const EthernetDeviceExceptions::IllegalParameterExImpl& ex)
+    {
+        throw EthernetDeviceExceptions::IllegalParameterExImpl(ex, __FILE__,
+            __LINE__, __PRETTY_FUNCTION__).getIllegalParameterEx();
+    }
+    catch(const ControlExceptions::INACTErrorExImpl& ex)
+    {
+        throw ControlExceptions::INACTErrorExImpl(ex, __FILE__, __LINE__,
+            __PRETTY_FUNCTION__).getINACTErrorEx();
+    }
+}
+    «ENDIF»
+«ENDDEFINE»
+
+
+«DEFINE ProtectedControlPoint FOR ControlPoint»
+    «IF isExternal»
+    /// ControlPoint: «CPName»
+    «ELSE»
+    /// ControlPoint: «CPName»
+    /// «Description»
+    «ENDIF»
+    «IF isImplemented»
+        «IF isDataArray»
+void «Assembly»Base::set«AltCPName»(
+    const std::vector< «DataToCPPType» >& value)
+        «ELSEIF DataType == "void"»
+void «Assembly»Base::set«AltCPName»()
+        «ELSEIF DataType == "string"»
+void «Assembly»Base::set«AltCPName»(const std::string& value)
+        «ELSE»
+void «Assembly»Base::set«AltCPName»(«DataToCPPType» value)
+        «ENDIF»
+{
+    «IF Mode == "startup"»
+    Control::HardwareDeviceImpl::checkHwStateOrThrow(
+        &Control::HardwareDeviceImpl::isStartup, __FILE__, __LINE__,
+        __PRETTY_FUNCTION__);
+    «ELSEIF Mode == "diagnostic"»
+    Control::HardwareDeviceImpl::checkHwStateOrThrow(
+        &Control::HardwareDeviceImpl::isDiagnostic, __FILE__, __LINE__,
+        __PRETTY_FUNCTION__);
+    «ELSE»
+    Control::HardwareDeviceImpl::checkHwStateOrThrow(
+        &Control::HardwareDeviceImpl::isReady, __FILE__, __LINE__,
+        __PRETTY_FUNCTION__);
+    «ENDIF»
+
+    «IF !isDependent»
+    try
+    {
+        ACS::Time timestamp(0ULL);
+        «IF DataType == "void"»
+        EthernetDevice::command(address«AltCPName», timestamp);
+        «ELSE»
+        EthernetDevice::command(address«AltCPName», value, timestamp);
+        «ENDIF»
+        Control::HardwareDeviceImpl::clearDeviceErrorCounter();
+    }
+    catch(const EthernetDeviceExceptions::SocketOperationFailedExImpl& ex)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        throw EthernetDeviceExceptions::SocketOperationFailedExImpl(ex,
+            __FILE__, __LINE__, __PRETTY_FUNCTION__);
+    }
+    catch(const EthernetDeviceExceptions::IllegalParameterExImpl& ex)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        throw EthernetDeviceExceptions::IllegalParameterExImpl(ex, __FILE__,
+        __LINE__, __PRETTY_FUNCTION__);
+    }
+    catch(const EthernetDeviceExceptions::EthernetDeviceExceptionsExImpl& ex)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        EthernetDeviceExceptions::SocketOperationFailedExImpl nex(ex, __FILE__,
+        __LINE__, __PRETTY_FUNCTION__);
+        nex.addData(Control::EX_USER_ERROR_MSG, "Caught a generic "
+            "\"EthernetDeviceExceptions::EthernetDeviceExceptionsExImpl\" "
+            "exception.");
+        throw nex;
+    }
+    catch(...)
+    {
+        Control::HardwareDeviceImpl::incrementDeviceErrorCounter();
+
+        EthernetDeviceExceptions::SocketOperationFailedExImpl ex(__FILE__,
+        __LINE__, __PRETTY_FUNCTION__);
+        ex.addData(Control::EX_USER_ERROR_MSG, "Caught an unexpected exception.");
+        throw ex;
+    }
+    «ELSE»
+    /// TODO: Support setting dependent control points
+#warning FIXME: Dependent monitor points are not supported.
+    «ENDIF»
+
+}
+«ENDIF»
+«ENDDEFINE»

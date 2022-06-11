@@ -1,0 +1,9 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:x="urn:schemas-microsoft-com:office:excel"
+				targetNamespace="urn:schemas-microsoft-com:office:excel">
+
+	<xsd:element name="ExcelWorkbook"/>
+	<xsd:element name="WorksheetOptions"/>
+	<xsd:element name="Sorting"/>
+
+</xsd:schema>

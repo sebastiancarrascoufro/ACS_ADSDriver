@@ -1,0 +1,155 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+    «EXPAND SWModuleDef»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/doc/"+Assembly+".xml"»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * Warning!
+ *  =========================================================
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  =========================================================
+-->
+
+<«Assembly»Base xmlns="urn:schemas-cosylab-com:«Assembly»Base:1.0"
+    xsi:schemaLocation="urn:schemas-cosylab-com:«Assembly»Base:1.0
+    http://www.nrao.edu/schemas/CONTROL/«Assembly»Base.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isMonitored»
+    <«x.MPName»
+        archive_priority="15"
+      «IF x.Interval != "none" && x.Interval != "0"»
+        archive_min_int="«x.Interval»"
+        archive_max_int="«x.Interval»"
+      «ELSE»
+        archive_min_int="0"
+        archive_max_int="0"
+        archive_suppress="1"
+      «ENDIF»
+        default_value="0"
+      «IF x.GraphMin != "none"»
+        graph_min="«x.GraphMin»"
+      «ENDIF»
+      «IF x.GraphMax != "none"»
+        graph_max="«x.GraphMax»"
+      «ENDIF»
+        format="%«x.Format»"
+        description="«x.Title»"
+        units="«x.DataUnits»"
+        min_timer_trig="1.0"
+      «IF x.DisplayUnits == "pattern"»
+        bitDescription=""
+        alarm_mask="0"
+        alarm_trigger="0"
+      «ELSE»
+        min_delta_trig="1"
+      «ENDIF»
+        default_timer_trig="1"
+        resolution="1"
+        min_step="1"
+        alarm_timer_trig="0"></«x.MPName»>
+    «ENDIF»
+  «ENDFOREACH»
+
+    <!-- EthernetConfig has six parameters. 
+        hostname:
+        It will be used to initiate the connection.  It is up to the
+        implementation to resolve the name to a valid IP4 address.
+
+        port:
+        It is the port on the target computer, i.e. the one with the hardware
+        device, that is used for the connection.  It is up to the implementation
+        if the port is used only for communication establishment or for the data
+        transport, too.
+
+        macAddress:
+        It will be used as deviceUniqueId.  Since Ethernet devices do not
+        have any AMBSI which come with a unique device ID, the unique MAC
+        address of the Ethernet interface of the host running the hardware
+        has been chosen to serve as it instead.
+
+        retries:
+        Number of allowed retries after a communication failure.  The initial
+        first communication attempt shall not be counted against the retries.
+
+        timeoutRxTx:
+        Tx/Rx timeout in s.
+
+        lingerTime:
+        Time span in s before the OS closes the socket after the application has
+        actively closed the socket.  This is from man 7 socket:
+
+            "When enabled, a close(2) or shutdown(2) will not return until all
+            queued messages for the socket have been successfully sent or the
+            linger timeout has been reached.  Otherwise, the call returns
+            immediately and the closing is done in the background.  When the
+            socket is closed as part of exit(2), it always lingers in the
+            background." -->
+    <EthernetConfig
+        hostname="localhost"
+        port="0"
+        macAddress="00:00:00:00:00:00"
+        retries="3"
+        timeoutRxTx="2.0"
+        lingerTime="2"></EthernetConfig>
+</«Assembly»Base>
+«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,125 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+File XMLAddDevice.xpt
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+«FILE Assembly+"/config/TMCDB"+Assembly+"Add.xml"»<?xml version="1.0" ?>
+<lru-type>
+    <name>«Assembly»</name>
+    <fullname>«DeviceName»</fullname>
+    <icd>«ICD»</icd>
+    <icd-date>«ICDDateAsArrayTime»</icd-date>
+    <description>«DescriptionAsString»</description>
+    <assembly-type>
+        <name>«Assembly»</name>
+        <dev-name>«DeviceName»</dev-name>
+        <description>«DescriptionAsString»</description>
+        <default-role>
+            <node>none</node>
+            <base-address>none</base-address>
+            <channel>none</channel>
+        </default-role>
+    «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+        «IF x.isMonitored»
+            «REM»
+              Ethernet devices have no dependent monitor points.
+              However, we better check in case of spreadsheet typo.
+            «ENDREM»
+            «IF !x.isDependent»
+                «REM»Adding BACIProperty«ENDREM»
+        <baci-property>
+            <propertyname>«x.MPName»</propertyname>
+            <description>«x.Description»</description>
+            <format>«x.Format»</format>
+            <units>«x.DisplayUnits»</units>
+            <resolution>0</resolution>
+            <archive-priority>3</archive-priority>
+            <archive-min-int>0</archive-min-int>
+            <archive-max-int>«IF x.Interval != "none"»«x.Interval»«ELSE»0«ENDIF»</archive-max-int>
+            <default-timer-trig>1</default-timer-trig>
+            <min-timer-trig>0.048</min-timer-trig>
+            <initialize-devio>0</initialize-devio>
+            <min-delta-trig>0</min-delta-trig>
+            <default-value>0</default-value>
+            <graph-min>«IF x.GraphMin == "na" || x.GraphMin == "none"»0«ELSE»«x.GraphMin»«ENDIF»</graph-min>
+            <graph-max>«IF x.GraphMax == "na" || x.GraphMax == "none"»0«ELSE»«x.GraphMax»«ENDIF»</graph-max>
+            <min-step>0</min-step>
+            <archive-delta>«IF x.OnChange == "no"»0«ELSE»«x.OnChange»«ENDIF»</archive-delta>
+            <alarm-high-on>0</alarm-high-on>
+            <alarm-low-on>0</alarm-low-on>
+            <alarm-high-off>0</alarm-high-off>
+            <alarm-low-off>0</alarm-low-off>
+            <alarm-timer-trig>0</alarm-timer-trig>
+            <min-value>-2147483648</min-value>
+            <max-value>2147483647</max-value>
+            <bitdescription></bitdescription>
+            <whenset></whenset>
+            <whencleared></whencleared>
+            <statedescription></statedescription>
+            <condition></condition>
+            <alarm-on></alarm-on>
+            <alarm-off></alarm-off>
+            <data></data>
+            <alarm-fault-family>!</alarm-fault-family>
+            <alarm-fault-member>!</alarm-fault-member>
+            <alarm-level>0</alarm-level>
+            <archive-suppress>«IF x.Interval == "none" || x.Interval == "0"»1«ELSE»0«ENDIF»</archive-suppress>
+            <archive-mechanism>monitor_collector</archive-mechanism>
+                «REM»Adding MonitorPoint«ENDREM»
+                «EXPAND MonitorPointEntry FOR x»
+        </baci-property>
+            «ENDIF»   «REM»IF !x.isDependent«ENDREM»
+        «ENDIF»   «REM»IF x.isMonitored«ENDREM»
+    «ENDFOREACH»   «REM»FOREACH (Set[MonitorPoint]) MonitorPoint AS x«ENDREM»
+    </assembly-type>
+</lru-type>
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE MonitorPointEntry FOR MonitorPoint»
+            <monitor-point>
+                <monitorpointname>«MPName»</monitorpointname>
+                <datatype>«DataToDatabaseType»</datatype>
+                <rca>0x0</rca>
+                <terelated>0</terelated>
+                <rawdatatype>«DataType»</rawdatatype>
+                <worlddatatype>«DataToCPPType»</worlddatatype>
+                <units>«DataUnits»</units>
+                <scale>0</scale>
+                <offset>0</offset>
+                <minrange>«IF MinRange == "na" || MinRange == "none" || MinRange == "not specified"»0«ELSE»«MinRange»«ENDIF»</minrange>
+                <maxrange>«IF MaxRange == "na" || MaxRange == "none" || MaxRange == "not specified"»0«ELSE»«MaxRange»«ENDIF»</maxrange>
+                <description>«DescriptionAsString»</description>
+            </monitor-point>
+«ENDDEFINE»
+

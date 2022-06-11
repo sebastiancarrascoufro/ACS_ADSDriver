@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="MandCImpl.xsd"/>
+	<xsd:include schemaLocation="../ControlBase.xsd"/>
+
+	<xsd:group name="ControlImpl">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="1">
+				<xsd:element name="Row" type="ss:ControlBaseFR"/>
+				<xsd:element name="Row" type="ss:ControlImplSR"/>
+				<xsd:element name="Row" type="ss:ControlImplRows" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Row"/>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="ControlImplSR">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MandCBase_Name"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_Address"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_DataType"/>
+				<xsd:element name="Cell" type="ss:MandCBase_DataUnits"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MinRange"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MaxRange"/>
+				<xsd:element name="Cell" type="ss:ControlBase_ArchiveOnUse"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Mode"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Implement"/>
+				<xsd:element name="Cell" type="ss:MandCBase_External"/>
+				<xsd:element name="Cell" type="ss:MandCBase_Description"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ControlImplRows">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MandCBase_NameV"/>
+				<xsd:element name="Cell" type="ss:MandCImpl_AddressV"/>
+				<xsd:element name="Cell" type="ss:ControlImpl_DataTypeV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_DataUnitsV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MinRangeV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_MaxRangeV"/>
+				<xsd:element name="Cell" type="ss:ControlBase_ArchiveOnUseV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_ModeV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_ImplementV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_ExternalV"/>
+				<xsd:element name="Cell" type="ss:MandCBase_DescriptionV"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column titles -->
+
+	<!-- Specification of column value fields -->
+	<xsd:complexType name="ControlImpl_DataTypeV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="int(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="short(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="long long(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="char(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="string(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="float(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="double(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="bool(\[[1-9]([0-9])*\]){0,1}"/>
+							<xsd:pattern value="void"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+<!--
+	<xsd:complexType name="ControlImpl_ValueV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:pattern value="0"/>
+							<xsd:pattern value="-?([0-9])+(\.([0-9])+)?(E-([0-9])+)?"/>
+							<xsd:pattern value="0x([0-9A-Fa-f])+"/>
+							<xsd:pattern value="TRUE"/>
+							<xsd:pattern value="FALSE"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+-->
+
+</xsd:schema>

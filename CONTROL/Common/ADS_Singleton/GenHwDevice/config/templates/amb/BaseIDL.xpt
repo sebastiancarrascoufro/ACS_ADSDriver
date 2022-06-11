@@ -1,0 +1,181 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+File BaseIDL.xpt
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/idl/"+Assembly+"Base.idl"»
+#ifndef «Assembly»Base_idl
+#define «Assembly»Base_idl
+// ALMA - Atacama Large Millimeter Array
+// (c) European Southern Observatory, 2010
+// (c) Associated Universities Inc., 2010
+// Copyright by ESO (in the framework of the ALMA collaboration),
+// Copyright by AUI (in the framework of the ALMA collaboration),
+// All rights reserved.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY, without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+// MA 02111-1307  USA
+//
+// WARNING! DO NOT MODIFY THIS FILE!
+//  ---------------------------------------------------------
+// | This is generated code!  Do not modify this file.       |
+// | Any changes will be lost when the file is re-generated. |
+//  ---------------------------------------------------------
+
+/// External interface to the hardware assembly: Control::«Assembly».
+
+
+#include <HardwareDevice.idl>
+#include <ControlExceptions.idl>
+#include <baci.idl>
+«IF Extends != "none"»
+#include <«Extends».idl>
+«ENDIF»
+
+
+#pragma prefix "alma"
+
+
+module Control
+{
+    /// «Description»
+«IF Extends != "none"»
+    interface «Assembly»Base: «Extends»
+«ELSE»
+    interface «Assembly»Base: Control::HardwareDevice
+«ENDIF»
+    {
+        /////////////////////
+        // BACI Properties //
+        /////////////////////
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isMonitored»
+        /// «x.DescriptionFormatted»
+        «IF x.isPattern»
+        readonly attribute ACS::ROpattern «x.MPName»;
+        «ELSE»
+            «IF x.isWorldDataArray»
+        readonly attribute ACS::RO«x.WorldDataToBACIType»Seq «x.MPName»;
+            «ELSE»
+        readonly attribute ACS::RO«x.WorldDataToBACIType» «x.MPName»;
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+«IF GenericMonitorPoints »
+        /////////////////////////////////////////
+        // IDL Definition for                  //
+        // Custom Generic Methods              //
+        /////////////////////////////////////////
+        
+        /// Get internal slave CAN Error in a readable form
+        string GET_INTERNAL_SLAVE_CAN_ERROR_MSG();
+        
+        /// Get last CAN Error in a readable form
+        string GET_LAST_CAN_ERROR_MSG();
+«ENDIF»
+        
+«IF Extends == "none"»
+        /////////////////////////////////////////
+        // IDL Definitions for General Methods //
+        /////////////////////////////////////////
+
+        /// Get the channel number for this device.
+        unsigned long GET_CHANNEL_NUMBER();
+    «IF Channel == "parm"»
+        /// Set the channel number for this device.
+        void SET_CHANNEL_NUMBER(in unsigned long channelNumber);
+    «ENDIF»
+        /// Get the node address for this device.
+        unsigned long GET_NODE_ADDRESS();
+    «IF NodeAddress == "parm"»
+        /// Set the node address for this device.
+        void SET_NODE_ADDRESS(in unsigned long nodeAddress);
+    «ENDIF»
+        /// Get the base address for this device.
+        unsigned long GET_BASE_ADDRESS();
+    «IF BaseAddress == "parm"»
+        /// Set the base address for this device.
+        void SET_BASE_ADDRESS(in unsigned long baseAddress);
+    «ENDIF»
+«ENDIF»
+        ////////////////////////////////////////
+        // IDL Definitions for Monitor Points //
+        ////////////////////////////////////////
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isExternal»
+        /// «x.DescriptionFormatted»
+        «IF x.isWorldDataArray»
+        «x.WorldDataToIDLSeqType» GET_«x.MPName»(out ACS::Time timestamp) raises(ControlExceptions::CAMBErrorEx, ControlExceptions::INACTErrorEx);
+        «ELSE»
+        «x.WorldDataToIDLType» GET_«x.MPName»(out ACS::Time timestamp) raises(ControlExceptions::CAMBErrorEx, ControlExceptions::INACTErrorEx);
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+        ////////////////////////////////////////
+        // IDL Definitions for Control Points //
+        ////////////////////////////////////////
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «REM»
+    The condition isTERelated is built into the idlDeclaration method for ControlPoint.
+    «ENDREM»
+    «IF x.isExternal»
+        /// «x.DescriptionFormatted»
+        «x.idlReturns» «x.idlDeclaration»;
+    «ENDIF»
+«ENDFOREACH»
+    };
+};
+#endif
+«ENDFILE»
+«ENDDEFINE»

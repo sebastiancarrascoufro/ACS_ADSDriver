@@ -1,0 +1,1310 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <LastAuthor>tjuerges</LastAuthor>
+  <LastPrinted>2008-05-28T19:05:00Z</LastPrinted>
+  <Created>2008-05-13T21:05:44Z</Created>
+  <LastSaved>2008-01-23T22:21:31Z</LastSaved>
+  <Version>11.5703</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <Colors>
+   <Color>
+    <Index>3</Index>
+    <RGB>#C0C0C0</RGB>
+   </Color>
+   <Color>
+    <Index>4</Index>
+    <RGB>#CCFFCC</RGB>
+   </Color>
+   <Color>
+    <Index>6</Index>
+    <RGB>#FF0000</RGB>
+   </Color>
+  </Colors>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>7695</WindowHeight>
+  <WindowWidth>15480</WindowWidth>
+  <WindowTopX>-15</WindowTopX>
+  <WindowTopY>6540</WindowTopY>
+  <ActiveSheet>2</ActiveSheet>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Verdana"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s21" ss:Name="Default">
+  </Style>
+  <Style ss:ID="s22" ss:Name="Normal_">
+   <Alignment ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s26" ss:Parent="s22">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+  </Style>
+  <Style ss:ID="s27" ss:Parent="s22">
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s28" ss:Parent="s22">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Interior ss:Color="#FFFF00" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s29" ss:Parent="s22">
+   <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s30" ss:Parent="s22">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s31" ss:Parent="s22">
+   <Font ss:FontName="Verdana"/>
+   <Interior ss:Color="#CCFFCC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s32" ss:Parent="s22">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Font ss:FontName="Verdana"/>
+  </Style>
+  <Style ss:ID="s33" ss:Parent="s22">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Verdana"/>
+  </Style>
+  <Style ss:ID="s34" ss:Parent="s22">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s35" ss:Parent="s22">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Font ss:FontName="Verdana"/>
+   <NumberFormat ss:Format="Short Date"/>
+  </Style>
+  <Style ss:ID="s36" ss:Parent="s22">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Verdana"/>
+   <NumberFormat ss:Format="Short Date"/>
+  </Style>
+  <Style ss:ID="s37" ss:Parent="s22">
+   <Alignment ss:Vertical="Bottom"/>
+   <Font ss:FontName="Verdana"/>
+  </Style>
+  <Style ss:ID="s38" ss:Parent="s22">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Verdana"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Main">
+  <Table ss:ExpandedColumnCount="19" ss:ExpandedRowCount="65532" x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="54">
+   <Column ss:StyleID="s22" ss:Width="89.25"/>
+   <Column ss:StyleID="s26" ss:AutoFitWidth="0" ss:Width="229.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="79.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="44.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="37.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="57"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="117.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="72.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="44.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="71.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="159.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="63.75"/>
+   <Column ss:StyleID="s22" ss:Width="65.25" ss:Span="4"/>
+   <Column ss:Index="18" ss:StyleID="s22" ss:Width="59.25"/>
+   <Column ss:StyleID="s22" ss:Width="56.25"/>
+   <Row>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">Hardware Device</Data></Cell>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Assembly</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">Description</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Device Name</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Extends</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Parent</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Cardinality</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Generic Monitor Points</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Node Address</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Channel</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Base Address</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">ICD</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">ICD Date</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Generic Monitor Points</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">Generic Device</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">root</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">ALMA-70.35.00.00-001-B-STD</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="DateTime">2006-02-20T00:00:00.000</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+    <Cell><Data ss:Type="String">Notes</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">First Implementation 20080811, Pablo Burgos. ICD conformance check and bug fixes 2009-06-08 Thomas Juerges.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+    <Cell ss:Index="2"><Data ss:Type="String">Changed the GET_TRANS_NUM MP from uint to ulong world data type because of the insufficient CORBA/Java mapping.</Data></Cell>
+   </Row>
+   <Row ss:Index="65532" ss:AutoFitHeight="0" ss:Height="12"/>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0"/>
+    <Footer x:Margin="0"/>
+    <PageMargins x:Bottom="0.984251969" x:Left="0.78740157499999996"
+     x:Right="0.78740157499999996" x:Top="0.984251969"/>
+   </PageSetup>
+   <FitToPage/>
+   <Print>
+    <ValidPrinterInfo/>
+    <Scale>47</Scale>
+    <HorizontalResolution>-4</HorizontalResolution>
+    <VerticalResolution>-4</VerticalResolution>
+   </Print>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>4</ActiveRow>
+     <ActiveCol>1</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+   <x:PageLayoutZoom>0</x:PageLayoutZoom>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Monitor">
+  <Names>
+   <NamedRange ss:Name="Print_Area" ss:RefersTo="=Monitor!R3C1:R21C4"/>
+  </Names>
+  <Table ss:ExpandedColumnCount="22" ss:ExpandedRowCount="21" x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="54">
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="71.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="191.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="49.5"/>
+   <Column ss:StyleID="s22" ss:Width="84"/>
+   <Column ss:StyleID="s22" ss:Width="60"/>
+   <Column ss:StyleID="s22" ss:Width="91.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="57.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="52.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="36"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="57.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="61.5"/>
+   <Column ss:StyleID="s22" ss:Width="67.5"/>
+   <Column ss:StyleID="s22" ss:Width="84"/>
+   <Column ss:StyleID="s22" ss:Width="77.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="66"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="62.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="60.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="47.25"/>
+   <Column ss:StyleID="s22" ss:Width="81.75"/>
+   <Column ss:StyleID="s26" ss:AutoFitWidth="0" ss:Width="569.25"/>
+   <Column ss:StyleID="s22" ss:Width="65.25" ss:Span="1"/>
+   <Row>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">Monitor Point</Data></Cell>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Assembly</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Name</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">RCA</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Raw Data Type</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">TE Related</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">On Change</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">World Data Type</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Data Units</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Scale</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Offset</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Min Range</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Max Range</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Default</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Error Condition</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Error Severity</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Error Action</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Mode</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Implement</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">External</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Can Be Invalid</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">Description</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">SERIAL_NUMBER</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x00000</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8[8]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte[8]</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Serial number of the device.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">PROTOCOL_REV_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30000</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8[3]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte[3]</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_MAJOR_REV_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30000</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[0]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol major revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_MINOR_REV_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30000</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[1]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol minor revision Level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_PATCH_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30000</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[2]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol patch revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">CAN_ERROR</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30001</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8[4]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte[4]</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. CAN-bus errors since power up and error code of the last error.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^CAN_ERROR_COUNT</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30001</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[0-1]uint8</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ushort</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Number of CAN errors since last power up or last reset.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^INTERNAL_SLAVE_ERROR_CODE</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30001</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[2]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Internal slave error code</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^ERROR_CODE_LAST_CAN_ERROR</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30001</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[3]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Error code of last CAN error. Codes are those defined by the INTEL 82527 CAN Controller status.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">TRANS_NUM</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30002</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint32</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x20</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no </Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Number of transactions handled by the slave node since power up.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">SW_REV_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30004</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8[3]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no </Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte[3]</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Revision level of the embedded code. This is the software embedded in the AMBSI or the programmable device that is handling the AMB communications.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MAJOR_REV_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30004</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[0]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Major Revision level</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MINOR_REV_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30004</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[1]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Minor Revision Level</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PATCH_LEVEL</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30004</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[2]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Patch revision level</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">AMBIENT_TEMPERATURE</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30003</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8[4]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">float</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">extended</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Temperature measured by the DS1820 chip.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MAGNITUDE_CELSIUS_OP</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30003</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[0]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Magnitude for degrees Celsius</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^SIGN_OP</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30003</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[1]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Temperature sign.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^COUNT_REMAINING_OP</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30003</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[2]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Counts remaining.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^COUNT_PER_C_OP</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x30003</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">[3]</Data><NamedCell
+      ss:Name="Print_Area"/></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">ubyte</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">operational</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Counts per degree Celsius.</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0"/>
+    <Footer x:Margin="0"/>
+    <PageMargins x:Bottom="0.984251969" x:Left="0.78740157499999996"
+     x:Right="0.78740157499999996" x:Top="0.984251969"/>
+   </PageSetup>
+   <FitToPage/>
+   <Print>
+    <ValidPrinterInfo/>
+    <HorizontalResolution>-4</HorizontalResolution>
+    <VerticalResolution>-4</VerticalResolution>
+   </Print>
+   <Zoom>85</Zoom>
+   <FreezePanes/>
+   <FrozenNoSplit/>
+   <SplitHorizontal>2</SplitHorizontal>
+   <TopRowBottomPane>2</TopRowBottomPane>
+   <SplitVertical>3</SplitVertical>
+   <LeftColumnRightPane>3</LeftColumnRightPane>
+   <ActivePane>0</ActivePane>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+    </Pane>
+    <Pane>
+     <Number>1</Number>
+    </Pane>
+    <Pane>
+     <Number>2</Number>
+    </Pane>
+    <Pane>
+     <Number>0</Number>
+     <ActiveRow>11</ActiveRow>
+     <ActiveCol>11</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+   <x:PageLayoutZoom>0</x:PageLayoutZoom>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Control">
+  <Table ss:ExpandedColumnCount="20" ss:ExpandedRowCount="4" x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="54">
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="69"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="79.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="46.5"/>
+   <Column ss:StyleID="s22" ss:Width="81.75"/>
+   <Column ss:StyleID="s22" ss:Width="58.5"/>
+   <Column ss:StyleID="s22" ss:Width="89.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="57"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="32.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="36"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="55.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="58.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="42.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="55.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="29.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="78.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="32.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="60"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="56.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="45"/>
+   <Column ss:StyleID="s21" ss:AutoFitWidth="0" ss:Width="338.25"/>
+   <Row>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">Control Point</Data></Cell>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Assembly</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Name</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">RCA</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Raw Data Type</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">TE Related</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">World Data Type</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Data Units</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Scale</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Offset</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Min Range</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Max Range</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Returns</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Parameter</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Data</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Archive On Use</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Value</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Mode</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Implement</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">External</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">Description</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="76.5">
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">RESET_AMBSI</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x31000</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8</Data></Cell>
+    <Cell><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">boolean</Data></Cell>
+    <Cell><Data ss:Type="String">none</Data></Cell>
+    <Cell><Data ss:Type="String">none</Data></Cell>
+    <Cell><Data ss:Type="String">none</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">void</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">default</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">parm</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">startup</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Reset the hardware/software implementing the AMB interface. This command will cause the hardware implementing the AMB interface (typically and AMBSI-or AMBSI-2) to reset in a fashion that is equivalent having detected a reset signal on the AMB. Once this command is received the AMB interface may ignore AMB communications for up to 1 second.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="51">
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">RESET_DEVICE</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">0x31001</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">uint8</Data></Cell>
+    <Cell><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">boolean</Data></Cell>
+    <Cell><Data ss:Type="String">none</Data></Cell>
+    <Cell><Data ss:Type="String">none</Data></Cell>
+    <Cell><Data ss:Type="String">none</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">void</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">default</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">parm</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">startup</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">yes</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Send a reset pulse to the hardware device attached to the AMB. This command will cause the a signal to be asserted that can be used to trigger a reset in the hardware attached to the AMB interface.</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0"/>
+    <Footer x:Margin="0"/>
+    <PageMargins x:Bottom="0.984251969" x:Left="0.78740157499999996"
+     x:Right="0.78740157499999996" x:Top="0.984251969"/>
+   </PageSetup>
+   <FitToPage/>
+   <Print>
+    <ValidPrinterInfo/>
+    <Scale>47</Scale>
+    <HorizontalResolution>-4</HorizontalResolution>
+    <VerticalResolution>-4</VerticalResolution>
+   </Print>
+   <Selected/>
+   <FreezePanes/>
+   <FrozenNoSplit/>
+   <SplitHorizontal>2</SplitHorizontal>
+   <TopRowBottomPane>2</TopRowBottomPane>
+   <SplitVertical>3</SplitVertical>
+   <LeftColumnRightPane>3</LeftColumnRightPane>
+   <ActivePane>0</ActivePane>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+    </Pane>
+    <Pane>
+     <Number>1</Number>
+    </Pane>
+    <Pane>
+     <Number>2</Number>
+    </Pane>
+    <Pane>
+     <Number>0</Number>
+     <ActiveCol>14</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+   <x:PageLayoutZoom>0</x:PageLayoutZoom>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Archive">
+  <Table ss:ExpandedColumnCount="11" ss:ExpandedRowCount="20" x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s21" ss:DefaultColumnWidth="54">
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="88.5"/>
+   <Column ss:StyleID="s22" ss:Width="177" ss:Span="1"/>
+   <Column ss:Index="4" ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="87.75"/>
+   <Column ss:StyleID="s22" ss:Width="85.5"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="68.25"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0"/>
+   <Column ss:StyleID="s22" ss:Width="57"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="39.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="57.75"/>
+   <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="452.25"/>
+   <Row>
+    <Cell ss:StyleID="s27"><Data ss:Type="String">Archive Property</Data></Cell>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Assembly</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Name</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Refers To</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Interval (secs)</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Only On Change</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Display Units</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Graph Min</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Graph Max</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Format</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">On Startup</Data></Cell>
+    <Cell ss:StyleID="s29"><Data ss:Type="String">Title</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">SERIAL_NUMBER</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">SERIAL_NUMBER</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Serial number of the device.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">PROTOCOL_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">PROTOCOL_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_MAJOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_MAJOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol major revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_MINOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_MINOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol minor revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_PATCH_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PROTOCOL_PATCH_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Protocol patch revision level.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">CAN_ERROR</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">CAN_ERROR</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. CAN-bus errors since power up and error code of last error.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^CAN_ERROR_COUNT</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^CAN_ERROR_COUNT</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Number of CAN errors since last power up or last reset.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^INTERNAL_SLAVE_ERROR_CODE</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^INTERNAL_SLAVE_ERROR_CODE</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Internal slave error code</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^ERROR_CODE_LAST_CAN_ERROR</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^ERROR_CODE_LAST_CAN_ERROR</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Error code of last CAN error. Codes are those defined by the INTEL 82527 CAN Controller status.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">SW_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">SW_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Revision level of embedded code. This is the software embedded in the AMBSI or the programmable device that is handling the AMB communications.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MAJOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MAJOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Major Revision level</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MINOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MINOR_REV_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Minor Revision Level</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PATCH_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^PATCH_LEVEL</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Patch revision level</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">AMBIENT_TEMPERATURE</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">AMBIENT_TEMPERATURE</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="Number">300</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Temperature measured by the DS1820 chip.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MAGNITUDE_CELSIUS_OP</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^MAGNITUDE_CELSIUS_OP</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Magnitude of degrees Celsius.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^SIGN_OP</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^SIGN_OP</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Temperature sign.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^COUNT_REMAINING_OP</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^COUNT_REMAINING_OP</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Counts Remaining.</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">GENERIC</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^COUNT_PER_C_OP</Data></Cell>
+    <Cell ss:StyleID="s37"><Data ss:Type="String">^COUNT_PER_C_OP</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">none</Data></Cell>
+    <Cell ss:StyleID="s32"><Data ss:Type="String">no</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Generic Monitor Point. Counts per degree Celsius.</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0"/>
+    <Footer x:Margin="0"/>
+    <PageMargins x:Bottom="0.984251969" x:Left="0.78740157499999996"
+     x:Right="0.78740157499999996" x:Top="0.984251969"/>
+   </PageSetup>
+   <FitToPage/>
+   <Print>
+    <ValidPrinterInfo/>
+    <Scale>58</Scale>
+    <HorizontalResolution>-4</HorizontalResolution>
+    <VerticalResolution>-4</VerticalResolution>
+   </Print>
+   <FreezePanes/>
+   <FrozenNoSplit/>
+   <SplitHorizontal>2</SplitHorizontal>
+   <TopRowBottomPane>2</TopRowBottomPane>
+   <SplitVertical>3</SplitVertical>
+   <LeftColumnRightPane>4</LeftColumnRightPane>
+   <ActivePane>0</ActivePane>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+    </Pane>
+    <Pane>
+     <Number>1</Number>
+     <ActiveCol>3</ActiveCol>
+    </Pane>
+    <Pane>
+     <Number>2</Number>
+    </Pane>
+    <Pane>
+     <Number>0</Number>
+     <ActiveRow>47</ActiveRow>
+     <ActiveCol>1</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+   <x:PageLayoutZoom>0</x:PageLayoutZoom>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

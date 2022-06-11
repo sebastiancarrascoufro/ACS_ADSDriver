@@ -1,0 +1,348 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+  «IF !IsMonitorDBOnly»
+    «EXPAND SWModuleDef»
+  «ENDIF»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/test/Test"+Assembly+"HWSimImpl.cpp"»
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * WARNING! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+
+#include <limits>
+#include <vector>
+#include <ambDefs.h>
+#include <cppunit/extensions/HelperMacros.h>
+#include <TypeConversion.h>
+#include <«Assembly»HWSimBase.h>
+
+
+/**
+ * A test case for the «Assembly»HWSimBase class
+ *
+ */
+class «Assembly»HWSimImplTestCase: public CPPUNIT_NS::TestFixture
+{
+    CPPUNIT_TEST_SUITE(«Assembly»HWSimImplTestCase);
+    CPPUNIT_TEST(test_simulation);
+    CPPUNIT_TEST_SUITE_END();
+
+
+    public:
+    void setUp();
+    void tearDown();
+
+
+    protected:
+    void test_simulation();
+    std::vector< CAN::byte_t > createVector(const AmbDataLength_t size);
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF !x.isDependent»
+    ///  testMonitorPoint_«x.MPName»
+    void testMonitorPoint_«x.MPName»();
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent»
+    ///  testControlPoint_«x.CPName»
+    void testControlPoint_«x.CPName»();
+    «ENDIF»
+«ENDFOREACH»
+
+    //AMB::Device* sim_m;
+    AMB::«Assembly»HWSimBase* sim_m;
+};
+
+CPPUNIT_TEST_SUITE_REGISTRATION(«Assembly»HWSimImplTestCase);
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «REM»
+    The test of the monitor point TRANS_NUM is skipped, since its value changes on each call.
+    «ENDREM»
+    «IF !x.isDependent && x.MPName != "TRANS_NUM"»
+///  testMonitorPoint_«x.MPName»
+void «Assembly»HWSimImplTestCase::testMonitorPoint_«x.MPName»()
+{
+    std::vector< CAN::byte_t > received, original;
+    const AmbDataLength_t size(«x.TotalBytesRawData»U);
+
+        «IF BaseAddress == "none"»
+    const unsigned int baseAddress_m(0UL);
+        «ELSEIF BaseAddress == "parm"»
+    const unsigned int baseAddress_m(std::numeric_limits< unsigned int >::max());
+        «ELSE»
+    const unsigned int baseAddress_m(«BaseAddress»UL);
+        «ENDIF»
+
+    CPPUNIT_ASSERT_EQUAL(static_cast< AMB::rca_t >(«x.RCA»U), AMB::«Assembly»HWSimBase::monitorPoint_«x.MPName»);
+
+    CPPUNIT_ASSERT_NO_THROW(received = sim_m->monitor(AMB::«Assembly»HWSimBase::monitorPoint_«x.MPName»«IF Assembly != "FEMC"» + baseAddress_m«ENDIF»));
+        «IF x.isFEStatus»
+    CPPUNIT_ASSERT_EQUAL(static_cast< std::size_t >(size + 1U), received.size());
+        «ELSE»
+    CPPUNIT_ASSERT_EQUAL(static_cast< std::size_t >(size), received.size());
+        «ENDIF»
+
+        «IF x.Default != "none"»
+            «IF x.WorldDataToCPPType == "void"»
+                «ERROR "Cannot assign a default value to a monitor point which returns nothing!"»
+            «ENDIF»
+            «IF x.WorldDataToCPPType == "std::string"»
+    const std::string defaultString("«x.Default»");
+    for(std::string::const_iterator iter(defaultString.begin());
+        i != defaultString.end(); ++iter)
+    {
+        original.push_back(static_cast< unsigned char >(*iter));
+    }
+            «ELSE»
+    «x.RawDataToCPPType» raw(0U);
+                «IF x.Default == "mid"»
+    double value(«x.MaxRange» + «x.MinRange»);
+    value /= 2.0;
+                «ELSEIF x.Default == "random"»
+    double value(«x.MaxRange» - «x.MinRange»);
+    value *= std::rand();
+    value += «x.MinRange»;
+                «ELSE»
+    double value(«x.Default»);
+                «ENDIF»
+                «IF x.isConversion»
+    // Convert world to raw.
+                    «IF x.Offset != "none" && x.Offset != "0.0"»
+    value -= «x.Offset»;
+                    «ENDIF»
+                    «IF x.Scale != "none" && x.Scale != "1.0"»
+    value /= «x.Scale»;
+                    «ENDIF»
+                «ENDIF»
+    raw = static_cast< «x.RawDataToCPPType» >(value);
+    AMB::TypeConversion::valueToData(original, raw, «x.TotalBytesRawData»U);
+            «ENDIF»
+
+    «REM»
+    This comparison will fail for monitor points which have random default values
+    «ENDREM»
+            «IF x.Default != "random"»
+    for(AmbDataLength_t i(0U); i < size; ++i)
+    {
+        CPPUNIT_ASSERT_EQUAL(received[i], original[i]);
+    }
+            «ENDIF»
+        «ENDIF»
+
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(AMB::«Assembly»HWSimBase::monitorPoint_«x.MPName»«IF Assembly != "FEMC"» + baseAddress_m«ENDIF», createVector(size)));
+    received.clear();
+    CPPUNIT_ASSERT_NO_THROW(received = sim_m->monitor(AMB::«Assembly»HWSimBase::monitorPoint_«x.MPName»«IF Assembly != "FEMC"» + baseAddress_m«ENDIF»));
+        «IF x.isFEStatus»
+    CPPUNIT_ASSERT_EQUAL(static_cast< std::size_t >(size + 1U), received.size());
+        «ELSE»
+    CPPUNIT_ASSERT_EQUAL(static_cast< std::size_t >(size), received.size());
+        «ENDIF»
+    for(AmbDataLength_t i(0U); i < size; ++i)
+    {
+        CPPUNIT_ASSERT_EQUAL(static_cast< CAN::byte_t >(i + 1U), received[i]);
+    }
+}
+    «ENDIF»
+«ENDFOREACH»
+
+/// Testing specific control points
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent»
+///  testControlPoint_«x.CPName»
+void «Assembly»HWSimImplTestCase::testControlPoint_«x.CPName»()
+{
+    std::vector< CAN::byte_t > received, original;
+    const AmbDataLength_t size(«x.TotalBytesRawData»U);
+        «IF BaseAddress == "none"»
+    const unsigned int baseAddress_m(0UL);
+        «ELSEIF BaseAddress == "parm"»
+    const unsigned int baseAddress_m(std::numeric_limits< unsigned int >::max());
+        «ELSE»
+    const unsigned int baseAddress_m(«BaseAddress»UL);
+        «ENDIF»
+
+    CPPUNIT_ASSERT_EQUAL(static_cast< AMB::rca_t >(«x.RCA»U), AMB::«Assembly»HWSimBase::controlPoint_«x.CPName»);
+    CPPUNIT_ASSERT_NO_THROW(sim_m->control(AMB::«Assembly»HWSimBase::controlPoint_«x.CPName»«IF Assembly != "FEMC"» + baseAddress_m«ENDIF», createVector(size)));
+    received.clear();
+    CPPUNIT_ASSERT_NO_THROW(received = sim_m->controlGetter(AMB::«Assembly»HWSimBase::controlPoint_«x.CPName»«IF Assembly != "FEMC"» + baseAddress_m«ENDIF»));
+    CPPUNIT_ASSERT_EQUAL(static_cast< std::size_t >(size«IF Parent == "FrontEnd"» + 1U«ENDIF»), received.size());
+    for(AmbDataLength_t i(0U); i < size; ++i)
+    {
+        CPPUNIT_ASSERT_EQUAL(static_cast< CAN::byte_t >(i + 1U), received[i]);
+    }
+}
+    «ENDIF»
+«ENDFOREACH»
+
+void «Assembly»HWSimImplTestCase::setUp()
+{
+    AMB::node_t node(0x0U);
+    std::vector< CAN::byte_t > sn(8U, 0x0U);
+
+    sim_m = new AMB::«Assembly»HWSimBase(node, sn);
+}
+
+void «Assembly»HWSimImplTestCase::tearDown()
+{
+    delete sim_m;
+    sim_m = 0;
+}
+
+void «Assembly»HWSimImplTestCase::test_simulation()
+{
+    /// Testing specific monitor points
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «REM»
+    The test of the monitor point TRANS_NUM is skipped, since its value changes on each call.
+    «ENDREM»
+    «IF !x.isDependent && !x.isWorldDataArray && !x.isSpecialConversion && x.MPName != "TRANS_NUM"»
+    testMonitorPoint_«x.MPName»();
+    «ENDIF»
+«ENDFOREACH»
+
+    /// Testing specific control points
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.isDependent && !x.hasDependents && !x.isSpecialConversion»
+    testControlPoint_«x.CPName»();
+    «ENDIF»
+«ENDFOREACH»
+
+«IF GenericMonitorPoints»
+    /// Testing generic points
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_SERIAL_NUMBER), createVector(8U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_PROTOCOL_REV_LEVEL), createVector(3U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_CAN_ERROR), createVector(4U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_TRANS_NUM), createVector(4U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_AMBIENT_TEMPERATURE), createVector(4U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitorSetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_SW_REV_LEVEL), createVector(3U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->control(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::controlPoint_RESET_AMBSI), createVector(1U)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->control(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::controlPoint_RESET_DEVICE), createVector(1U)));
+
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitor(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_SERIAL_NUMBER)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitor(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_PROTOCOL_REV_LEVEL)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitor(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_CAN_ERROR)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitor(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_TRANS_NUM)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitor(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_AMBIENT_TEMPERATURE)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->monitor(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::monitorPoint_SW_REV_LEVEL)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->controlGetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::controlPoint_RESET_AMBSI)));
+    CPPUNIT_ASSERT_NO_THROW(sim_m->controlGetter(static_cast< AMB::rca_t >(AMB::«Assembly»HWSimBase::controlPoint_RESET_DEVICE)));
+«ENDIF»
+
+    /// Testing error cases
+    CPPUNIT_ASSERT_THROW(sim_m->control(static_cast< AMB::rca_t >(0x99999U), createVector(8U)), CAN::Error);
+    CPPUNIT_ASSERT_THROW(sim_m->monitor(static_cast< AMB::rca_t >(0x99999U)), CAN::Error);
+}
+
+std::vector< CAN::byte_t > «Assembly»HWSimImplTestCase::createVector(const AmbDataLength_t size)
+{
+    std::vector< CAN::byte_t > data;
+
+    for(AmbDataLength_t count(1U); count <= size; ++count)
+    {
+        data.push_back(static_cast< CAN::byte_t >(count));
+    }
+
+    return data;
+}
+
+
+/**
+ * Main function running the tests
+ */
+#include <cppunit/BriefTestProgressListener.h>
+#include <cppunit/CompilerOutputter.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/TestResultCollector.h>
+#include <cppunit/TestRunner.h>
+
+
+int main(int argc, char* argv[])
+{
+    // Create the event manager and test controller
+    CPPUNIT_NS::TestResult controller;
+
+    // Add a listener that colllects test result
+    CPPUNIT_NS::TestResultCollector result;
+    controller.addListener(&result);
+
+    // Add a listener that print dots as test run.
+    CPPUNIT_NS::BriefTestProgressListener progress;
+    controller.addListener(&progress);
+
+    // Add the top suite to the test runner
+    CPPUNIT_NS::TestRunner runner;
+    runner.addTest(CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest());
+    runner.run(controller);
+
+    // Print test in a compiler compatible format.
+    CPPUNIT_NS::CompilerOutputter outputter(&result, std::cerr);
+    outputter.write();
+
+    return result.wasSuccessful() ? 0 : 1;
+}
+«ENDFILE»
+«ENDDEFINE»

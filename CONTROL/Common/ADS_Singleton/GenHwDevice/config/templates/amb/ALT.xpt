@@ -1,0 +1,661 @@
+«REM»
+
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::amb»
+
+«DEFINE Root FOR DeviceModel»
+    «IF IsGenerateAlt»
+        «EXPAND AltSWModuleDef»
+    «ENDIF»
+«ENDDEFINE»
+
+«DEFINE AltSWModuleDef FOR DeviceModel»
+
+«REM»
+            ////////////////////////////////
+            // Makefile                   //
+            ////////////////////////////////
+«ENDREM»
+
+«FILE "ALT/"+Assembly+".makefile"»
+#******************************************************************************
+#
+# ALMA - Atacama Large Millimeter Array
+# (c) Associated Universities Inc., 2007
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+#******************************************************************************
+
+#
+# Generated Code Name
+# --------------------
+MODULE_NAME = «Assembly»
+
+#
+# user definable C-compilation flags
+#USER_CFLAGS =
+
+#
+# additional include and library search paths
+#USER_INC =
+#USER_LIB =
+
+#
+# Libraries (public and local)
+# ----------------------------
+LIBRARIES       =
+LIBRARIES += $(MODULE_NAME)Impl $(MODULE_NAME)SimImpl
+
+$(MODULE_NAME)Impl_OBJECTS = $(MODULE_NAME)Base $(MODULE_NAME)Impl
+$(MODULE_NAME)Impl_LIBS = $(MODULE_NAME)ImplStubs
+
+$(MODULE_NAME)SimImpl_OBJECTS = $(MODULE_NAME)SimBase $(MODULE_NAME)SimImpl
+$(MODULE_NAME)SimImpl_LIBS = $(MODULE_NAME)Impl
+
+#
+# Scripts (public and local)
+# ----------------------------
+#SCRIPTS         =
+#SCRIPTS_L       =
+
+#
+# Python stuff (public and local)
+# ----------------------------
+#PY_SCRIPTS         =
+#PY_SCRIPTS_L       =
+
+#PY_MODULES         =
+#PY_MODULES_L       =
+
+#PY_PACKAGES        =
+#PY_PACKAGES_L      =
+#pppppp_MODULES       =
+
+#
+# Configuration Database Files
+# ----------------------------
+CDB_SCHEMAS = $(MODULE_NAME)Base
+
+#
+# Exception Generation
+#
+#ACSERRDEF =
+
+#
+# IDL Files and flags
+#
+IDL_FILES = $(MODULE_NAME)Base $(MODULE_NAME)Impl
+$(MODULE_NAME)ImplStubs_LIBS = $(MODULE_NAME)BaseStubs enumpropStdStubs \
+    HardwareControllerStubs
+#IDL_TAO_FLAGS =
+#USER_IDL =
+
+#
+# Jarfiles and their directories
+#
+#JARFILES=
+#jjj_DIRS=
+#jjj_EXTRAS=
+#
+
+# java sources in Jarfile on/off
+#DEBUG=
+
+#
+# ACS XmlIdl generation on/off
+#
+#XML_IDL=
+
+#
+# Java Component Helper Classes generation on/off
+#
+#COMPONENT_HELPERS=
+
+#
+# Java Entity Classes generation on/off
+#
+#XSDBIND=
+
+#
+# Schema Config files for the above
+#
+#XSDBIND_INCLUDE=
+
+#
+# other files to be installed
+#----------------------------
+INSTALL_FILES =
+
+#
+# list of all possible C-sources (used to create automatic dependencies)
+# ------------------------------
+CSOURCENAMES = \
+    $(foreach exe, $(EXECUTABLES) $(EXECUTABLES_L), $($(exe)_OBJECTS)) \
+    $(foreach rtos, $(RTAI_MODULES) , $($(rtos)_OBJECTS)) \
+    $(foreach lib, $(LIBRARIES) $(LIBRARIES_L), $($(lib)_OBJECTS))
+
+#
+#>>>>> END OF standard rules
+
+#
+# INCLUDE STANDARDS
+# -----------------
+
+MAKEDIRTMP := $(shell searchFile include/acsMakefile)
+ifneq ($(MAKEDIRTMP),\#error\#)
+   MAKEDIR := $(MAKEDIRTMP)/include
+   include $(MAKEDIR)/acsMakefile
+endif
+
+#
+# Location of Control's code generation framework.
+# ------------------------------------------------
+GenHwLocation := $(shell searchFile lib/ControlGenHwDevice/lib/ControlGenHwDevice.jar)
+ifeq ($(GenHwLocation), \#error\#)
+   GenHwLocation := $(INSTALL_ROOT)/lib
+endif
+
+GEN_CLASSPATH = $(GenHwLocation)/lib/ControlGenHwDevice/lib/asdmIDLTypes.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/asdmRuntime.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/ControlGenHwDevice.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/genfw.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/genfwutil.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/metacore.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/ojbdc14_g.jar:$(GenHwLocation)/lib/ControlGenHwDevice/lib/xalan.jar
+
+# List of generated files and directories.
+GEN_LIST := ../doc/* ../config/CDB/schemas/*Base* ../idl/*Base* \
+        ../idl/$(MODULE_NAME)Add.sql ../include/*Base* ../src/CCL/*Base* \
+        *Base*
+
+#
+# TARGETS
+# -------
+all:    gen do_all
+    @echo " . . . 'all' done"
+
+gen:
+    @echo Generating $(MODULE_NAME)
+    java -classpath $(GEN_CLASSPATH) alma.buildtime.gen.GenHwDevice $(MODULE_NAME)
+    @echo " . . . 'Generation' done"
+
+clean_gen:
+    $(RM) $(GEN_LIST)
+
+clean : clean_gen clean_all
+    @echo " . . . clean done"
+
+clean_dist : clean_all clean_dist_all
+    @echo " . . . clean_dist done"
+
+man   : do_man
+    @echo " . . . man page(s) done"
+
+install : install_all
+    @echo " . . . installation done"
+«ENDFILE»
+
+«REM»
+            ////////////////////////////////
+            // IDL file                   //
+            ////////////////////////////////
+«ENDREM»
+
+«FILE "ALT/"+Assembly+"Impl.idl"»
+#ifndef «Assembly»Impl_IDL
+#define «Assembly»Impl_IDL
+/*
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ */
+
+/**
+ * External device interface to «Assembly».
+ */
+
+#include <«Assembly»Base.idl>
+
+#pragma prefix "alma"
+
+module Control
+{
+    interface «Assembly»Impl: Control::«Assembly»Base
+    {
+    };
+};
+#endif /* «Assembly»Impl_IDL */
+«ENDFILE»
+
+«REM»
+            ////////////////////////////////
+            // <<Assembly>>Impl.h file    //
+            ////////////////////////////////
+«ENDREM»
+
+«FILE "ALT/"+Assembly+"Impl.h"»
+#ifndef «Assembly»Impl_H
+#define «Assembly»Impl_H
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ */
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C.
+#endif
+
+// Base class
+#include <«Assembly»Base.h>
+
+
+class «Assembly»Impl: public «Assembly»Base
+{
+public:
+    /**
+     * Constructor
+     */
+    «Assembly»Impl(const ACE_CString& name, maci::ContainerServices* cs);
+
+    /**
+     * Destructor
+     */
+    virtual ~«Assembly»Impl();
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isSpecialConversion»
+    ///////////////////////////////////
+    // Monitor point: «x.MPName»
+    ///////////////////////////////////
+        «IF x.isWorldDataArray»
+    virtual std::vector< «x.WorldDataToCPPType» > convert_«x.MPName»(«x.RawDataToCPPType»* raw);
+        «ELSE»
+    virtual «x.WorldDataToCPPType» convert_«x.MPName»(«x.RawDataToCPPType» raw);
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.Implement»
+    ///////////////////////////////////
+    // Control point: «x.CPName»
+    ///////////////////////////////////
+    virtual «x.cppReturns» «x.CPName»«x.cppDeclaration»;
+    «ENDIF»
+«ENDFOREACH»
+};
+#endif // «Assembly»Impl_H
+«ENDFILE»
+
+«REM»
+            ////////////////////////////////
+            // <<Assembly>>Impl.cpp file  //
+            ////////////////////////////////
+«ENDREM»
+
+«FILE "ALT/"+Assembly+"Impl.cpp"»
+/*
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ */
+
+#include <«Assembly»Impl.h>
+
+
+/**
+ *-----------------------
+ * «Assembly» Constructor
+ *-----------------------
+ */
+«Assembly»Impl::«Assembly»Impl(const ACE_CString& name,
+    maci::ContainerServices* cs):
+    «Assembly»Base(name,cs)
+{
+    ACS_TRACE(__PRETTY_FUNCTION__);
+}
+
+/**
+ *-----------------------
+ * «Assembly» Destructor
+ *-----------------------
+ */
+«Assembly»Impl::~«Assembly»Impl()
+{
+  ACS_TRACE(__PRETTY_FUNCTION__);
+}
+
+
+///////////////////////////////////////
+// Additional methods for «Assembly»
+///////////////////////////////////////
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isSpecialConversion»
+///////////////////////////////////
+// Monitor point: «x.MPName»
+///////////////////////////////////
+        «IF x.isWorldDataArray»
+std::vector< «x.WorldDataToCPPType» > convert_«x.MPName»(«x.RawDataToCPPType»* raw)
+{
+    // TODO
+}
+        «ELSE»
+«x.WorldDataToCPPType» convert_«x.MPName»(«x.RawDataToCPPType» raw)
+{
+    // TODO
+}
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.Implement»
+///////////////////////////////////
+// Control point: «x.CPName»
+///////////////////////////////////
+«x.cppReturns» «Assembly»Impl::«x.CPName»«x.cppDeclaration»
+{
+    // TODO
+}
+    «ENDIF»
+«ENDFOREACH»
+
+
+/**
+ *----------------------------
+ * MACI DLL support functions
+ *----------------------------
+ */
+#include <maciACSComponentDefines.h>
+MACI_DLL_SUPPORT_FUNCTIONS(«Assembly»Impl)
+«ENDFILE»
+
+«REM»
+            ////////////////////////////////
+            // <<Assembly>>SimImpl.h file //
+            ////////////////////////////////
+«ENDREM»
+
+
+«FILE "ALT/"+Assembly+"SimImpl.h"»
+#ifndef «Assembly»SimImpl_H
+#define «Assembly»SimImpl_H
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ */
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C.
+#endif
+
+// Base class
+#include <«Assembly»SimBase.h>
+#include <maciContainerServices.h>
+#include <ControlDeviceExceptionsC.h>
+
+
+class «Assembly»SimImpl: public «Assembly»SimBase
+{
+public:
+    /**
+     * Constructor
+     */
+    «Assembly»SimImpl(const ACE_CString& name, maci::ContainerServices* cs);
+
+    /**
+     * Destructor
+     */
+    virtual ~«Assembly»SimImpl();
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isSpecialConversion»
+    ///////////////////////////////////
+    // Monitor point: «x.MPName»
+    ///////////////////////////////////
+        «IF x.isWorldDataArray»
+    virtual std::vector< «x.WorldDataToCPPType» > convert_«x.MPName»(«x.RawDataToCPPType»* raw);
+        «ELSE»
+    virtual «x.WorldDataToCPPType» convert_«x.MPName»(«x.RawDataToCPPType» raw);
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.Implement»
+    ///////////////////////////////////
+    // Control point: «x.CPName»
+    ///////////////////////////////////
+    virtual «x.cppReturns» «x.CPName»«x.cppDeclaration»;
+    «ENDIF»
+«ENDFOREACH»
+
+private:
+    /**
+     * No default constructor.
+     */
+    «Assembly»SimImpl();
+
+    /**
+     * ALMA coding standards: copy constructor is disabled.
+     */
+    «Assembly»SimImpl(const «Assembly»SimImpl&);
+
+    /**
+     * ALMA coding standards: assignment operator is disabled.
+     */
+    «Assembly»SimImpl& operator=(const «Assembly»SimImpl&);
+
+};
+#endif // «Assembly»SimImpl_H
+«ENDFILE»
+
+«REM»
+            //////////////////////////////////
+            // <<Assembly>>SimImpl.cpp file //
+            //////////////////////////////////
+«ENDREM»
+
+
+«FILE "ALT/"+Assembly+"SimImpl.cpp"»
+/*
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2002
+ * (c) Associated Universities Inc., 2002
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ */
+
+#include <«Assembly»SimImpl.h>
+#include <logging.h>
+
+/**
+ *-----------------------
+ * «Assembly» Constructor
+ *-----------------------
+ */
+«Assembly»SimImpl::«Assembly»SimImpl(const ACE_CString& name,
+    maci::ContainerServices* cs):
+    «Assembly»SimBase::«Assembly»SimBase(name, cs)
+{
+    ACS_TRACE(__PRETTY_FUNCTION__);
+}
+
+/**
+ *-----------------------
+ * «Assembly» Destructor
+ *-----------------------
+ */
+«Assembly»SimImpl::~«Assembly»SimImpl()
+{
+    ACS_TRACE(__PRETTY_FUNCTION__);
+}
+
+///////////////////////////////////////
+// Additional methods for «Assembly»
+///////////////////////////////////////
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isSpecialConversion»
+///////////////////////////////////
+// Monitor point: «x.MPName»
+///////////////////////////////////
+        «IF x.isWorldDataArray»
+std::vector< «x.WorldDataToCPPType» > «Assembly»SimImpl::convert_«x.MPName»(«x.RawDataToCPPType»* raw)
+{
+    // TODO
+}
+        «ELSE»
+«x.WorldDataToCPPType» «Assembly»SimImpl::convert_«x.MPName»(«x.RawDataToCPPType» raw)
+{
+    // TODO
+}
+        «ENDIF»
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF !x.Implement»
+///////////////////////////////////
+// Control point: «x.CPName»
+///////////////////////////////////
+«x.cppReturns» «Assembly»SimImpl::«x.CPName»«x.cppDeclaration»
+{
+    // TODO
+}
+    «ENDIF»
+«ENDFOREACH»
+
+
+/**
+ *----------------------------
+ * MACI DLL support functions
+ *----------------------------
+ */
+#include <maciACSComponentDefines.h>
+MACI_DLL_SUPPORT_FUNCTIONS(«Assembly»Impl)
+«ENDFILE»
+«ENDDEFINE»

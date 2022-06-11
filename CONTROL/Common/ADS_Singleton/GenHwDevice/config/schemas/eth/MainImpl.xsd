@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+				targetNamespace="urn:schemas-microsoft-com:office:spreadsheet"
+				elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="../MainBase.xsd"/>
+
+	<xsd:group name="MainImpl">
+		<xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="1">
+				<xsd:element name="Row" type="ss:MainBaseFR"/>
+				<xsd:element name="Row" type="ss:MainImplSR"/>
+				<xsd:element name="Row" type="ss:MainImplRows" maxOccurs="1"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Row"/>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:complexType name="MainImplSR">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MainBase_Assembly"/>
+				<xsd:element name="Cell" type="ss:MainBase_Description"/>
+				<xsd:element name="Cell" type="ss:MainBase_DeviceName"/>
+				<xsd:element name="Cell" type="ss:MainBase_VendorClass"/>
+				<xsd:element name="Cell" type="ss:MainBase_Extends"/>
+				<xsd:element name="Cell" type="ss:MainBase_ICD"/>
+				<xsd:element name="Cell" type="ss:MainBase_ICDDate"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="MainImplRows">
+		<xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Cell" type="ss:MainBase_AssemblyV"/>
+				<xsd:element name="Cell" type="ss:MainBase_DescriptionV"/>
+				<xsd:element name="Cell" type="ss:MainBase_DeviceNameV"/>
+				<xsd:element name="Cell" type="ss:MainBase_VendorClassV"/>
+				<xsd:element name="Cell" type="ss:MainBase_ExtendsV"/>
+				<xsd:element name="Cell" type="ss:MainBase_ICDV"/>
+				<xsd:element name="Cell" type="ss:MainBase_ICDDateV"/>
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="Cell"/>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column titles -->
+	<xsd:complexType name="MainBase_VendorClass">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:enumeration value="Vendor Class"/>
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+	<!-- Specification of column value fields -->
+	<xsd:complexType name="MainBase_VendorClassV">
+		<xsd:sequence>
+			<xsd:element name="Data">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:restriction base="ss:String">
+							<xsd:anyAttribute namespace="##any" processContents="skip"/>
+						</xsd:restriction>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:anyAttribute namespace="##any" processContents="skip"/>
+	</xsd:complexType>
+
+</xsd:schema>

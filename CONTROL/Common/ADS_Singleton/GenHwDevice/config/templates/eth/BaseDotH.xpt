@@ -1,0 +1,349 @@
+«REM»
+ALMA - Atacama Large Millimeter Array
+(c) European Southern Observatory, 2002
+(c) Associated Universities Inc., 2002
+Copyright by ESO (in the framework of the ALMA collaboration),
+Copyright by AUI (in the framework of the ALMA collaboration),
+All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY, without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307  USA
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta::base»
+«IMPORT alma::Control::datamodel::meta::eth»
+
+«DEFINE Root FOR DeviceModel»
+    «EXPAND SWModuleDef»
+«ENDDEFINE»
+
+«DEFINE SWModuleDef FOR DeviceModel»
+«FILE DirPath+"/include/"+Assembly+"Base.h"»
+#ifndef «Assembly»Base_h
+#define «Assembly»Base_h
+/**
+ * ALMA - Atacama Large Millimeter Array
+ * (c) European Southern Observatory, 2009
+ * (c) Associated Universities Inc., 2009
+ * Copyright by ESO (in the framework of the ALMA collaboration),
+ * Copyright by AUI (in the framework of the ALMA collaboration),
+ * All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY, without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307  USA
+ *
+ * WARNING! DO NOT MODIFY THIS FILE!
+ *  ---------------------------------------------------------
+ * | This is generated code!  Do not modify this file.       |
+ * | Any changes will be lost when the file is re-generated. |
+ *  ---------------------------------------------------------
+ */
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C.
+#endif
+
+
+// Ethernet vendor communication class.
+#include <«VendorClass».h>
+
+«IF Extends != "none"»
+// Extended device.
+#include <«Extends»Impl.h>
+«ELSE»
+// Base class.
+#include <EthernetDevice.h>
+#include <EthernetDevIO.i>
+
+// CORBA servant header generated from IDL.
+#include <«Assembly»BaseS.h>
+
+// ACS classes that might be needed.
+#include <acscommonC.h>
+#include <baciDevIO.h>
+#include <acserr.h>
+#include <acstimeC.h>
+#include <loggingLogger.h>
+#include <loggingLoggable.h>
+#include <loggingGetLogger.h>
+#include <loggingACEMACROS.h>
+#include <TETimeUtil.h>
+
+// BACI related includes
+#include <baciROlong.h>
+#include <baciROlongLong.h>
+#include <baciROuLongLong.h>
+#include <baciROfloat.h>
+#include <baciROdouble.h>
+#include <baciROstring.h>
+#include <baciROdoubleSeq.h>
+#include <baciROfloatSeq.h>
+#include <baciROlongSeq.h>
+#include <baciROpattern.h>
+#include <baciSmartPropertyPointer.h>
+
+// Includes needed for data members.
+#include <vector>
+#include <iterator>
+#include <string>
+#include <sstream>
+#include <limits>
+#include <cerrno>
+#include <cmath>
+«ENDIF»
+
+/// The «Assembly»Base class is the base class for the «DeviceName».
+/// <ul>
+/// <li> Device:   «DeviceName»
+/// <li> Assembly: «Assembly»
+/// </ul>
+/// <p>
+/// «Description»
+class «Assembly»Base:
+«IF Extends != "none"»
+    public «Extends»Impl,
+«ELSE»
+    public EthernetDevice,
+«ENDIF»
+    public virtual POA_Control::«Assembly»Base
+{
+    public:
+    /// Destructor
+    virtual ~«Assembly»Base();
+
+    /// Returns true if a device is in simulation mode, false if
+    /// it works with real hardware.
+    virtual CORBA::Boolean isSimulated();
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «IF x.isExternal || x.isMonitored»
+        «EXPAND PublicMonitorPoint FOR x»
+    «ENDIF»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «IF x.isExternal»
+        «EXPAND PublicControlPoint FOR x»
+    «ENDIF»
+«ENDFOREACH»
+
+
+    protected:
+    /// Constructor. Never instanciate this class directly!
+    «Assembly»Base(const ACE_CString& name, maci::ContainerServices* cs);
+    
+    /// Overriden from the component lifecycle interface.
+    /// \exception acsErrTypeLifeCycle::LifeCycleExImpl
+    virtual void initialize();
+
+    /// Overriden from the component lifecycle interface.
+    /// \exception acsErrTypeLifeCycle::LifeCycleExImpl
+    virtual void cleanUp();
+
+«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
+    «EXPAND ProtectedMonitorPoint FOR x»
+«ENDFOREACH»
+
+«FOREACH (Set[ControlPoint]) ControlPoint AS x»
+    «EXPAND ProtectedControlPoint FOR x»
+«ENDFOREACH»
+
+
+    private:
+    /// ALMA coding standards: copy constructor is disabled.
+    «Assembly»Base(const «Assembly»Base&);
+    
+    /// ALMA coding standards: assignment operator is disabled.
+    «Assembly»Base& operator=(const «Assembly»Base&);
+};
+#endif
+«ENDFILE»
+«ENDDEFINE»
+
+
+«DEFINE PublicMonitorPoint FOR MonitorPoint»
+    /// MonitorPoint: «MPName»
+    /// «Description»
+    /// \exception EthernetDeviceExceptions::SocketOperationFailedEx
+    /// \exception EthernetDeviceExceptions::IllegalParameterEx
+    /// \exception ControlExceptions::INACTErrorEx
+    «REM»
+    a. Major monitor method
+    «ENDREM»
+    «IF isDataArray»
+        «IF DataType != "void"»
+    virtual «DataToCORBASeqType»* GET_«MPName»(
+        ACS::Time& timestamp);
+        «ELSE»
+#error "MonitorPoint: «MPName» is of type void. Cannot create GET_«MPName»!"
+        «ENDIF»
+    «ELSE»
+        «IF DataType == "string"»
+    virtual «DataToCORBAType» GET_«MPName»(ACS::Time& timestamp);
+        «ELSE»
+    virtual «DataToCORBAType» GET_«MPName»(ACS::Time& timestamp);
+        «ENDIF»
+    «ENDIF»
+
+    «REM»
+    b. Method for monitored property
+    «ENDREM»
+    «IF isMonitored»
+        «IF DisplayUnits == "pattern"»
+    virtual ACS::ROpattern_ptr «MPName»();
+        «ELSE»
+            «IF isDataArray»
+    virtual ACS::RO«DataToBACIType»Seq_ptr «MPName»();
+            «ELSE»
+    virtual ACS::RO«DataToBACIType»_ptr «MPName»();
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+«ENDDEFINE»
+
+«DEFINE ProtectedMonitorPoint FOR MonitorPoint»
+    «IF isExternal»
+    /// MonitorPoint: «MPName»
+    «ELSE»
+    /// MonitorPoint: «MPName»
+    /// «Description»
+    «ENDIF»
+    «REM»
+    a. Major monitor method
+    «ENDREM»
+    «IF isImplemented»
+        «IF isDataArray»
+    virtual std::vector< «DataToCPPType» > get«AltMPName»(
+        ACS::Time& timestamp);
+        «ELSEIF DataType == "string"»
+    virtual std::string get«AltMPName»(ACS::Time& timestamp);
+        «ELSE»
+    virtual «DataToCPPType» get«AltMPName»(ACS::Time& timestamp);
+        «ENDIF»
+    «ELSE»
+        «IF isDataArray»
+    virtual std::vector< «DataToCPPType» > get«AltMPName»(
+        ACS::Time& timestamp) = 0;
+        «ELSEIF DataType == "string"»
+    virtual std::string get«AltMPName»(ACS::Time& timestamp) = 0;
+        «ELSE»
+    virtual «DataToCPPType» get«AltMPName»(ACS::Time& timestamp) = 0;
+        «ENDIF»
+    «ENDIF»
+
+    «REM»
+    b. Field for Address
+    «ENDREM»
+    «IF !isDependent && Address != "none"»
+    /// The command address for this monitor point.
+    int address«AltMPName»;
+    «ENDIF»
+
+    «REM»
+    c. Property pointers.
+    «ENDREM»
+    «IF isMonitored»
+    /// The ACS smart property pointer for getting the property.
+        «IF DisplayUnits == "pattern"»
+    baci::SmartPropertyPointer< baci::ROpattern > spp«AltMPName»;
+        «ELSE»
+            «IF isDataArray»
+    baci::SmartPropertyPointer< baci::RO«DataToBACIType»Seq > spp«AltMPName»;
+            «ELSE»
+    baci::SmartPropertyPointer< baci::RO«DataToBACIType» > spp«AltMPName»;
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+«ENDDEFINE»
+
+«DEFINE PublicControlPoint FOR ControlPoint»
+    /// ControlPoint: «CPName»
+    /// «Description»
+    /// \exception EthernetDeviceExceptions::SocketOperationFailedEx
+    /// \exception EthernetDeviceExceptions::IllegalParameterEx
+    /// \exception ControlExceptions::INACTErrorEx
+    «REM»
+    a. Major control method
+    «ENDREM»
+    «IF isDataArray»
+        «IF DataType != "void"»
+    virtual void SET_«CPName»(const «DataToCORBASeqType»&);
+        «ELSE»
+#error "ControlPoint: «CPName» is of type void. Cannot create SET_«CPName»!"
+        «ENDIF»
+    «ELSE»
+        «IF DataType == "string"»
+    virtual void SET_«CPName»(const «DataToCORBAType»);
+        «ELSEIF DataType == "void"»
+    virtual void SET_«CPName»();
+        «ELSE»
+    virtual void SET_«CPName»(«DataToCORBAType»);
+        «ENDIF»
+    «ENDIF»
+«ENDDEFINE»
+
+«DEFINE ProtectedControlPoint FOR ControlPoint»
+    «IF isExternal»
+    /// ControlPoint: «CPName»
+    «ELSE»
+    /// ControlPoint: «CPName»
+    /// «Description»
+    «ENDIF»
+    «IF isImplemented»
+        «IF isDataArray»
+    virtual void set«AltCPName»(const std::vector< «DataToCPPType» >&);
+        «ELSEIF DataType == "void"»
+    virtual void set«AltCPName»();
+        «ELSEIF DataType == "string"»
+    virtual void set«AltCPName»(const std::string&);
+        «ELSE»
+    virtual void set«AltCPName»(«DataToCPPType»);
+        «ENDIF»
+    «ELSE»
+        «IF isDataArray»
+    virtual void set«AltCPName»(const std::vector< «DataToCPPType» >&) = 0;
+        «ELSEIF DataType == "void"»
+    virtual void set«AltCPName»() = 0;
+        «ELSEIF DataType == "string"»
+    virtual void set«AltCPName»(const std::string&) = 0;
+        «ELSE»
+    virtual void set«AltCPName»(«DataToCPPType») = 0;
+        «ENDIF»
+    «ENDIF»
+
+    «REM»
+    b. Field for Address
+    «ENDREM»
+    «IF !isDependent && Address != "none"»
+    /// The command address for this control point.
+    int address«AltCPName»;
+    «ENDIF»
+«ENDDEFINE»

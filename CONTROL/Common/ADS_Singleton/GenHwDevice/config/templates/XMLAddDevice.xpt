@@ -1,0 +1,63 @@
+«REM»
+
+Just a comment here.
+
+«ENDREM»
+
+«IMPORT org::openarchitectureware::core::meta::core»
+«IMPORT org::openarchitectureware::meta::uml»
+«IMPORT org::openarchitectureware::meta::uml::classifier»
+«IMPORT alma::Control::datamodel::meta»
+
+«DEFINE Root FOR DeviceModel»
+«FILE Assembly+"/config/TMCDB"+Assembly+"Add.xml"»<?xml version="1.0" ?>
+<lru-type>
+    <name>«Assembly»</name> 
+    <fullname>«DeviceName»</fullname> 
+    <icd>«ICD»</icd> 
+    <icd-date>«ICDDateAsArrayTime»</icd-date>
+    <description>«DescriptionAsString»</description> 
+    <notes/>«FOREACH (Set[SWModule]) SWModule AS x»
+    <assembly-type>
+        <name>«x.Assembly»</name>
+        <dev-name>«x.DeviceName»</dev-name>
+        <description>«x.DescriptionAsString»</description>
+        <default-role>
+            <node>«x.NodeAddress»</node>
+            <base-address>«x.BaseAddress»</base-address>
+            <channel>«IF x.Channel == "parm"»0«ELSE»«x.Channel»«ENDIF»</channel>
+        </default-role>«FOREACH (Set[ArchiveProperty]) x.ArchiveProperty AS y»«IF y.isRefersTo»«IF y.isMonitorPoint»
+        <monitor-point>
+            <name>«y.APName»</name>
+            <world-data-to-db-type>«y.getMonitorPoint.WorldDataToDatabaseType»</world-data-to-db-type>
+            <rca>«y.getMonitorPoint.RCA»</rca>
+            <te-related>«IF y.getMonitorPoint.TeRelatedCell == "yes"»1«ELSE»0«ENDIF»</te-related>
+            <raw-data-type>«y.getMonitorPoint.RawDataType»</raw-data-type>
+            <world-data-to-cpp-type>«y.getMonitorPoint.WorldDataToCPPType»</world-data-to-cpp-type>
+            <units>«y.getMonitorPoint.DataUnits»</units>
+            <scale>«IF y.getMonitorPoint.Scale == "na" || y.getMonitorPoint.Scale == "none" || y.getMonitorPoint.Scale == "not specified" || y.getMonitorPoint.Scale == "special"»0«ELSE»«y.getMonitorPoint.Scale»«ENDIF»</scale> 
+            <offset>«IF y.getMonitorPoint.Offset == "na" || y.getMonitorPoint.Offset == "none" || y.getMonitorPoint.Offset == "not specified" || y.getMonitorPoint.Offset == "special"»0«ELSE»«y.getMonitorPoint.Offset»«ENDIF»</offset> 
+            <min-range>«IF y.getMonitorPoint.MinRange == "na" || y.getMonitorPoint.MinRange == "none" || y.getMonitorPoint.MinRange == "not specified"»0«ELSE»«y.getMonitorPoint.MinRange»«ENDIF»</min-range> 
+            <max-range>«IF y.getMonitorPoint.MaxRange == "na" || y.getMonitorPoint.MaxRange == "none" || y.getMonitorPoint.MaxRange == "not specified"»0«ELSE»'«y.getMonitorPoint.MaxRange»«ENDIF» </max-range>
+            <interval>«IF y.Interval == "te"»1«ELSE» «IF y.Interval == "na" || y.Interval == "none" || y.Interval == "not specified"»0«ELSE»«y.Interval»«ENDIF»«ENDIF»</interval> 
+            <description>«y.getMonitorPoint.DescriptionAsString»</description>
+        </monitor-point>«ENDIF»«IF y.isControlPoint»«IF !y.getControlPoint.isDependent»
+        <monitor-point>
+            <name>«y.APName»</name> 
+            <world-data-to-db-type>«y.getControlPoint.WorldDataToDatabaseType»</world-data-to-db-type>
+            <rca>«y.getControlPoint.RCA»</rca> 
+            <te-related>«IF y.getControlPoint.TeRelatedCell == "yes"»1«ELSE»0«ENDIF»</te-related>
+            <raw-data-type>«y.getControlPoint.RawDataType»</raw-data-type>
+            <world-data-to-cpp-type>«y.getControlPoint.WorldDataToCPPType»</world-data-to-cpp-type>
+            <units>«y.getControlPoint.DataUnits»</units>
+            <scale>«IF y.getControlPoint.Scale == "na" || y.getControlPoint.Scale == "none" || y.getControlPoint.Scale == "not specified" || y.getControlPoint.Scale == "special"»0«ELSE»«y.getControlPoint.Scale»«ENDIF»</scale> 
+            <offset>«IF y.getControlPoint.Offset == "na" || y.getControlPoint.Offset == "none" || y.getControlPoint.Offset == "not specified" || y.getControlPoint.Offset == "special"»0«ELSE»«y.getControlPoint.Offset»«ENDIF»</offset> 
+            <min-range>«IF y.getControlPoint.MinRange == "na" || y.getControlPoint.MinRange == "none" || y.getControlPoint.MinRange == "not specified"»0«ELSE»«y.getControlPoint.MinRange»«ENDIF»</min-range>
+            <max-range>«IF y.getControlPoint.MaxRange == "na" || y.getControlPoint.MaxRange == "none" || y.getControlPoint.MaxRange == "not specified"»0«ELSE»«y.getControlPoint.MaxRange»«ENDIF»</max-range>
+            <interval>«IF y.Interval == "te"»'1',  «ELSE» «IF y.Interval == "na" || y.Interval == "none" || y.Interval == "not specified"»'0',  «ELSE»'«y.Interval»',  «ENDIF»  «ENDIF»</interval> 
+            <description>«y.getControlPoint.DescriptionAsString»</description>
+        </monitor-point>«ENDIF»«ENDIF»«ENDIF»«ENDFOREACH»
+    </assembly-type>«ENDFOREACH»
+</lru-type>
+«ENDFILE»
+«ENDDEFINE»
