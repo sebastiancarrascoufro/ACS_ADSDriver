@@ -81,7 +81,7 @@ class adsInterface
     void startNotification(const std::string& devName);
     void enqueueAdsMessage(const AmbMessage_t& msg, const DeviceMap& pointInfoMap) const;
   
-pointNodeInfo_t getNodesRCA(AmbRelativeAddr RCA, std::string deviceName , std::string pointName) const;
+pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string pointName) const;
   /**
    * This method sends the message to the real time system if te=0 then
    * the command is executed asap, otherwise the command is executed at

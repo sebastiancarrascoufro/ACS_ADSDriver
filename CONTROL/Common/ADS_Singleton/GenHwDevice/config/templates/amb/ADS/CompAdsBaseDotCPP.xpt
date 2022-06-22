@@ -162,12 +162,7 @@ using acsErrTypeLifeCycle::LifeCycleExImpl;
     
     interface_mp = new adsDevio(dev, remoteIp, amsarr, port);
 
-«FOREACH (Set[MonitorPoint]) MonitorPoint AS x»«IF x.isMonitored && !x.isDependent»
-    interface_mp->insertRCA(«x.RCA», std::string("«x.MPName»"));
-«ENDIF»«ENDFOREACH» 
-«FOREACH (Set[ControlPoint]) ControlPoint AS y»«IF !y.isDependent»       
-   interface_mp->insertRCA(«y.RCA», std::string("«y.CPName»"));
-«ENDIF»«ENDFOREACH» 
+
 
 
 

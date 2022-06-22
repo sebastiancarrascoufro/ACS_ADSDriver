@@ -380,10 +380,10 @@ void adsInterface::clearBuffer(std::string deviceName, AdsQueue* q, uint16_t i){
 /**
  * The reference of the nodes of interest is obtained and stored.
  @params
- * RCA: monitoring/control point rca
+ * deviceName: Name of the current device
  * pointName: Name of the monitoring/control point (the ADS server has nodes implemented with the same name)
 */
-pointNodeInfo_t adsInterface::getNodesRCA(AmbRelativeAddr RCA, std::string deviceName , std::string pointName) const{
+pointNodeInfo_t adsInterface::getNodesForDevicePoint(std::string deviceName , std::string pointName) const{
     std::string devRoute = deviceName+"."+pointName;
     pointNodeInfo_t pointInfo;
     pointInfo.nodeName = pointName;
@@ -393,7 +393,7 @@ pointNodeInfo_t adsInterface::getNodesRCA(AmbRelativeAddr RCA, std::string devic
     if (pointInfo.responseNode == 0 || pointInfo.methodNode==0 || pointInfo.cleanNode == 0)
     {
         ControlExceptions::CAMBErrorExImpl ex(__FILE__, __LINE__,
-                              "adsDevio::insertRCA");
+                              "adsInterface::getNodesForDevicePoint");
         ex.addData(Control::EX_USER_ERROR_MSG,
                    "one or more "+pointName+" symbols were not found on the ADS server");
         ex.log();
@@ -445,13 +445,13 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, DeviceMap pointIn
     }
     */
         pointNodeInfo_t point;
-        AmbRelativeAddr RCA;
-        RCA = (message.address & 0x3ffff);
-    
+        //AmbRelativeAddr RCA;
+        //RCA = (message.address & 0x3ffff);
+    	AmbRelativeAddr messageNode = 0;
 
         //it is searched if the rca of the received address matches any mapped element
-        if(pointInfoMap.find(RCA) == pointInfoMap.end()){
-            ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "RCA (0x%x) not found. ", RCA));
+        /*if(pointInfoMap.find(messageNode) == pointInfoMap.end()){
+            ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "Message Node not found. "));
             if (message.completion_p->status_p  != NULL) {
                 *(message.completion_p->status_p) = AMBERR_WRITEERR;
             }
@@ -467,9 +467,9 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, DeviceMap pointIn
             }
             return;
         }else{
-            point = pointInfoMap.at(RCA);
-        }
-
+            point = pointInfoMap.at(messageNode);
+        }*/
+	point = pointInfoMap.at(messageNode);
 
         long nErr;
         uint32_t bytesRead;
@@ -481,7 +481,6 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, DeviceMap pointIn
         q->emplace(msgDevice);
         if (nErr || rValue != 0)
         {
-printf("rValue %i\n", rValue);
             if (nErr){
                  ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "ADS ReadWriteReqEx2 failed with code: %ld. ", nErr));
         

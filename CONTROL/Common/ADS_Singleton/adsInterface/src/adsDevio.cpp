@@ -17,6 +17,7 @@ adsDevio::adsDevio(const std::string& devName, const std::string& remoteIp, cons
 {
     deviceName = devName;
     interface_mp = adsInterface::getInstance(remoteIp, arrayNetId, plcPort);
+    insertRCA(0x0, "AMBMessageNode");
     interface_mp->startNotification(deviceName);
 }
 
@@ -47,7 +48,7 @@ adsDevio::~adsDevio()
 */
 void adsDevio::insertRCA(AmbRelativeAddr RCA, std::string pointName){
     
-    pointNodeInfo_t pointInfo = interface_mp->getNodesRCA(RCA, deviceName, pointName);
+    pointNodeInfo_t pointInfo = interface_mp->getNodesForDevicePoint(deviceName, pointName);
     pointInfoMap.insert({ RCA, pointInfo});
 }
 

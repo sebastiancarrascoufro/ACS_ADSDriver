@@ -40,12 +40,20 @@ MA 02111-1307  USA
 
 #include "«Assembly»_SLAVE_SIM.h"
 
-//***poner tamaño de array e inicializar
+
 «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»«IF x.isMonitored && !x.isDependent»
-uint8_t mntr_«x.MPName»[«x.TotalBytesRawData»]			= {«x.RCA»};«ENDIF»«ENDFOREACH» 
+uint8_t mntr_«x.MPName»[«x.TotalBytesRawData»]			= {0x0};
+uint32_t rca_mntr_«x.MPName» = «x.RCA»;
+memcpy(&mntr_«x.MPName», &rca_mntr_«x.MPName», sizeof(mntr_«x.MPName»));
+«ENDIF»«ENDFOREACH» 
 
 «FOREACH (Set[ControlPoint]) ControlPoint AS y»«IF !y.isDependent»       
-uint8_t ctrl_«y.CPName»[«y.TotalBytesRawData»]			= {0x0};«ENDIF»«ENDFOREACH» 
+uint8_t ctrl_«y.CPName»[«y.TotalBytesRawData»]			= {0x0};
+uint32_t rca_ctrl_«y.CPName» = «y.RCA»;
+memcpy(&mntr_«y.CPName», &rca_ctrl_«y.CPName», sizeof(mntr_«y.CPName»));
+«ENDIF»«ENDFOREACH» 
+
+
 
 
 void execute_amb_command(XMCMessageStruct_t *msg)
