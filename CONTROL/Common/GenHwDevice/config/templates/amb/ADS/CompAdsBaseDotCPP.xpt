@@ -1,4 +1,4 @@
-«REM»
+Â«REMÂ»
 ALMA - Atacama Large Millimeter Array
 (c) European Southern Observatory, 2002
 (c) Associated Universities Inc., 2002
@@ -21,22 +21,22 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 MA 02111-1307  USA
 
-«ENDREM»
+Â«ENDREMÂ»
 
-«IMPORT org::openarchitectureware::core::meta::core»
-«IMPORT org::openarchitectureware::meta::uml»
-«IMPORT org::openarchitectureware::meta::uml::classifier»
-«IMPORT alma::Control::datamodel::meta::base»
-«IMPORT alma::Control::datamodel::meta::amb»
+Â«IMPORT org::openarchitectureware::core::meta::coreÂ»
+Â«IMPORT org::openarchitectureware::meta::umlÂ»
+Â«IMPORT org::openarchitectureware::meta::uml::classifierÂ»
+Â«IMPORT alma::Control::datamodel::meta::baseÂ»
+Â«IMPORT alma::Control::datamodel::meta::ambÂ»
 
-«DEFINE Root FOR DeviceModel»
-  «IF !IsMonitorDBOnly»
-    «EXPAND SWModuleDef»
-  «ENDIF»
-«ENDDEFINE»
+Â«DEFINE Root FOR DeviceModelÂ»
+  Â«IF !IsMonitorDBOnlyÂ»
+    Â«EXPAND SWModuleDefÂ»
+  Â«ENDIFÂ»
+Â«ENDDEFINEÂ»
 
-«DEFINE SWModuleDef FOR DeviceModel»
-«FILE DirPath+"/src/"+Assembly+"CompAdsBase.cpp"»
+Â«DEFINE SWModuleDef FOR DeviceModelÂ»
+Â«FILE DirPath+"/src/"+Assembly+"CompAdsBase.cpp"Â»
 /**
  * ALMA - Atacama Large Millimeter Array
  * (c) European Southern Observatory, 2002
@@ -68,7 +68,7 @@ MA 02111-1307  USA
  */
 
 
-#include <«Assembly»CompAdsBase.h>
+#include <Â«AssemblyÂ»CompAdsBase.h>
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -81,9 +81,9 @@ MA 02111-1307  USA
 using std::string;
 using acsErrTypeLifeCycle::LifeCycleExImpl;
 //------------------------------------------------------------------------------
-«Assembly»CompAdsBase::«Assembly»CompAdsBase(const ACE_CString& name,
+Â«AssemblyÂ»CompAdsBase::Â«AssemblyÂ»CompAdsBase(const ACE_CString& name,
     maci::ContainerServices* pCS):
-    «Assembly»Impl(name, pCS)
+    Â«AssemblyÂ»Impl(name, pCS)
 {
 
 
@@ -94,6 +94,7 @@ using acsErrTypeLifeCycle::LifeCycleExImpl;
 	std::string remoteIp; 
 	std::string stringarray;
 	uint32_t port;
+	uint32_t sz;
 	uint8_t amsarr[6];
 
 
@@ -123,7 +124,7 @@ using acsErrTypeLifeCycle::LifeCycleExImpl;
 
 		    std::stringstream text_stream(stringarray);
 		    std::string item;
-		    while (std::getline(text_stream, item, '.')) {
+		    while (std::getline(text_stream, item, ',')) {
 			amsvector.push_back(stoi(item));
 		    }
 		    std::copy(amsvector.begin(), amsvector.end(), amsarr);
@@ -152,49 +153,74 @@ using acsErrTypeLifeCycle::LifeCycleExImpl;
 	ACS_SHORT_LOG((LM_ERROR,"Error reading the characteristic adsport by its name"));
 	}
 
+	try 
+	{
+	CORBA::Any* characteristic = get_characteristic_by_name("adsthreads");
+	char *strCharacteristic;
+	if (!(*characteristic >>= CORBA::Any::to_string(strCharacteristic, 0)))
+	    {
+	    ACS_SHORT_LOG((LM_ERROR,"Error getting threadsize by the CORBA::Any object"));
+	    }else{
+		std::istringstream i(strCharacteristic);
+		i >> sz;
+		}
+	}
+   	catch (...)
+	{
+	ACS_SHORT_LOG((LM_ERROR,"Error reading the characteristic adsthreads by its name"));
+	}
 
 
+    const std::string compName = pCS->getName().c_str();
+    size_t divider = compName.find_last_of('/');
+    const std::string path = compName.substr(0, divider);
+    const std::string dev = compName.substr(divider+1);
 
-    
-    interface_mp = new adsDevio(remoteIp, amsarr, port);
+    interface_mp = new adsDevio(dev, remoteIp, amsarr, port, sz);
 
-
+Â«FOREACH (Set[MonitorPoint]) MonitorPoint AS xÂ»Â«IF x.isMonitored && !x.isDependentÂ»
+    interface_mp->insertRCA(Â«x.RCAÂ», std::string("Â«x.MPNameÂ»"));
+Â«ENDIFÂ»Â«ENDFOREACHÂ» 
+Â«FOREACH (Set[ControlPoint]) ControlPoint AS yÂ»Â«IF !y.isDependentÂ»       
+   interface_mp->insertRCA(Â«y.RCAÂ», std::string("Â«y.CPNameÂ»"));
+Â«ENDIFÂ»Â«ENDFOREACHÂ» 
 
 
 
 }
 
 //------------------------------------------------------------------------------
-«Assembly»CompAdsBase::~«Assembly»CompAdsBase()
+Â«AssemblyÂ»CompAdsBase::~Â«AssemblyÂ»CompAdsBase()
 {
     AUTO_TRACE(__PRETTY_FUNCTION__);
     delete interface_mp;
 }
 
-inline void «Assembly»CompAdsBase::setChannelNumber(const unsigned int arg)
+inline void Â«AssemblyÂ»CompAdsBase::setChannelNumber(const unsigned int arg)
 {
+std::cout << "setChannelNumber" << std::endl;
     channel_m = arg;
 }
 /**
  * Get the channel number for this device.
  */
-inline unsigned int «Assembly»CompAdsBase::getChannelNumber() const
+inline unsigned int Â«AssemblyÂ»CompAdsBase::getChannelNumber() const
 {
     return channel_m;
 }
 /**
  * CORBA method for getting the node address for this device.
  */
-inline unsigned int «Assembly»CompAdsBase::getNodeAddress() const
+inline unsigned int Â«AssemblyÂ»CompAdsBase::getNodeAddress() const
 {
     return nodeAddress_m;
 }
-inline void «Assembly»CompAdsBase::setNodeAddress(const unsigned int arg)
+inline void Â«AssemblyÂ»CompAdsBase::setNodeAddress(const unsigned int arg)
 {
     nodeAddress_m = arg;
 }
 //------------------------------------------------------------------------------
-void «Assembly»CompAdsBase::getDeviceUniqueId(std::string& deviceID)
+void Â«AssemblyÂ»CompAdsBase::getDeviceUniqueId(std::string& deviceID)
 {
     AUTO_TRACE(__PRETTY_FUNCTION__);
 
@@ -255,7 +281,7 @@ void «Assembly»CompAdsBase::getDeviceUniqueId(std::string& deviceID)
 
 
 //------------------------------------------------------------------------------
-void «Assembly»CompAdsBase::monitor(
+void Â«AssemblyÂ»CompAdsBase::monitor(
     AmbRelativeAddr RCA,
     AmbDataLength_t& dataLength,
     AmbDataMem_t* data,
@@ -265,7 +291,7 @@ void «Assembly»CompAdsBase::monitor(
 {
     return (monitorTE(0, RCA, dataLength, data, synchLock, timestamp, status));
 }
-void «Assembly»CompAdsBase::command(
+void Â«AssemblyÂ»CompAdsBase::command(
     AmbRelativeAddr RCA,
     AmbDataLength_t dataLength,
     const AmbDataMem_t* data,
@@ -276,7 +302,7 @@ void «Assembly»CompAdsBase::command(
     return (commandTE(0, RCA, dataLength, data, synchLock, timestamp, status));
 }
 
-void «Assembly»CompAdsBase::monitorTE(
+void Â«AssemblyÂ»CompAdsBase::monitorTE(
     ACS::Time TimeEvent,
     AmbRelativeAddr RCA,
     AmbDataLength_t& dataLength,
@@ -340,7 +366,7 @@ void «Assembly»CompAdsBase::monitorTE(
     interface_mp->enqueueAdsMessage(message);
 }
 
-void «Assembly»CompAdsBase::commandTE(
+void Â«AssemblyÂ»CompAdsBase::commandTE(
     ACS::Time TimeEvent,
     AmbRelativeAddr RCA,
     AmbDataLength_t dataLength,
@@ -414,7 +440,7 @@ void «Assembly»CompAdsBase::commandTE(
     interface_mp->enqueueAdsMessage(message);
 }
 
-void «Assembly»CompAdsBase::monitorNextTE(
+void Â«AssemblyÂ»CompAdsBase::monitorNextTE(
     AmbRelativeAddr RCA,
     AmbDataLength_t& dataLength,
     AmbDataMem_t* data,
@@ -478,7 +504,7 @@ void «Assembly»CompAdsBase::monitorNextTE(
     interface_mp->enqueueAdsMessage(message);
 }
 
-void «Assembly»CompAdsBase::commandNextTE(AMBSystem::AmbRelativeAddr RCA,
+void Â«AssemblyÂ»CompAdsBase::commandNextTE(AMBSystem::AmbRelativeAddr RCA,
     AmbDataLength_t dataLength,
     const AmbDataMem_t* data,
     sem_t* synchLock,
@@ -546,21 +572,54 @@ void «Assembly»CompAdsBase::commandNextTE(AMBSystem::AmbRelativeAddr RCA,
 }
 
 
-void «Assembly»CompAdsBase::flushNode(ACS::Time TimeEvent, ACS::Time* timestamp,
+void Â«AssemblyÂ»CompAdsBase::flushNode(ACS::Time TimeEvent, ACS::Time* timestamp,
     AmbErrorCode_t* status)
 {
-    interface_mp->flushNode(channel_m, nodeAddress_m, TimeEvent,
-            timestamp,  status);
+    if(interface_mp == 0)
+    {
+        *status = AMBERR_WRITEERR;
+        return;
+    }
+
+    // Send the message and wait for a return
+    try
+    {
+        *status = interface_mp->flush(channel_m, nodeAddress_m, TimeEvent,
+            (Time&)*timestamp);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        if(status != 0)
+        {
+            *status = AMBERR_ADDRERR;
+        }
+    }
 }
 
-void «Assembly»CompAdsBase::flushRCA(ACS::Time TimeEvent, AmbRelativeAddr RCA,
+void Â«AssemblyÂ»CompAdsBase::flushRCA(ACS::Time TimeEvent, AmbRelativeAddr RCA,
     ACS::Time* timestamp, AmbErrorCode_t* status)
 {
-    interface_mp->flushRCA(channel_m, nodeAddress_m, RCA,
-            TimeEvent, timestamp, status);
-    
+    if(interface_mp == 0)
+    {
+        *status = AMBERR_WRITEERR;
+        return;
+    }
+
+    // Send the message and wait for a return
+    try
+    {
+        *status = interface_mp->flush(channel_m, nodeAddress_m, RCA,
+            TimeEvent, (Time&)*timestamp);
+    }
+    catch(const ControlExceptions::CAMBErrorExImpl& ex)
+    {
+        if(status != 0)
+        {
+            *status = AMBERR_ADDRERR;
+        }
+    }
 }
 
 
-«ENDFILE»
-«ENDDEFINE»
+Â«ENDFILEÂ»
+Â«ENDDEFINEÂ»
