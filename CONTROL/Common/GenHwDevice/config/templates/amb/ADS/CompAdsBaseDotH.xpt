@@ -151,7 +151,7 @@ class «Assembly»CompAdsBase: public «Assembly»Impl,
     /// \exception ControlExceptions::CAMBErrorExImpl
     virtual void getDeviceUniqueId(std::string& deviceID);
 
-    //AmbSimulationInt simulationIf_m;
+    
     adsDevio * interface_mp;
 
     private:

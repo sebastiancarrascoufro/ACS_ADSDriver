@@ -22,7 +22,7 @@ class adsDevio
  
     public:
         
-        adsDevio(const std::string& deviceName, const std::string& remoteIp, const uint8_t (&arrayNetId)[6],  const uint32_t& plcPort);
+        adsDevio(const std::string& remoteIp, const uint8_t (&arrayNetId)[6],  const uint32_t& plcPort);
 
         ~adsDevio();
 
@@ -44,9 +44,8 @@ class adsDevio
         
         
         adsInterface* interface_mp;
-        DeviceMap pointInfoMap; // each address of the sent AMBCommands is stored and the time in microseconds in which
 	std::string deviceName;
-	
+	pointNodeInfo_t msgPoint;
         
     
 };

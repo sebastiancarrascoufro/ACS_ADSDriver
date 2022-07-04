@@ -72,7 +72,7 @@ File CDBInstanceADS.xpt
 <«Assembly»BaseADS xmlns="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0"
     xsi:schemaLocation="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0 http://www.nrao.edu/schemas/CONTROL/«Assembly»BaseADS.xsd"
       xmlns:amb="urn:schemas-cosylab-com:AmbDevice:1.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" remoteip="192.168.1.6" adsport="866" adsthreads="5" amsnetid="192,168,56,1,1,1">
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" remoteip="192.168.1.6" adsport="866" amsnetid="192.168.56.1.1.1">
     «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
         «IF x.isMonitored»
   <«x.MPName»

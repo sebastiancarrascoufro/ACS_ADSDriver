@@ -12,13 +12,12 @@
  * arrayNetId: AMS netId of the ADS server
  * port: PLC ADS port
 */
-adsDevio::adsDevio(const std::string& devName, const std::string& remoteIp, const uint8_t (&arrayNetId)[6],  const uint32_t& plcPort) : channel_m(0ULL), nodeAddress_m(0ULL)
+adsDevio::adsDevio(const std::string& remoteIp, const uint8_t (&arrayNetId)[6],  const uint32_t& plcPort) : channel_m(0ULL), nodeAddress_m(0ULL)
 
 {
-    deviceName = devName;
+    deviceName = "HARDWARE_DEVICES";
     interface_mp = adsInterface::getInstance(remoteIp, arrayNetId, plcPort);
-    insertRCA(0x0, "AMBMessageNode");
-    interface_mp->startNotification(deviceName);
+    msgPoint = interface_mp->getNodesForDevicePoint(deviceName, "AMBMessageNode");
 }
 
 
@@ -40,19 +39,6 @@ adsDevio::~adsDevio()
 }
 
 
-/**
- * The reference of the nodes of interest is obtained and stored.
- @params
- * RCA: monitoring/control point rca
- * pointName: Name of the monitoring/control point (the ADS server has nodes implemented with the same name)
-*/
-void adsDevio::insertRCA(AmbRelativeAddr RCA, std::string pointName){
-    
-    pointNodeInfo_t pointInfo = interface_mp->getNodesForDevicePoint(deviceName, pointName);
-    pointInfoMap.insert({ RCA, pointInfo});
-}
-
-
 
 
 /**
@@ -62,7 +48,7 @@ void adsDevio::insertRCA(AmbRelativeAddr RCA, std::string pointName){
 */
 void adsDevio::enqueueAdsMessage(const AmbMessage_t& message) const
 {
-    interface_mp->enqueueAdsMessage(message, pointInfoMap);
+    interface_mp->enqueueAdsMessage(message, msgPoint);
 }
 
 

@@ -79,7 +79,7 @@ class adsInterface
     static adsInterface* getInstance(const std::string& remoteIp, const uint8_t (&arrayNetId)[6],  const uint32_t& plcPort);
     static void deleteInstance();
     void startNotification(const std::string& devName);
-    void enqueueAdsMessage(const AmbMessage_t& msg, const DeviceMap& pointInfoMap) const;
+    void enqueueAdsMessage(const AmbMessage_t& msg, const pointNodeInfo_t& msgPoint) const;
   
 pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string pointName) const;
   /**
@@ -182,6 +182,7 @@ pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string poin
   static uint8_t          arrayNetIdInt[6];
   static uint32_t         plcPortInt;
   static int              shutdownFlag_m;
+  static std::string 	  deviceName;
 
   static pthread_mutex_t  adsMtx_m;// Mutex protection for cmdFifo
   pthread_t               replyTID_m;    // Thread ID for reply thread
@@ -198,7 +199,7 @@ pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string poin
   AdsNotification* notif;
 
   private:
-  static void sendAdsMessage(const AmbMessage_t& msg, DeviceMap pointInfoMap, AdsQueue* q);
+  static void sendAdsMessage(const AmbMessage_t& msg, pointNodeInfo_t msgPoint, AdsQueue* q);
   static uint32_t getOffset(std::string devRoute, AdsQueue* q);
   static void clearBuffer(std::string devRoute, AdsQueue* q, uint16_t i);
   static void NotifyCallback(const AmsAddr* pAddr, const AdsNotificationHeader* pNotification, uint32_t hUser);

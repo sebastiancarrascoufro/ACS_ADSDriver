@@ -85,6 +85,7 @@ uint8_t          adsInterface::maxNextTE = 0;
 std::string	 adsInterface::remoteIpInt;
 uint8_t          adsInterface::arrayNetIdInt[6];
 uint32_t         adsInterface::plcPortInt;
+std::string	 adsInterface::deviceName = "HARDWARE_DEVICES";
 
 pthread_mutex_t  adsInterface::adsMtx_m;
 std::map<uint64_t, uint64_t> adsInterface::adr_map;
@@ -174,7 +175,7 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
     remoteIpInt = remoteIp;
     memcpy (arrayNetIdInt, arrayNetId, sizeof(arrayNetId));
     plcPortInt = plcPort;
-    
+    this->startNotification(deviceName);
     }
     catch (const std::exception & exc)
     {
@@ -409,9 +410,9 @@ pointNodeInfo_t adsInterface::getNodesForDevicePoint(std::string deviceName , st
 @params
 * message: AMBmessage to transmit to the ADS server
 */
-void adsInterface::enqueueAdsMessage(const AmbMessage_t& message, const DeviceMap& pointInfoMap ) const
+void adsInterface::enqueueAdsMessage(const AmbMessage_t& message, const pointNodeInfo_t& msgPoint) const
 {
-    auto result = pool->enqueue(&adsInterface::sendAdsMessage,message,pointInfoMap,q);
+    auto result = pool->enqueue(&adsInterface::sendAdsMessage,message,msgPoint,q);
 }
 
 
@@ -420,10 +421,10 @@ void adsInterface::enqueueAdsMessage(const AmbMessage_t& message, const DeviceMa
 * the data is packed and the message is sent, this is called when a thread is available
 @params
 * message: AMBmessage to transmit to the ADS server
-* pointInfoMap: map with necessary information of the monitoring/control points of the device
+* msgPoint: point reference to send messages
 * q: pointer to ADS connection queue
 */
-void adsInterface::sendAdsMessage(const AmbMessage_t& message, DeviceMap pointInfoMap, AdsQueue* q)
+void adsInterface::sendAdsMessage(const AmbMessage_t& message, pointNodeInfo_t msgPoint, AdsQueue* q)
 {
     const std::string fnName = "adsDevio::sendAdsMessage";
     
@@ -444,10 +445,8 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, DeviceMap pointIn
     }
     }
     */
-        pointNodeInfo_t point;
         //AmbRelativeAddr RCA;
         //RCA = (message.address & 0x3ffff);
-    	AmbRelativeAddr messageNode = 0;
 
         //it is searched if the rca of the received address matches any mapped element
         /*if(pointInfoMap.find(messageNode) == pointInfoMap.end()){
@@ -469,14 +468,13 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, DeviceMap pointIn
         }else{
             point = pointInfoMap.at(messageNode);
         }*/
-	point = pointInfoMap.at(messageNode);
 
         long nErr;
         uint32_t bytesRead;
         uint8_t rValue;
         //we get an ADS connection available
         AdsDevice* msgDevice = q->pop();
-        nErr = msgDevice->ReadWriteReqEx2(ADSIGRP_SYM_VALBYHND, point.methodNode, sizeof(rValue), &rValue, sizeof(message), &message, &bytesRead);
+        nErr = msgDevice->ReadWriteReqEx2(ADSIGRP_SYM_VALBYHND, msgPoint.methodNode, sizeof(rValue), &rValue, sizeof(message), &message, &bytesRead);
         //we insert the ADS connection to the queue again
         q->emplace(msgDevice);
         if (nErr || rValue != 0)
@@ -772,7 +770,7 @@ AmbErrorCode_t adsInterface::findSN(AmbDataMem_t   serialNumber[],
     sem_init(&synchLock, 0, 0);
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap);
+    enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch(const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);
@@ -836,7 +834,7 @@ AmbErrorCode_t adsInterface::findSNUsingBroadcast(unsigned char serialNumber[],
     message.targetTE     = 0;
 
     try {
-    enqueueAdsMessage(message, pointInfoMap);
+    enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex) {
     sem_destroy(&synchLock);
@@ -906,7 +904,7 @@ AmbErrorCode_t adsInterface::flush(AmbChannel channel,
 
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap);
+    enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);
@@ -968,7 +966,7 @@ AmbErrorCode_t adsInterface::flush(AmbChannel      channel,
     sem_init(&synchLock, 0, 0);
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap);
+    enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);
@@ -1032,7 +1030,7 @@ AmbErrorCode_t adsInterface::flush(AmbChannel      channel,
     sem_init(&synchLock, 0, 0);
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap);
+    enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);

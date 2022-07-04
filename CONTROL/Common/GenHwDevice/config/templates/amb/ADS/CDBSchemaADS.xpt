@@ -138,7 +138,6 @@ MA 02111-1307  USA
     </xs:sequence>
 	<xs:attribute name="remoteip" type="xs:string" use="required" />
 	<xs:attribute name="adsport" type="xs:integer" use="required"/>
-	<xs:attribute name="adsthreads" type="xs:integer" use="required"/>
 	<xs:attribute name="amsnetid" type="xs:string" use="required" />
   </xs:extension>
  </xs:complexContent>
