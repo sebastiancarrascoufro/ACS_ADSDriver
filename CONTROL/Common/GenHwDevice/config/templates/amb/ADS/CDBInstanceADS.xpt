@@ -1,4 +1,4 @@
-«REM»
+Â«REMÂ»
 
 ALMA - Atacama Large Millimeter Array
 (c) European Southern Observatory, 2002
@@ -24,22 +24,22 @@ MA 02111-1307  USA
 
 File CDBInstanceADS.xpt
 
-«ENDREM»
+Â«ENDREMÂ»
 
-«IMPORT org::openarchitectureware::core::meta::core»
-«IMPORT org::openarchitectureware::meta::uml»
-«IMPORT org::openarchitectureware::meta::uml::classifier»
-«IMPORT alma::Control::datamodel::meta::base»
-«IMPORT alma::Control::datamodel::meta::amb»
+Â«IMPORT org::openarchitectureware::core::meta::coreÂ»
+Â«IMPORT org::openarchitectureware::meta::umlÂ»
+Â«IMPORT org::openarchitectureware::meta::uml::classifierÂ»
+Â«IMPORT alma::Control::datamodel::meta::baseÂ»
+Â«IMPORT alma::Control::datamodel::meta::ambÂ»
 
-«DEFINE Root FOR DeviceModel»
-  «IF !IsMonitorDBOnly»
-    «EXPAND SWModuleDef»
-  «ENDIF»
-«ENDDEFINE»
+Â«DEFINE Root FOR DeviceModelÂ»
+  Â«IF !IsMonitorDBOnlyÂ»
+    Â«EXPAND SWModuleDefÂ»
+  Â«ENDIFÂ»
+Â«ENDDEFINEÂ»
 
-«DEFINE SWModuleDef FOR DeviceModel»
-«FILE DirPath+"/doc/"+Assembly+"ADS.xml"»<?xml version="1.0" encoding="ISO-8859-1"?>
+Â«DEFINE SWModuleDef FOR DeviceModelÂ»
+Â«FILE DirPath+"/doc/"+Assembly+"ADS.xml"Â»<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
  * ALMA - Atacama Large Millimeter Array
  * (c) European Southern Observatory, 2002
@@ -69,59 +69,59 @@ File CDBInstanceADS.xpt
  * | Any changes will be lost when the file is re-generated. |
  *  =========================================================
 -->
-<«Assembly»BaseADS xmlns="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0"
-    xsi:schemaLocation="urn:schemas-cosylab-com:«Assembly»BaseADS:1.0 http://www.nrao.edu/schemas/CONTROL/«Assembly»BaseADS.xsd"
+<Â«AssemblyÂ»BaseADS xmlns="urn:schemas-cosylab-com:Â«AssemblyÂ»BaseADS:1.0"
+    xsi:schemaLocation="urn:schemas-cosylab-com:Â«AssemblyÂ»BaseADS:1.0 http://www.nrao.edu/schemas/CONTROL/Â«AssemblyÂ»BaseADS.xsd"
       xmlns:amb="urn:schemas-cosylab-com:AmbDevice:1.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" remoteip="192.168.1.6" adsport="866" amsnetid="192.168.56.1.1.1">
-    «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»
-        «IF x.isMonitored»
-  <«x.MPName»
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" remoteip="192.168.1.6" adsport="866" adsthreads="5" amsnetid="192.168.56.1.1.1">
+    Â«FOREACH (Set[MonitorPoint]) MonitorPoint AS xÂ»
+        Â«IF x.isMonitoredÂ»
+  <Â«x.MPNameÂ»
     archive_priority="15"
-    «IF x.Interval != "none" && x.Interval != "0"»
-    archive_min_int="«x.Interval»"
-    archive_max_int="«x.Interval»"
-    «ELSE»
+    Â«IF x.Interval != "none" && x.Interval != "0"Â»
+    archive_min_int="Â«x.IntervalÂ»"
+    archive_max_int="Â«x.IntervalÂ»"
+    Â«ELSEÂ»
     archive_min_int="0"
     archive_max_int="0"
     archive_suppress="1"
-    «ENDIF»
+    Â«ENDIFÂ»
     default_value="0"
-    «IF x.GraphMin != "none"»
-    graph_min="«x.GraphMin»"
-    «ENDIF»
-    «IF x.GraphMax != "none"»
-    graph_max="«x.GraphMax»"
-    «ENDIF»
-    format="%«x.Format»"
-    description="«x.Title»"
-    units="«x.DataUnits»"
+    Â«IF x.GraphMin != "none"Â»
+    graph_min="Â«x.GraphMinÂ»"
+    Â«ENDIFÂ»
+    Â«IF x.GraphMax != "none"Â»
+    graph_max="Â«x.GraphMaxÂ»"
+    Â«ENDIFÂ»
+    format="%Â«x.FormatÂ»"
+    description="Â«x.TitleÂ»"
+    units="Â«x.DataUnitsÂ»"
     min_timer_trig="0.048"
-    «IF x.isPattern»
+    Â«IF x.isPatternÂ»
     bitDescription=""
     alarm_mask="0"
     alarm_trigger="0"
-    «ELSE»
+    Â«ELSEÂ»
     min_delta_trig="1"
-    «ENDIF»
+    Â«ENDIFÂ»
     default_timer_trig="1"
     resolution="1"
     min_step="1"
     alarm_timer_trig="0"
     />
-          «ENDIF»
-    «ENDFOREACH»
+          Â«ENDIFÂ»
+    Â«ENDFOREACHÂ»
     <Address
-«IF Channel != "none" && Channel != "parm"»
-        ChannelNumber = "«Channel»"
-«ENDIF»
-«IF NodeAddress != "none"»
-    «IF NodeAddress != "parm"»
-        NodeNumber = "«NodeAddressInDecimal»"
-    «ELSE»
+Â«IF Channel != "none" && Channel != "parm"Â»
+        ChannelNumber = "Â«ChannelÂ»"
+Â«ENDIFÂ»
+Â«IF NodeAddress != "none"Â»
+    Â«IF NodeAddress != "parm"Â»
+        NodeNumber = "Â«NodeAddressInDecimalÂ»"
+    Â«ELSEÂ»
         NodeNumber = "Fill in the correct Node Address!"
-    «ENDIF»
-«ENDIF»
+    Â«ENDIFÂ»
+Â«ENDIFÂ»
     />
-</«Assembly»BaseADS>
-«ENDFILE»
-«ENDDEFINE»
+</Â«AssemblyÂ»BaseADS>
+Â«ENDFILEÂ»
+Â«ENDDEFINEÂ»
