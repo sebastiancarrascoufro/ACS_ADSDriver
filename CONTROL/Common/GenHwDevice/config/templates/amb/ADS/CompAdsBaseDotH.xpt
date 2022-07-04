@@ -1,4 +1,4 @@
-«REM»
+Â«REMÂ»
 ALMA - Atacama Large Millimeter Array
 (c) European Southern Observatory, 2002
 (c) Associated Universities Inc., 2002
@@ -21,27 +21,27 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 MA 02111-1307  USA
 
-«ENDREM»
+Â«ENDREMÂ»
 
-«IMPORT org::openarchitectureware::core::meta::core»
-«IMPORT org::openarchitectureware::meta::uml»
-«IMPORT org::openarchitectureware::meta::uml::classifier»
-«IMPORT alma::Control::datamodel::meta::base»
-«IMPORT alma::Control::datamodel::meta::amb»
+Â«IMPORT org::openarchitectureware::core::meta::coreÂ»
+Â«IMPORT org::openarchitectureware::meta::umlÂ»
+Â«IMPORT org::openarchitectureware::meta::uml::classifierÂ»
+Â«IMPORT alma::Control::datamodel::meta::baseÂ»
+Â«IMPORT alma::Control::datamodel::meta::ambÂ»
 
-«DEFINE Root FOR DeviceModel»
-  «IF !IsMonitorDBOnly»
-    «EXPAND SWModuleDef»
-  «ENDIF»
-«ENDDEFINE»
+Â«DEFINE Root FOR DeviceModelÂ»
+  Â«IF !IsMonitorDBOnlyÂ»
+    Â«EXPAND SWModuleDefÂ»
+  Â«ENDIFÂ»
+Â«ENDDEFINEÂ»
 
-«DEFINE SWModuleDef FOR DeviceModel»
-«FILE DirPath+"/include/"+Assembly+"CompAdsBase.h"»
+Â«DEFINE SWModuleDef FOR DeviceModelÂ»
+Â«FILE DirPath+"/include/"+Assembly+"CompAdsBase.h"Â»
 #ifndef __cplusplus
 #error This is a C++ include file and cannot be used from plain C.
 #endif
-#ifndef «Assembly»CompAdsBase_h
-#define «Assembly»CompAdsBase_h
+#ifndef Â«AssemblyÂ»CompAdsBase_h
+#define Â«AssemblyÂ»CompAdsBase_h
 //
 // ALMA - Atacama Large Millimiter Array
 // (c) Associated Universities Inc., 2011
@@ -70,31 +70,31 @@ MA 02111-1307  USA
 
 
 //#include <AmbSimulationInt.h>
-#include <«Assembly»CompAdsBaseS.h>
-#include <«Assembly»Impl.h>
+#include <Â«AssemblyÂ»CompAdsBaseS.h>
+#include <Â«AssemblyÂ»Impl.h>
 
 
 #include <adsDefs.h>
 #include <adsDevio.h>
 #include <TETimeUtil.h>
 
-/// The «Assembly»CompAdsBase class is the local component for the
-/// «DeviceName» hardware simulator.
+/// The Â«AssemblyÂ»CompAdsBase class is the local component for the
+/// Â«DeviceNameÂ» hardware simulator.
 /// <ul>
-/// <li> Device:   «DeviceName»
-/// <li> Assembly: «Assembly»
-/// <li> Parent:   «Parent»
-/// <li> Node:     «NodeAddress»
-/// <li> Channel:  «Channel»
+/// <li> Device:   Â«DeviceNameÂ»
+/// <li> Assembly: Â«AssemblyÂ»
+/// <li> Parent:   Â«ParentÂ»
+/// <li> Node:     Â«NodeAddressÂ»
+/// <li> Channel:  Â«ChannelÂ»
 /// </ul>
-class «Assembly»CompAdsBase: public «Assembly»Impl,
-    public virtual POA_Control::«Assembly»CompAdsBase
+class Â«AssemblyÂ»CompAdsBase: public Â«AssemblyÂ»Impl,
+    public virtual POA_Control::Â«AssemblyÂ»CompAdsBase
 {
     public:
-    «Assembly»CompAdsBase(const ACE_CString& name,
+    Â«AssemblyÂ»CompAdsBase(const ACE_CString& name,
        maci::ContainerServices* pCS);
 
-    virtual ~«Assembly»CompAdsBase();
+    virtual ~Â«AssemblyÂ»CompAdsBase();
 
 
 
@@ -151,19 +151,19 @@ class «Assembly»CompAdsBase: public «Assembly»Impl,
     /// \exception ControlExceptions::CAMBErrorExImpl
     virtual void getDeviceUniqueId(std::string& deviceID);
 
-    
+    //AmbSimulationInt simulationIf_m;
     adsDevio * interface_mp;
 
     private:
     /// No default ctor.
-    «Assembly»CompAdsBase();
+    Â«AssemblyÂ»CompAdsBase();
 
     /// Copy constructor is not allowed.
-    «Assembly»CompAdsBase(const «Assembly»CompAdsBase&);
+    Â«AssemblyÂ»CompAdsBase(const Â«AssemblyÂ»CompAdsBase&);
 
     /// Assignment operator is not allowed. 
-    «Assembly»CompAdsBase& operator=(const «Assembly»CompAdsBase&);
+    Â«AssemblyÂ»CompAdsBase& operator=(const Â«AssemblyÂ»CompAdsBase&);
 };
 #endif
-«ENDFILE»
-«ENDDEFINE»
+Â«ENDFILEÂ»
+Â«ENDDEFINEÂ»
