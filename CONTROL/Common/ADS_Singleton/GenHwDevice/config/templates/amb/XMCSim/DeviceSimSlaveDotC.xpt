@@ -42,15 +42,11 @@ MA 02111-1307  USA
 
 
 «FOREACH (Set[MonitorPoint]) MonitorPoint AS x»«IF x.isMonitored && !x.isDependent»
-uint8_t mntr_«x.MPName»[«x.TotalBytesRawData»]			= {0x0};
-uint32_t rca_mntr_«x.MPName» = «x.RCA»;
-memcpy(&mntr_«x.MPName», &rca_mntr_«x.MPName», sizeof(mntr_«x.MPName»));
+uint8_t mntr_«x.MPName»[«x.TotalBytesRawData»]			= {«x.RCA» & 0xFF«IF x.TotalBytesRawData != "1"», ((«x.RCA» >> 8) & 0xFF)«ENDIF»};
 «ENDIF»«ENDFOREACH» 
 
 «FOREACH (Set[ControlPoint]) ControlPoint AS y»«IF !y.isDependent»       
-uint8_t ctrl_«y.CPName»[«y.TotalBytesRawData»]			= {0x0};
-uint32_t rca_ctrl_«y.CPName» = «y.RCA»;
-memcpy(&mntr_«y.CPName», &rca_ctrl_«y.CPName», sizeof(mntr_«y.CPName»));
+uint8_t ctrl_«y.CPName»[«y.TotalBytesRawData»]			= {«y.RCA» & 0xFF«IF y.TotalBytesRawData != "1"», ((«y.RCA» >> 8) & 0xFF)«ENDIF»};
 «ENDIF»«ENDFOREACH» 
 
 
