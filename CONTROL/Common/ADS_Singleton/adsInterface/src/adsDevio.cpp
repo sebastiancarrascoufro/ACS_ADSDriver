@@ -23,7 +23,7 @@ adsDevio::adsDevio(const std::string& remoteIp, const uint8_t (&arrayNetId)[6], 
 
 adsDevio::~adsDevio()
 {
-    
+    std::cout << "destructor" << std::endl;
     try {
         if(interface_mp != 0)
     {

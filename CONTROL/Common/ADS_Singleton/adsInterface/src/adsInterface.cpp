@@ -82,6 +82,7 @@ sem_t            adsInterface::semCount_m;
 uint32_t         adsInterface::timeout = 500;
 uint8_t          adsInterface::maxNextTE = 0;
 
+
 std::string	 adsInterface::remoteIpInt;
 uint8_t          adsInterface::arrayNetIdInt[6];
 uint32_t         adsInterface::plcPortInt;
@@ -90,6 +91,8 @@ std::string	 adsInterface::deviceName = "HARDWARE_DEVICES";
 pthread_mutex_t  adsInterface::adsMtx_m;
 std::map<uint64_t, uint64_t> adsInterface::adr_map;
 
+
+AdsDevice* adsInterface::tempRoute;
 /**
 * Definition of the attributes of the notification. 
 * ADSTRANS_SERVERONCHA indicates that a notification will be generated when the variable changes 
@@ -103,6 +106,29 @@ AdsNotificationAttrib adsInterface::attrib = {
         {0}
     };
 
+
+
+static uint64_t getTimeAtNextTE(){
+
+	timeval tim;
+	uint64_t acstimestamp = 0ULL;
+	uint64_t tmp = 0ULL;
+	double start;
+
+	gettimeofday(&tim, NULL);
+	start = tim.tv_sec + (tim.tv_usec / 1000000.0);
+
+	//local time convert into acstimestamp
+	acstimestamp = static_cast<unsigned long long>(start) * 10000000LL + 122192928000000000LL;
+	//round it into a number divsible by a TE
+	tmp = acstimestamp % 480000LL;
+	acstimestamp = acstimestamp - tmp; 
+	//we are able only to adjsut time to the future not to the past. Since we substract part of the acstimestamp (tmp), thefore compensate with another TE
+	acstimestamp += 480000LL;
+	//since we are asking Time at next TE, add another TE
+	acstimestamp += 480000LL;
+	return acstimestamp;
+}
 
 adsInterface::adsInterface(const std::string& remoteIp, const uint8_t (&arrayNetId)[6],  const uint32_t& plcPort) 
 {
@@ -156,7 +182,7 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
         uint32_t ps = 25;
         //ThreadPool instance is created
         pool = new AdsThreadPool(ps);
-        //we start the queue of ADS connections
+        //we start the qusyncronizeTEeue of ADS connections
         q = new AdsQueue();
         //ADS connections are started and stored
         for (uint32_t i = 0; i < ps + 1; i++) {
@@ -175,7 +201,11 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
     remoteIpInt = remoteIp;
     memcpy (arrayNetIdInt, arrayNetId, sizeof(arrayNetId));
     plcPortInt = plcPort;
+    this->syncronizeTE(true);
     this->startNotification(deviceName);
+
+    tempRoute = q->pop();
+    
     }
     catch (const std::exception & exc)
     {
@@ -243,6 +273,7 @@ adsInterface::~adsInterface(){
             delete q;
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
             delete notificationRoute;
+	    delete  tempRoute;
         }
         catch (const std::exception & exc)
         {
@@ -267,8 +298,19 @@ In this thread the memory is cleared for the commands that have been lost
 void* adsInterface::replyThread(void* synchSemVoid){
     
 	timeout = maxNextTE*48 + 96;
+uint64_t currentTE = getTimeAtNextTE();
+uint64_t currentTE2 = (::getTimeStamp() / 48000ULL * 48000ULL); 
+AdsVariable<uint64_t> TwinCATTE {*tempRoute, "TEHANDLER.arrayT"};
+   
+	//acstime::Epoch startTime(TETimeUtil::unix2epoch(time(0)));
+    //lastStatusMonitorTime_m = TETimeUtil::rtMonitorTime(startTime, 5).value;
+
     /* Now start infinite loop */
     while (shutdownFlag_m == 0) {
+	currentTE = getTimeAtNextTE();
+	currentTE2 = (::getTimeStamp() / 48000ULL * 48000ULL); 
+	
+	std::cout << "TwinCAT: " << TwinCATTE << " getTimeAtNextTE(): " << currentTE << " getTimeStamp(): " << currentTE2 << " diff " << (TwinCATTE - currentTE) << " diff2 " << (TwinCATTE - currentTE2) << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds((uint32_t)(timeout)));
         uint64_t us = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
         //mtx.lock();
@@ -376,6 +418,58 @@ void adsInterface::clearBuffer(std::string deviceName, AdsQueue* q, uint16_t i){
     buffer = resp;
     //we insert the ADS connection to the queue again
     q->emplace(route);
+}
+
+
+
+/**
+
+*/
+void adsInterface::syncronizeTE(bool resync){
+
+	std::cout << "syncronizeTE" << std::endl;
+	uint32_t offset = adsInterface::getOffset("TEHANDLER.TE#a_setNextTE" , q);
+
+	uint64_t acstimestamp = getTimeAtNextTE();
+	uint64_t prev_acstimestamp = 0ULL;
+	bool retry = true;
+	
+	/*do{
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+	    prev_acstimestamp = getTimeAtNextTE();
+	}while(acstimestamp != prev_acstimestamp);*/
+	prev_acstimestamp = getTimeAtNextTE();
+	long nErr;
+        uint32_t bytesRead;
+        uint64_t rValue;
+	TEHandlerData_t message;
+	message.time = acstimestamp;
+	message.resyncFlag = resync;
+	
+	AdsDevice* route = q->pop();
+	nErr = route->ReadWriteReqEx2(ADSIGRP_SYM_VALBYHND, offset, sizeof(rValue), &rValue, sizeof(message), &message, &bytesRead);
+	q->emplace(route);
+	if (nErr){
+		ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "ADS ReadWriteReqEx2 failed with code: %ld. ", nErr));
+	}else{
+		if(rValue == 0){
+			ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "Not a good time to sync, retrying"));
+		}else if(rValue == 1){
+			ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "synchronization fails, no TE signal detected on TwinCAT"));
+		}else{
+			acstimestamp = getTimeAtNextTE();
+			if(rValue == acstimestamp && rValue == prev_acstimestamp){
+				ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "Sync OK"));
+				retry = false;
+			}else if(rValue == prev_acstimestamp){
+				ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "TwinCAT already synced, try resync"));
+			}
+		}
+	}
+   if(retry){
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
+	this->syncronizeTE(true);
+   }
 }
 
 /**
@@ -660,6 +754,7 @@ void adsInterface::fillCompletion(AdsResponse_t& response) {
     if (response.completion_p->status_p    != NULL) {
     *(response.completion_p->status_p) = response.status;
     }
+    std::cout <<  *(response.completion_p->timestamp_p) << std::endl;
 }
 
 void adsInterface::ambServerShutdown()
@@ -770,7 +865,10 @@ AmbErrorCode_t adsInterface::findSN(AmbDataMem_t   serialNumber[],
     sem_init(&synchLock, 0, 0);
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap.at(0));
+	status = AMBERR_NOERR;
+	sem_post(&synchLock);
+    	
+	if(false){ 	enqueueAdsMessage(message, pointInfoMap.at(0));}
     }
     catch(const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);
@@ -834,7 +932,9 @@ AmbErrorCode_t adsInterface::findSNUsingBroadcast(unsigned char serialNumber[],
     message.targetTE     = 0;
 
     try {
-    enqueueAdsMessage(message, pointInfoMap.at(0));
+	status = AMBERR_NOERR;
+	sem_post(&synchLock);
+	if(false){ 	enqueueAdsMessage(message, pointInfoMap.at(0));}
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex) {
     sem_destroy(&synchLock);
@@ -904,7 +1004,9 @@ AmbErrorCode_t adsInterface::flush(AmbChannel channel,
 
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap.at(0));
+	status = AMBERR_NOERR;
+	sem_post(&synchLock);
+    //enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);
@@ -966,7 +1068,9 @@ AmbErrorCode_t adsInterface::flush(AmbChannel      channel,
     sem_init(&synchLock, 0, 0);
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap.at(0));
+	status = AMBERR_NOERR;
+	sem_post(&synchLock);
+    //enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);
@@ -1030,7 +1134,9 @@ AmbErrorCode_t adsInterface::flush(AmbChannel      channel,
     sem_init(&synchLock, 0, 0);
     /* Send the message and wait for a return */
     try {
-    enqueueAdsMessage(message, pointInfoMap.at(0));
+	status = AMBERR_NOERR;
+	sem_post(&synchLock);
+    //enqueueAdsMessage(message, pointInfoMap.at(0));
     }
     catch (const ControlExceptions::CAMBErrorExImpl& ex){
     sem_destroy(&synchLock);

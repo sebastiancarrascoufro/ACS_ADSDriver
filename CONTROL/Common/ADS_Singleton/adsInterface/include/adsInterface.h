@@ -60,6 +60,11 @@ typedef struct {
     uint64_t time;
 } timeoutData_t;
 
+typedef struct __attribute__((packed)){
+    long time;
+    bool resyncFlag;
+} TEHandlerData_t;
+
 typedef AdsSafeQueue<timeoutData_t> tQueue;
 typedef AdsSafeQueue<AdsDevice*> AdsQueue;
 
@@ -183,6 +188,8 @@ pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string poin
   static uint32_t         plcPortInt;
   static int              shutdownFlag_m;
   static std::string 	  deviceName;
+  static AdsDevice* tempRoute;
+  
 
   static pthread_mutex_t  adsMtx_m;// Mutex protection for cmdFifo
   pthread_t               replyTID_m;    // Thread ID for reply thread
@@ -199,6 +206,7 @@ pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string poin
   AdsNotification* notif;
 
   private:
+  void syncronizeTE(bool resync);
   static void sendAdsMessage(const AmbMessage_t& msg, pointNodeInfo_t msgPoint, AdsQueue* q);
   static uint32_t getOffset(std::string devRoute, AdsQueue* q);
   static void clearBuffer(std::string devRoute, AdsQueue* q, uint16_t i);
