@@ -77,7 +77,7 @@ MA 02111-1307  USA
     Container="CONTROL/XY01/cppContainer"
     ImplLang="cpp"
     Name="CONTROL/XY01/«Assembly»"
-    Type="IDL:alma/Control/«Assembly»CompAdsImpl:1.0"
+    Type="IDL:alma/Control/«Assembly»CompAdsBase:1.0"
     xmlns="urn:schemas-cosylab-com:Component:1.0">
 </Component>
 «ENDFILE»

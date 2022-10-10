@@ -178,7 +178,7 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
     AmsNetId remoteNetId { arrayNetId[0], arrayNetId[1], arrayNetId[2], arrayNetId[3], arrayNetId[4], arrayNetId[5] };
 
     try {
-	//std::cout << "current TE " << (::getTimeStamp() / 48000ULL * 48000ULL) << std::cout;
+	
         uint32_t ps = 25;
         //ThreadPool instance is created
         pool = new AdsThreadPool(ps);
@@ -298,19 +298,14 @@ In this thread the memory is cleared for the commands that have been lost
 void* adsInterface::replyThread(void* synchSemVoid){
     
 	timeout = maxNextTE*48 + 96;
-uint64_t currentTE = getTimeAtNextTE();
-uint64_t currentTE2 = (::getTimeStamp() / 48000ULL * 48000ULL); 
-AdsVariable<uint64_t> TwinCATTE {*tempRoute, "TEHANDLER.arrayT"};
+	AdsVariable<uint64_t> TwinCATTE {*tempRoute, "TEHANDLER.arrayT"};
    
 	//acstime::Epoch startTime(TETimeUtil::unix2epoch(time(0)));
     //lastStatusMonitorTime_m = TETimeUtil::rtMonitorTime(startTime, 5).value;
 
     /* Now start infinite loop */
     while (shutdownFlag_m == 0) {
-	currentTE = getTimeAtNextTE();
-	currentTE2 = (::getTimeStamp() / 48000ULL * 48000ULL); 
 	
-	std::cout << "TwinCAT: " << TwinCATTE << " getTimeAtNextTE(): " << currentTE << " getTimeStamp(): " << currentTE2 << " diff " << (TwinCATTE - currentTE) << " diff2 " << (TwinCATTE - currentTE2) << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds((uint32_t)(timeout)));
         uint64_t us = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
         //mtx.lock();
@@ -328,7 +323,7 @@ AdsVariable<uint64_t> TwinCATTE {*tempRoute, "TEHANDLER.arrayT"};
                     delete(completion_p);
                 }
                 ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_WARNING, "Subscription timeout, possible data loss."));    
-		std::cout << "timeout" << std::endl;
+		//std::cout << "timeout" << std::endl;
                 adr_map.erase(it);
             }
         }
@@ -427,7 +422,6 @@ void adsInterface::clearBuffer(std::string deviceName, AdsQueue* q, uint16_t i){
 */
 void adsInterface::syncronizeTE(bool resync){
 
-	std::cout << "syncronizeTE" << std::endl;
 	uint32_t offset = adsInterface::getOffset("TEHANDLER.TE#a_setNextTE" , q);
 
 	uint64_t acstimestamp = getTimeAtNextTE();
@@ -467,7 +461,7 @@ void adsInterface::syncronizeTE(bool resync){
 		}
 	}
    if(retry){
-	std::this_thread::sleep_for(std::chrono::milliseconds(1));
+	std::this_thread::sleep_for(std::chrono::milliseconds(2));
 	this->syncronizeTE(true);
    }
 }
@@ -626,7 +620,6 @@ void adsInterface::NotifyCallback(const AmsAddr* pAddr, const AdsNotificationHea
         return;
     }
     pthread_mutex_unlock(&adsMtx_m);
-std::cout << "timestamp " << response.timestamp << std::endl;
         if(response.magic == 0xdeadbeef)
         {
             // AMBERR_RETRY is informational. Log it, transform it to 
@@ -754,7 +747,6 @@ void adsInterface::fillCompletion(AdsResponse_t& response) {
     if (response.completion_p->status_p    != NULL) {
     *(response.completion_p->status_p) = response.status;
     }
-    std::cout <<  *(response.completion_p->timestamp_p) << std::endl;
 }
 
 void adsInterface::ambServerShutdown()
