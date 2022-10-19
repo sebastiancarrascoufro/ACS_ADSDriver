@@ -50,7 +50,7 @@
 
 #include <ambInterface.h>
 
-
+#include <vector>
 
 
 
@@ -191,14 +191,17 @@ pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string poin
   static AdsDevice* tempRoute;
   
 
-  static pthread_mutex_t  adsMtx_m;// Mutex protection for cmdFifo
   pthread_t               replyTID_m;    // Thread ID for reply thread
   int                     replyStatus_m; // Thread initialization status
   static AdsNotificationAttrib attrib;
   static std::map<uint64_t, uint64_t> adr_map;
+  static AdsThreadPool* mapPool;    // threadpool for safe operations on std::map connection
+
+
   AdsDevice* notificationRoute;   //connection to receive notifications from the ADS server
   static uint32_t timeout;
   AdsThreadPool* pool;    // thread pool to queue calls that need an ADS connection
+  
   AdsQueue* q;            // queue for available ADS connections
   uint32_t bSize;         // buffer size (ads server)
   static uint8_t  maxNextTE;     // maximum number of future TEs defined in the ads server
@@ -211,6 +214,12 @@ pointNodeInfo_t getNodesForDevicePoint(std::string deviceName , std::string poin
   static uint32_t getOffset(std::string devRoute, AdsQueue* q);
   static void clearBuffer(std::string devRoute, AdsQueue* q, uint16_t i);
   static void NotifyCallback(const AmsAddr* pAddr, const AdsNotificationHeader* pNotification, uint32_t hUser);
+
+  /*operations on std::map commands*/
+  static void insertInMap(uint64_t completion_p, uint64_t ms);
+  static bool findInMap(uint64_t completion_p);
+  static void clearTimeoutCmds(uint64_t us);
+  static void removeCmd(uint64_t completion_p);
 };
 
 

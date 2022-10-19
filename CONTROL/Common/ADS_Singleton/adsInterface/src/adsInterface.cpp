@@ -87,8 +87,8 @@ std::string	 adsInterface::remoteIpInt;
 uint8_t          adsInterface::arrayNetIdInt[6];
 uint32_t         adsInterface::plcPortInt;
 std::string	 adsInterface::deviceName = "HARDWARE_DEVICES";
+AdsThreadPool*   adsInterface::mapPool;
 
-pthread_mutex_t  adsInterface::adsMtx_m;
 std::map<uint64_t, uint64_t> adsInterface::adr_map;
 
 
@@ -173,7 +173,7 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
      * Open the cmdFifo and create a mutex to protect it
      */
     try {
-    pthread_mutex_init(&adsMtx_m, NULL);
+    //pthread_mutex_init(&adsMtx_m, NULL);
     
     AmsNetId remoteNetId { arrayNetId[0], arrayNetId[1], arrayNetId[2], arrayNetId[3], arrayNetId[4], arrayNetId[5] };
 
@@ -182,6 +182,9 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
         uint32_t ps = 25;
         //ThreadPool instance is created
         pool = new AdsThreadPool(ps);
+	
+        mapPool = new AdsThreadPool(1);
+
         //we start the qusyncronizeTEeue of ADS connections
         q = new AdsQueue();
         //ADS connections are started and stored
@@ -220,15 +223,16 @@ void adsInterface::staticConstructor(const std::string& remoteIp, const uint8_t 
        Spawn a thread which handles all responses from the server
        This gets closed down when the instance is deleted
     */
-        sem_t threadSynchSem;
-        sem_init(&threadSynchSem, 0 ,0);
+
+        //sem_t threadSynchSem;
+        //sem_init(&threadSynchSem, 0 ,0);
         shutdownFlag_m = 0;
         if ( (replyStatus_m = pthread_create(&replyTID_m, NULL,
                                        reinterpret_cast<void*(*)(void*)>
                                        (adsInterface::replyThread),
-                                       static_cast<void*>(&threadSynchSem))) != 0 ) {
+                                       NULL)) != 0 ) {
                 ACS_SHORT_LOG((LM_ERROR, "Unable to start reply processing thread - return %d", replyStatus_m));
-                sem_destroy(&threadSynchSem);
+                //sem_destroy(&threadSynchSem);
                 ControlExceptions::CAMBErrorExImpl ex(__FILE__,__LINE__,fnName.c_str());
                 ex.addData(Control::EX_USER_ERROR_MSG,
                            "Unable to start reply processing thread");
@@ -266,6 +270,8 @@ adsInterface::~adsInterface(){
         ambServerShutdown();
         try {
             delete pool;
+
+	    delete mapPool;
             //we remove all ADS connections
             while (!(q->empty())) {
                 delete (q->pop()); 
@@ -293,7 +299,7 @@ adsInterface::~adsInterface(){
 }
 
 /*
-In this thread the memory is cleared for the commands that have been lost
+In this thread the process is called to clean up the lost commands.
 */
 void* adsInterface::replyThread(void* synchSemVoid){
     
@@ -308,26 +314,8 @@ void* adsInterface::replyThread(void* synchSemVoid){
 	
         std::this_thread::sleep_for(std::chrono::milliseconds((uint32_t)(timeout)));
         uint64_t us = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-        //mtx.lock();
-        pthread_mutex_lock(&adsMtx_m);
-        for ( auto it = adr_map.begin(); it != adr_map.end(); ++it  )
-        {
-            if (us - it->second > timeout){
-                uint64_t adr = it->first;
-                AmbCompletion_t* completion_p = (AmbCompletion_t *) adr;
-                *(completion_p->status_p) = AMBERR_WRITEERR;
-                if (completion_p->synchLock_p != NULL){
-                    sem_post(completion_p->synchLock_p);
-                }
-                if (completion_p != NULL){
-                    delete(completion_p);
-                }
-                ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_WARNING, "Subscription timeout, possible data loss."));    
-		//std::cout << "timeout" << std::endl;
-                adr_map.erase(it);
-            }
-        }
-        pthread_mutex_unlock(&adsMtx_m); 
+        
+        mapPool->enqueue(adsInterface::clearTimeoutCmds, us);
 
     }
 
@@ -557,6 +545,10 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, pointNodeInfo_t m
             point = pointInfoMap.at(messageNode);
         }*/
 
+	 uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+        
+        mapPool->enqueue(adsInterface::insertInMap, (uint64_t)(message.completion_p), ms);
+
         long nErr;
         uint32_t bytesRead;
         uint8_t rValue;
@@ -567,6 +559,8 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, pointNodeInfo_t m
         q->emplace(msgDevice);
         if (nErr || rValue != 0)
         {
+		mapPool->enqueue(adsInterface::removeCmd, (uint64_t)(message.completion_p));
+
             if (nErr){
                  ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_ERROR, "ADS ReadWriteReqEx2 failed with code: %ld. ", nErr));
         
@@ -586,13 +580,7 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, pointNodeInfo_t m
             if (message.completion_p != NULL){
                 delete(message.completion_p);
             }
-        }else{
-        
-        uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-        pthread_mutex_lock(&adsMtx_m);      
-        adr_map.insert({ (uint64_t)(message.completion_p), ms});
-        pthread_mutex_unlock(&adsMtx_m);
-    }
+        }
 }
 
 
@@ -606,21 +594,18 @@ void adsInterface::sendAdsMessage(const AmbMessage_t& message, pointNodeInfo_t m
  */
 void adsInterface::NotifyCallback(const AmsAddr* pAddr, const AdsNotificationHeader* pNotification, uint32_t hUser)
 {
-    const uint8_t* data = reinterpret_cast<const uint8_t*>(pNotification + 1);
+ const uint8_t* data = reinterpret_cast<const uint8_t*>(pNotification + 1);
     AdsResponse_t  response;
     memcpy( &response,data, sizeof(response));
-    
-    pthread_mutex_lock(&adsMtx_m);
-    std::map<uint64_t, uint64_t>::iterator it = adr_map.find((uint64_t)response.completion_p);
-    
-    if(it != adr_map.end()){
-        adr_map.erase(it);
-    }else{
-        pthread_mutex_unlock(&adsMtx_m);
-        return;
-    }
-    pthread_mutex_unlock(&adsMtx_m);
-        if(response.magic == 0xdeadbeef)
+
+	std::vector< std::future<bool> > results;
+	results.emplace_back(mapPool->enqueue(adsInterface::findInMap,(uint64_t)response.completion_p));
+
+
+if(results[0].get() == false){
+	return;
+}
+if(response.magic == 0xdeadbeef)
         {
             // AMBERR_RETRY is informational. Log it, transform it to 
             // AMBERR_NOERR so calling code wont interpret as error condition
@@ -681,10 +666,74 @@ void adsInterface::NotifyCallback(const AmsAddr* pAddr, const AdsNotificationHea
                                   "not work correct from now on.",
                                   response.magic, response.completion_p));
         }
+
+
+}
+
+/** Check if a completion_p is in the commands std::map
+ @params
+ * completion_p: 
+ */
+
+bool adsInterface::findInMap(uint64_t completion_p){
+   
+    std::map<uint64_t, uint64_t>::iterator it = adr_map.find(completion_p);
     
+    if(it != adr_map.end()){
+        adr_map.erase(it);
+	return true;
+    }else{
+        return false;
+    }    
 } 
 
+/** insert a new element into the commands std::map 
+ @params
+ * completion_p: completion_p to insert
+ * ms: timestamp of function call
+ */
 
+void adsInterface::insertInMap(uint64_t completion_p, uint64_t ms){
+	adr_map.insert({ completion_p, ms});
+
+}
+
+/** remove items with timeouts from std::map and from memory
+ @params
+ * us: timestamp of function call
+ */
+
+void adsInterface::clearTimeoutCmds(uint64_t us){
+	for ( auto it = adr_map.begin(); it != adr_map.end(); ++it  )
+        {
+            if (us - it->second > timeout){
+                uint64_t adr = it->first;
+                AmbCompletion_t* completion_p = (AmbCompletion_t *) adr;
+                *(completion_p->status_p) = AMBERR_WRITEERR;
+                if (completion_p->synchLock_p != NULL){
+                    sem_post(completion_p->synchLock_p);
+                }
+                if (completion_p != NULL){
+                    delete(completion_p);
+                }
+                ACS_STATIC_LOG(LM_SOURCE_INFO, __FUNCTION__, (LM_WARNING, "Subscription timeout, possible data loss."));    
+                adr_map.erase(it);
+            }else{
+		break;
+		}
+
+        }
+
+}
+/** Remove removes an element from std::map
+ @params
+ * completion_p: completion_p to remove
+ */
+
+void adsInterface::removeCmd(uint64_t completion_p){
+	adr_map.erase(completion_p);
+
+}
 
 /*
  * This function copies the information into the correct places
